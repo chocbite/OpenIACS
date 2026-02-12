@@ -1,5 +1,5 @@
 import type { Option, ResultOk } from "@chocbite/ts-lib-result";
-import type { StateROAWA } from "@libState";
+import type { StateROAWA } from "@chocbite/ts-lib-state";
 
 let name_transformer: ((name: string) => string) | undefined;
 export const settings_set_name_transform = (

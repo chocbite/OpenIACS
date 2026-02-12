@@ -1,12 +1,12 @@
-import { err, type Result } from "@chocbite/ts-lib-result";
-import { define_element } from "@libBase";
 import {
   get_cursor_position,
   set_cursor_end,
   set_cursor_position,
   set_selection_all,
-} from "@libCommon";
-import { number_step_start_decimal } from "@libMath";
+} from "@chocbite/ts-lib-common";
+import { number_step_start_decimal } from "@chocbite/ts-lib-math";
+import { err, type Result } from "@chocbite/ts-lib-result";
+import { define_element } from "@libBase";
 import { FormNumberWrite, type FormNumberWriteOptions } from "../numberBase";
 import "./numberInput.scss";
 

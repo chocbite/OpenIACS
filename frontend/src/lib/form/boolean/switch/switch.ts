@@ -1,10 +1,11 @@
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { define_element } from "@libBase";
-import type { SVGFunc } from "@libSVG";
 import { FormColors, FormValueWrite, type FormValueOptions } from "../../base";
 import "./switch.scss";
 
-interface FormSwitchOptions<ID extends string | undefined>
-  extends FormValueOptions<boolean, ID> {
+interface FormSwitchOptions<
+  ID extends string | undefined,
+> extends FormValueOptions<boolean, ID> {
   /**Icon to use for left side*/
   icon?: SVGFunc;
   /**Color when switch is on */
@@ -135,7 +136,7 @@ define_element(FormSwitch);
 
 /**Creates a switch form element */
 export function form_switch<ID extends string | undefined>(
-  options?: FormSwitchOptions<ID>
+  options?: FormSwitchOptions<ID>,
 ): FormSwitch<ID> {
   const swit = new FormSwitch<ID>(options?.id);
   if (options) {

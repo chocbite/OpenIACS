@@ -1,11 +1,12 @@
 import { some, type Option } from "@chocbite/ts-lib-result";
-import { Base, define_element } from "@libBase";
-import state, {
+import {
+  state,
   type State,
   type StateArray,
   type StateArrayRead,
   type StateInferSub,
-} from "@libState";
+} from "@chocbite/ts-lib-state";
+import { Base, define_element } from "@libBase";
 import { ListAddRow, type ListAddRowOptions } from "./add_row";
 import type { ListField } from "./field";
 import { ListKeyField, type ListKeyFieldOptions } from "./key_field";

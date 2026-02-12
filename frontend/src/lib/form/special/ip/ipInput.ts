@@ -1,4 +1,3 @@
-import { define_element } from "@libBase";
 import {
   get_cursor_position,
   IPAddress,
@@ -6,12 +5,14 @@ import {
   set_cursor_end,
   set_selection_all,
   sleep,
-} from "@libCommon";
+} from "@chocbite/ts-lib-common";
+import { define_element } from "@libBase";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./ipInput.scss";
 
-export interface IpInputOptions<ID extends string | undefined>
-  extends FormValueOptions<IPAddress, ID> {
+export interface IpInputOptions<
+  ID extends string | undefined,
+> extends FormValueOptions<IPAddress, ID> {
   /**Ip address type, this is overwritten if supplied with an ipaddress with a different type*/
   type: IPVersion;
 }
@@ -57,7 +58,7 @@ class FormIpInput<ID extends string | undefined> extends FormValueWrite<
         //Check for valid characters
         else if (
           !ev.data.match(
-            this.#type === IPVersion.V4 ? /^[\d]*$/ : /^[\dA-Fa-f]*$/
+            this.#type === IPVersion.V4 ? /^[\d]*$/ : /^[\dA-Fa-f]*$/,
           )
         )
           ev.preventDefault();
@@ -170,7 +171,7 @@ class FormIpInput<ID extends string | undefined> extends FormValueWrite<
           if (i < (this.#type === IPVersion.V4 ? 4 : 8) - 1)
             acc += this.#type === IPVersion.V4 ? "." : ":";
           return acc;
-        }, "")
+        }, ""),
     );
   }
 
@@ -185,8 +186,8 @@ class FormIpInput<ID extends string | undefined> extends FormValueWrite<
         .flatMap((v, i) =>
           i < (val === IPVersion.V4 ? 4 : 8) - 1
             ? [v, document.createTextNode(val === IPVersion.V4 ? "." : ":")]
-            : [v]
-        )
+            : [v],
+        ),
     );
   }
 
@@ -210,7 +211,7 @@ define_element(FormIpInput);
 
 /**Creates a color input form element */
 export function form_ip_input<ID extends string | undefined>(
-  options: IpInputOptions<ID>
+  options: IpInputOptions<ID>,
 ): FormIpInput<ID> {
   const input = new FormIpInput<ID>(options.type, options?.id);
   if (options) {

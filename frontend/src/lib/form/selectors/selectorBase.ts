@@ -1,5 +1,5 @@
-import { StateEnumHelper, type State } from "@libState";
-import type { SVGFunc } from "@libSVG";
+import { StateEnumHelper, type State } from "@chocbite/ts-lib-state";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormValueWrite, type FormValueOptions } from "../base";
 
 export interface FormSelectorOption<RT> {
@@ -11,8 +11,10 @@ export interface FormSelectorOption<RT> {
   icon?: SVGFunc;
 }
 
-export interface FormSelectorBaseOptions<T, ID extends string | undefined>
-  extends FormValueOptions<T, ID> {
+export interface FormSelectorBaseOptions<
+  T,
+  ID extends string | undefined,
+> extends FormValueOptions<T, ID> {
   /**Options for selector*/
   selections?: FormSelectorOption<T>[];
 }
@@ -20,14 +22,14 @@ export interface FormSelectorBaseOptions<T, ID extends string | undefined>
 /**Base for number elements elements*/
 export abstract class FormSelectorBase<
   RT,
-  ID extends string | undefined
+  ID extends string | undefined,
 > extends FormValueWrite<RT, ID> {
   /**Sets the selection options for the selector */
   abstract set selections(selections: FormSelectorOption<RT>[] | undefined);
 
   static apply_options<RT, ID extends string | undefined>(
     element: FormSelectorBase<RT, ID>,
-    options: FormSelectorBaseOptions<RT, ID>
+    options: FormSelectorBaseOptions<RT, ID>,
   ) {
     if (options.selections) element.selections = options.selections;
     super.apply_options(element, options);

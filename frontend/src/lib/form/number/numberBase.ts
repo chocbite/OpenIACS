@@ -1,9 +1,11 @@
-import type { SVGFunc } from "@libSVG";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormValueWrite, type FormValueOptions } from "../base";
 import "./numberBase.scss";
 
-export interface FormNumberOptions<ID extends string | undefined, RT = number>
-  extends FormValueOptions<RT, ID> {
+export interface FormNumberOptions<
+  ID extends string | undefined,
+  RT = number,
+> extends FormValueOptions<RT, ID> {
   /**Lower limit for slider value*/
   min?: number;
   /**Upper limit for slider value*/
@@ -16,7 +18,7 @@ export interface FormNumberOptions<ID extends string | undefined, RT = number>
 
 export interface FormNumberWriteOptions<
   ID extends string | undefined,
-  RT = number
+  RT = number,
 > extends FormNumberOptions<ID, RT> {
   /**Step size, use 0 for automatic step size*/
   step?: number;
@@ -26,7 +28,7 @@ export interface FormNumberWriteOptions<
 
 export interface FormStepperBaseOptions<
   ID extends string | undefined,
-  RT = number
+  RT = number,
 > extends FormNumberWriteOptions<ID, RT> {
   /**wether the events are live as the slider is moved or only when moving stops */
   live?: boolean;
@@ -38,11 +40,11 @@ export interface FormStepperBaseOptions<
 
 export abstract class FormNumberWrite<
   ID extends string | undefined,
-  RT = number
+  RT = number,
 > extends FormValueWrite<RT, ID> {
   static apply_options<RT, ID extends string | undefined>(
     element: FormNumberWrite<ID, RT>,
-    options: FormNumberWriteOptions<ID, RT>
+    options: FormNumberWriteOptions<ID, RT>,
   ) {
     if (options.unit) element.unit = options.unit;
     if (options.decimals) element.decimals = options.decimals;

@@ -1,11 +1,11 @@
+import {
+  state,
+  type State,
+  type StateArray,
+  type StateArrayRead,
+  type StateInferSub,
+} from "@chocbite/ts-lib-state";
 import { Base, define_element, type BaseObserverOptions } from "@libBase";
-import type {
-  State,
-  StateArray,
-  StateArrayRead,
-  StateInferSub,
-} from "@libState";
-import state from "@libState";
 import { px_to_rem } from "@libTheme";
 import { ListAddRow, type ListAddRowOptions } from "./add_row.ts";
 import "./container.scss";
@@ -101,7 +101,7 @@ interface ContainerOptions {
 class Container<
   A extends ListType<any>,
   T extends { [key: string]: ListColumnOptions<any, any> },
-  R = ListTypeExtract<A>
+  R = ListTypeExtract<A>,
 > extends Base {
   static element_name() {
     return "container";
@@ -122,7 +122,7 @@ class Container<
     columns: { [K in keyof T]: ListColumnOptions<T[K], any> },
     transform: ListRowTransformer<R, T, A>,
     rows: A,
-    options?: ContainerOptions
+    options?: ContainerOptions,
   ) {
     super();
     this.#root = {
@@ -163,7 +163,7 @@ class Container<
         (width) => {
           this.#root.columns.get(key)!.init_width = width;
           this.#update_column_widths();
-        }
+        },
       );
     }
 
@@ -214,7 +214,7 @@ class Container<
     if (rec)
       for (let i = 0; i < this.#child_box.childElementCount; i++)
         count += (this.#child_box.children[i] as ListRow<R, T, A>).amount_rows(
-          true
+          true,
         );
     return count;
   }
@@ -231,7 +231,7 @@ class Container<
         });
       else
         this.#state_sub = this.attach_state(rows, (r) =>
-          this.#update_rows(r.ok ? r.value : [])
+          this.#update_rows(r.ok ? r.value : []),
         );
     } else this.#update_rows(rows);
   }
@@ -246,7 +246,7 @@ class Container<
         this.#child_box.append(
           ...rows
             .slice(this.#child_box.childElementCount)
-            .map((row) => new ListRow<R, T, A>(this.#root, this.#parent, row))
+            .map((row) => new ListRow<R, T, A>(this.#root, this.#parent, row)),
         );
       else if (rows.length < this.#child_box.childElementCount) {
         for (
@@ -265,7 +265,7 @@ class Container<
         | ListRow<R, T, A>
         | undefined;
       const rows = sar.items.map(
-        (row) => new ListRow<R, T, A>(this.#root, this.#parent, row)
+        (row) => new ListRow<R, T, A>(this.#root, this.#parent, row),
       );
       if (child) child.before(...rows);
       else this.#child_box.append(...rows);
@@ -286,12 +286,12 @@ define_element(Container);
 export function container<
   A extends ListType<any>,
   T extends {},
-  R = ListTypeExtract<A>
+  R = ListTypeExtract<A>,
 >(
   columns: { [K in keyof T]: ListColumnOptions<T[K], any> },
   transform: ListRowTransformer<R, NoInfer<T>, A>,
   rows: A,
-  options?: ContainerOptions
+  options?: ContainerOptions,
 ) {
   return new Container<A, T, R>(columns, transform, rows, options);
 }

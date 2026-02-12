@@ -1,10 +1,10 @@
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { Base, define_element } from "@libBase";
 import {
   material_navigation_close_rounded,
   material_navigation_unfold_less_rounded,
   material_navigation_unfold_more_rounded,
 } from "@libIcons";
-import type { SVGFunc } from "@libSVG";
 import {
   FormSelectorBase,
   type FormSelectorBaseOptions,
@@ -17,8 +17,10 @@ interface SelOptions {
   icon?: SVGFunc;
 }
 
-export interface FormDropDownOptions<RT, ID extends string | undefined>
-  extends FormSelectorBaseOptions<RT, ID> {
+export interface FormDropDownOptions<
+  RT,
+  ID extends string | undefined,
+> extends FormSelectorBaseOptions<RT, ID> {
   /**Default text displayed*/
   default?: string;
   /**Default icon displayed*/
@@ -28,7 +30,7 @@ export interface FormDropDownOptions<RT, ID extends string | undefined>
 /**Dropdown box for selecting between multiple choices in a small space*/
 export class FormDropdown<
   RT,
-  ID extends string | undefined
+  ID extends string | undefined,
 > extends FormSelectorBase<RT, ID> {
   static element_name() {
     return "dropdown";
@@ -44,7 +46,7 @@ export class FormDropdown<
   #icon?: SVGSVGElement;
   #text: HTMLDivElement = this.appendChild(document.createElement("div"));
   #open: SVGSVGElement = this.appendChild(
-    material_navigation_unfold_more_rounded()
+    material_navigation_unfold_more_rounded(),
   );
   #default: Text = document.createTextNode("Select something");
   #default_icon?: SVGFunc;
@@ -139,7 +141,7 @@ export class FormDropdown<
   #select_adjacent(dir: boolean) {
     const y = Math.min(
       this.#values.length - 1,
-      Math.max(0, dir ? this.#selected + 1 : this.#selected - 1)
+      Math.max(0, dir ? this.#selected + 1 : this.#selected - 1),
     );
     if (y !== this.#selected) this.set_value_check(this.#values[y]);
   }
@@ -181,7 +183,7 @@ define_element(FormDropdown);
 
 /**Creates a dropdown form element */
 export function form_dropdown<RT, ID extends string | undefined>(
-  options?: FormDropDownOptions<RT, ID>
+  options?: FormDropDownOptions<RT, ID>,
 ): FormDropdown<RT, ID> {
   const drop = new FormDropdown<RT, ID>(options?.id);
   if (options) {
@@ -204,10 +206,10 @@ class DropDownBox extends Base {
   #closer: HTMLDivElement = document.createElement("div");
   #container: HTMLDivElement = this.appendChild(document.createElement("div"));
   #scroll: HTMLDivElement = this.#container.appendChild(
-    document.createElement("div")
+    document.createElement("div"),
   );
   #table: HTMLDivElement = this.#scroll.appendChild(
-    document.createElement("div")
+    document.createElement("div"),
   );
   #dropdown: FormDropdown<any, any> | undefined;
   #focus_out_handler = (e: FocusEvent) => {
@@ -275,7 +277,7 @@ class DropDownBox extends Base {
   open_menu(
     map: Map<any, SelOptions>,
     parent: FormDropdown<any, any>,
-    value: any
+    value: any,
   ) {
     const inner_height = this.ownerDocument.defaultView?.innerHeight || 0;
     this.classList.add("open");
@@ -322,7 +324,7 @@ class DropDownBox extends Base {
         };
         if (val === value) focus = line;
         return line;
-      })
+      }),
     );
 
     //Show closer or not
@@ -342,7 +344,7 @@ class DropDownBox extends Base {
     this.ownerDocument.defaultView?.addEventListener(
       "resize",
       this.#window_resize_handler,
-      { passive: true }
+      { passive: true },
     );
     this.#is_open = true;
   }
@@ -359,7 +361,7 @@ class DropDownBox extends Base {
     }
     this.ownerDocument.defaultView?.removeEventListener(
       "resize",
-      this.#window_resize_handler
+      this.#window_resize_handler,
     );
   }
 }

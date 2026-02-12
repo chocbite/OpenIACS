@@ -1,6 +1,6 @@
 import { type Option } from "@chocbite/ts-lib-result";
+import type { State, StateArray } from "@chocbite/ts-lib-state";
 import type { BaseObserver } from "@libBase";
-import type { State, StateArray } from "@libState";
 import type { ListField } from "./field";
 import type { ListRow, ListRowOptions } from "./row";
 

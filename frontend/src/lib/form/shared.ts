@@ -1,10 +1,17 @@
-import { BLUE, GREEN, GREY, ORANGE, RED, YELLOW } from "@libColors";
+import {
+  BLUE,
+  GREEN,
+  GREY,
+  ORANGE,
+  RED,
+  YELLOW,
+} from "@chocbite/ts-lib-colors";
 import { theme_init_variable_root } from "@libTheme";
 
 const theme_root = theme_init_variable_root(
   "form",
   "UI Form Elements",
-  "Theme variables for UI form Elements"
+  "Theme variables for UI form Elements",
 );
 
 //      _____  ______          _____     ____  _   _ _  __     __
@@ -16,7 +23,7 @@ const theme_root = theme_init_variable_root(
 const read_only = theme_root.make_sub_group(
   "read",
   "Read Only",
-  "Settings for form elements in read only mode"
+  "Settings for form elements in read only mode",
 );
 read_only.make_variable(
   "filter",
@@ -25,7 +32,7 @@ read_only.make_variable(
   "opacity(0.6)",
   "opacity(0.6)",
   "Filter",
-  undefined
+  undefined,
 );
 
 //#################################################################################3
@@ -39,7 +46,7 @@ read_only.make_variable(
 const colors = theme_root.make_sub_group(
   "colors",
   "Colors",
-  "Colors used in all form elements"
+  "Colors used in all form elements",
 );
 
 //      _______ ________   _________    _____ ____  _      ____  _____   _____
@@ -51,7 +58,7 @@ const colors = theme_root.make_sub_group(
 const colors_text = colors.make_sub_group(
   "text",
   "Text Colors",
-  "Text colors used in all form elements"
+  "Text colors used in all form elements",
 );
 colors_text.make_variable(
   "label",
@@ -60,7 +67,7 @@ colors_text.make_variable(
   GREY["700"],
   GREY["300"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text.make_variable(
   "normal",
@@ -69,7 +76,7 @@ colors_text.make_variable(
   GREY["800"],
   GREY["200"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text.make_variable(
   "selected",
@@ -78,7 +85,7 @@ colors_text.make_variable(
   GREY["900"],
   GREY["50"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text.make_variable(
   "unselected",
@@ -87,7 +94,7 @@ colors_text.make_variable(
   GREY["600"],
   GREY["400"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      _______ ________   _________   ____  _               _____ _  __
@@ -101,7 +108,7 @@ colors_text.make_variable(
 const colors_text_black = colors.make_sub_group(
   "textBlack",
   "Text Colors Black Background",
-  "Text colors used for black background in all form elements"
+  "Text colors used for black background in all form elements",
 );
 colors_text_black.make_variable(
   "normal",
@@ -110,7 +117,7 @@ colors_text_black.make_variable(
   GREY["200"],
   GREY["200"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text_black.make_variable(
   "selected",
@@ -119,7 +126,7 @@ colors_text_black.make_variable(
   GREY["50"],
   GREY["50"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text_black.make_variable(
   "unselected",
@@ -128,7 +135,7 @@ colors_text_black.make_variable(
   GREY["600"],
   GREY["400"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      _____ _____ ____  _   _    _____ ____  _      ____  _____   _____
@@ -140,7 +147,7 @@ colors_text_black.make_variable(
 const colors_icon = colors.make_sub_group(
   "icon",
   "Icon Colors",
-  "Icon colors used in all form elements"
+  "Icon colors used in all form elements",
 );
 colors_icon.make_variable(
   "normal",
@@ -149,7 +156,7 @@ colors_icon.make_variable(
   GREY["800"],
   GREY["200"],
   "Color",
-  undefined
+  undefined,
 );
 colors_icon.make_variable(
   "selected",
@@ -158,7 +165,7 @@ colors_icon.make_variable(
   GREY["900"],
   GREY["50"],
   "Color",
-  undefined
+  undefined,
 );
 colors_icon.make_variable(
   "unselected",
@@ -167,7 +174,7 @@ colors_icon.make_variable(
   GREY["600"],
   GREY["400"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      ____          _____ _  _______ _____   ____  _    _ _   _ _____     _____ ____  _      ____  _____   _____
@@ -179,7 +186,7 @@ colors_icon.make_variable(
 const colors_background = colors.make_sub_group(
   "background",
   "Background Colors",
-  "Background colors used in all form elements"
+  "Background colors used in all form elements",
 );
 colors_background.make_variable(
   "normal",
@@ -188,7 +195,7 @@ colors_background.make_variable(
   GREY["50"],
   GREY["900"],
   "Color",
-  undefined
+  undefined,
 );
 colors_background.make_variable(
   "hover",
@@ -197,7 +204,7 @@ colors_background.make_variable(
   GREY["400"],
   GREY["700"],
   "Color",
-  undefined
+  undefined,
 );
 colors_background.make_variable(
   "unselected",
@@ -206,7 +213,7 @@ colors_background.make_variable(
   GREY["300"],
   GREY["800"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      ____   ____  _____  _____  ______ _____     _____ ____  _      ____  _____   _____
@@ -218,7 +225,7 @@ colors_background.make_variable(
 const colors_border = colors.make_sub_group(
   "border",
   "Border Colors",
-  "Border colors used in all form elements"
+  "Border colors used in all form elements",
 );
 colors_border.make_variable(
   "normal",
@@ -227,7 +234,7 @@ colors_border.make_variable(
   GREY["700"],
   GREY["300"],
   "Color",
-  undefined
+  undefined,
 );
 colors_border.make_variable(
   "unselected",
@@ -236,7 +243,7 @@ colors_border.make_variable(
   GREY["700"],
   GREY["300"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      ______ ____   _____ _    _  _____
@@ -248,7 +255,7 @@ colors_border.make_variable(
 const colors_focus = colors.make_sub_group(
   "focus",
   "Focus Colors",
-  "Focus colors used in all form elements"
+  "Focus colors used in all form elements",
 );
 colors_focus.make_variable(
   "normal",
@@ -257,7 +264,7 @@ colors_focus.make_variable(
   ORANGE["600"],
   ORANGE["300"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      ____           _____ _____ _____    _____ ____  _      ____  _____   _____
@@ -269,7 +276,7 @@ colors_focus.make_variable(
 const colors_basic = colors.make_sub_group(
   "basic",
   "Basic Colors",
-  "Basic colors used in all form elements"
+  "Basic colors used in all form elements",
 );
 colors_basic.make_variable(
   "green",
@@ -278,7 +285,7 @@ colors_basic.make_variable(
   GREEN["300"],
   GREEN["900"],
   "Color",
-  undefined
+  undefined,
 );
 colors_basic.make_variable(
   "red",
@@ -287,7 +294,7 @@ colors_basic.make_variable(
   RED["300"],
   RED["900"],
   "Color",
-  undefined
+  undefined,
 );
 colors_basic.make_variable(
   "blue",
@@ -296,7 +303,7 @@ colors_basic.make_variable(
   BLUE["300"],
   BLUE["900"],
   "Color",
-  undefined
+  undefined,
 );
 colors_basic.make_variable(
   "yellow",
@@ -305,7 +312,7 @@ colors_basic.make_variable(
   YELLOW["300"],
   ORANGE["900"],
   "Color",
-  undefined
+  undefined,
 );
 
 //#################################################################################3
@@ -319,7 +326,7 @@ colors_basic.make_variable(
 const sizes = theme_root.make_sub_group(
   "size",
   "Size",
-  "Sizes used in all form elements"
+  "Sizes used in all form elements",
 );
 
 sizes.make_variable(
@@ -329,7 +336,7 @@ sizes.make_variable(
   "0.4rem",
   "0.4rem",
   "Length",
-  { min: 0, max: 4 }
+  { min: 0, max: 4 },
 );
 
 sizes.make_variable(
@@ -339,7 +346,7 @@ sizes.make_variable(
   "1.6rem",
   "1.6rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 sizes.make_variable(
@@ -349,7 +356,7 @@ sizes.make_variable(
   "2.6rem",
   "2.6rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 //#################################################################################3
@@ -363,7 +370,7 @@ sizes.make_variable(
 const animation = theme_root.make_sub_group(
   "animation",
   "Animation",
-  "Animation settings used in all form elements"
+  "Animation settings used in all form elements",
 );
 
 animation.make_variable(
@@ -373,7 +380,7 @@ animation.make_variable(
   "ease-in-out",
   "ease-in-out",
   "TransitionType",
-  undefined
+  undefined,
 );
 
 animation.make_variable(
@@ -383,7 +390,7 @@ animation.make_variable(
   "200ms",
   "200ms",
   "Time",
-  { min: 0, max: 5000 }
+  { min: 0, max: 5000 },
 );
 
 //#################################################################################3
@@ -397,7 +404,7 @@ animation.make_variable(
 const font = theme_root.make_sub_group(
   "font",
   "Font",
-  "Font settings used in all form elements"
+  "Font settings used in all form elements",
 );
 
 font.make_variable(
@@ -407,7 +414,7 @@ font.make_variable(
   "1rem",
   "1rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 font.make_variable(
@@ -417,5 +424,5 @@ font.make_variable(
   "1.1rem",
   "1.1rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );

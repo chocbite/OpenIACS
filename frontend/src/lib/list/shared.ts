@@ -1,10 +1,10 @@
-import { GREY, ORANGE } from "@libColors";
+import { GREY, ORANGE } from "@chocbite/ts-lib-colors";
 import { theme_init_variable_root } from "@libTheme";
 
 const theme_root = theme_init_variable_root(
   "list",
   "UI List Elements",
-  "Theme variables for UI list elements"
+  "Theme variables for UI list elements",
 );
 
 //      _____  ______          _____     ____  _   _ _  __     __
@@ -16,7 +16,7 @@ const theme_root = theme_init_variable_root(
 const read_only = theme_root.make_sub_group(
   "read",
   "Read Only",
-  "Settings for list elements in read only mode"
+  "Settings for list elements in read only mode",
 );
 read_only.make_variable(
   "filter",
@@ -25,7 +25,7 @@ read_only.make_variable(
   "opacity(0.6)",
   "opacity(0.6)",
   "Filter",
-  undefined
+  undefined,
 );
 
 //#################################################################################3
@@ -39,7 +39,7 @@ read_only.make_variable(
 const colors = theme_root.make_sub_group(
   "colors",
   "Colors",
-  "Colors used in all list elements"
+  "Colors used in all list elements",
 );
 
 //      _______ ________   _________    _____ ____  _      ____  _____   _____
@@ -51,7 +51,7 @@ const colors = theme_root.make_sub_group(
 const colors_text = colors.make_sub_group(
   "text",
   "Text Colors",
-  "Text colors used in all list elements"
+  "Text colors used in all list elements",
 );
 colors_text.make_variable(
   "header",
@@ -60,7 +60,7 @@ colors_text.make_variable(
   GREY["900"],
   GREY["50"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text.make_variable(
   "field",
@@ -69,7 +69,7 @@ colors_text.make_variable(
   GREY["800"],
   GREY["100"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text.make_variable(
   "key_field",
@@ -78,7 +78,7 @@ colors_text.make_variable(
   GREY["900"],
   GREY["50"],
   "Color",
-  undefined
+  undefined,
 );
 colors_text.make_variable(
   "add",
@@ -87,7 +87,7 @@ colors_text.make_variable(
   GREY["900"],
   GREY["50"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      _____ _____ ____  _   _    _____ ____  _      ____  _____   _____
@@ -99,7 +99,7 @@ colors_text.make_variable(
 const colors_icon = colors.make_sub_group(
   "icon",
   "Icon Colors",
-  "Icon colors used in all form elements"
+  "Icon colors used in all form elements",
 );
 colors_icon.make_variable(
   "sub_opener",
@@ -108,7 +108,7 @@ colors_icon.make_variable(
   GREY["800"],
   GREY["200"],
   "Color",
-  undefined
+  undefined,
 );
 colors_icon.make_variable(
   "key_icon",
@@ -117,7 +117,7 @@ colors_icon.make_variable(
   GREY["800"],
   GREY["200"],
   "Color",
-  undefined
+  undefined,
 );
 colors_icon.make_variable(
   "add_icon",
@@ -126,7 +126,7 @@ colors_icon.make_variable(
   GREY["800"],
   GREY["200"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      ____          _____ _  _______ _____   ____  _    _ _   _ _____     _____ ____  _      ____  _____   _____
@@ -138,7 +138,7 @@ colors_icon.make_variable(
 const colors_background = colors.make_sub_group(
   "background",
   "Background Colors",
-  "Background colors used in all list elements"
+  "Background colors used in all list elements",
 );
 colors_background.make_variable(
   "row_even",
@@ -147,7 +147,7 @@ colors_background.make_variable(
   GREY["100"],
   GREY["800"],
   "Color",
-  undefined
+  undefined,
 );
 colors_background.make_variable(
   "row_odd",
@@ -156,7 +156,7 @@ colors_background.make_variable(
   GREY["50"],
   GREY["900"],
   "Color",
-  undefined
+  undefined,
 );
 colors_background.make_variable(
   "row_hover",
@@ -165,7 +165,7 @@ colors_background.make_variable(
   GREY["300"],
   GREY["700"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      ____   ____  _____  _____  ______ _____     _____ ____  _      ____  _____   _____
@@ -177,7 +177,7 @@ colors_background.make_variable(
 const colors_border = colors.make_sub_group(
   "border",
   "Border Colors",
-  "Border colors used in all list elements"
+  "Border colors used in all list elements",
 );
 colors_border.make_variable(
   "header",
@@ -186,7 +186,7 @@ colors_border.make_variable(
   GREY["600"],
   GREY["400"],
   "Color",
-  undefined
+  undefined,
 );
 colors_border.make_variable(
   "row",
@@ -195,7 +195,7 @@ colors_border.make_variable(
   GREY["400"],
   GREY["600"],
   "Color",
-  undefined
+  undefined,
 );
 colors_border.make_variable(
   "column",
@@ -204,7 +204,7 @@ colors_border.make_variable(
   GREY["500"],
   GREY["500"],
   "Color",
-  undefined
+  undefined,
 );
 
 //      ______ ____   _____ _    _  _____
@@ -216,7 +216,7 @@ colors_border.make_variable(
 const colors_focus = colors.make_sub_group(
   "focus",
   "Focus Colors",
-  "Focus colors used in all list elements"
+  "Focus colors used in all list elements",
 );
 colors_focus.make_variable(
   "normal",
@@ -225,7 +225,7 @@ colors_focus.make_variable(
   ORANGE["600"],
   ORANGE["300"],
   "Color",
-  undefined
+  undefined,
 );
 
 //#################################################################################3
@@ -239,7 +239,7 @@ colors_focus.make_variable(
 const sizes = theme_root.make_sub_group(
   "size",
   "Size",
-  "Sizes used in all list elements"
+  "Sizes used in all list elements",
 );
 
 sizes.make_variable(
@@ -249,7 +249,7 @@ sizes.make_variable(
   "1.4rem",
   "1.4rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 sizes.make_variable(
@@ -259,7 +259,7 @@ sizes.make_variable(
   "2.6rem",
   "2.6rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 sizes.make_variable(
@@ -269,7 +269,7 @@ sizes.make_variable(
   "1rem",
   "1rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 sizes.make_variable(
@@ -279,7 +279,7 @@ sizes.make_variable(
   "2rem",
   "2rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 //#################################################################################3
@@ -293,7 +293,7 @@ sizes.make_variable(
 const animation = theme_root.make_sub_group(
   "animation",
   "Animation",
-  "Animation settings used in all list elements"
+  "Animation settings used in all list elements",
 );
 
 animation.make_variable(
@@ -303,7 +303,7 @@ animation.make_variable(
   "ease-in-out",
   "ease-in-out",
   "TransitionType",
-  undefined
+  undefined,
 );
 
 animation.make_variable(
@@ -313,7 +313,7 @@ animation.make_variable(
   "200ms",
   "200ms",
   "Time",
-  { min: 0, max: 5000 }
+  { min: 0, max: 5000 },
 );
 
 //#################################################################################3
@@ -327,7 +327,7 @@ animation.make_variable(
 const font = theme_root.make_sub_group(
   "font",
   "Font",
-  "Font settings used in all list elements"
+  "Font settings used in all list elements",
 );
 
 font.make_variable(
@@ -337,7 +337,7 @@ font.make_variable(
   "1rem",
   "1rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );
 
 font.make_variable(
@@ -347,5 +347,5 @@ font.make_variable(
   "1.2rem",
   "1.2rem",
   "Length",
-  { min: 0.1, max: 10 }
+  { min: 0.1, max: 10 },
 );

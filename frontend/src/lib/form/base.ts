@@ -1,6 +1,6 @@
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
+import type { State, StateSub } from "@chocbite/ts-lib-state";
 import { Base } from "@libBase";
-import type { State, StateSub } from "@libState";
 import "./shared";
 
 /**Colors for form elements that have selectable colors*/

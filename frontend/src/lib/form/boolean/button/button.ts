@@ -1,5 +1,5 @@
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { define_element } from "@libBase";
-import type { SVGFunc } from "@libSVG";
 import {
   FormColors,
   FormValue,
@@ -9,8 +9,9 @@ import {
 import "../../shared";
 import "./button.scss";
 
-interface FormButtonOptions<ID extends string | undefined>
-  extends FormValueOptions<boolean, ID> {
+interface FormButtonOptions<
+  ID extends string | undefined,
+> extends FormValueOptions<boolean, ID> {
   /**Buttons text */
   text?: string;
   /**Icon for button */
@@ -157,7 +158,7 @@ define_element(FormButton);
 
 /**Creates a button form element */
 export function form_button<ID extends string | undefined>(
-  options?: FormButtonOptions<ID>
+  options?: FormButtonOptions<ID>,
 ): FormButton<ID> {
   const butt = new FormButton<ID>(options?.id);
   if (options) {

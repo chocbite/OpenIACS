@@ -1,12 +1,12 @@
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { define_element } from "@libBase";
-import type { SVGFunc } from "@libSVG";
 import { FormValue, type FormColors, type FormValueOptions } from "../../base";
 import "./lamp.scss";
 
 interface FormLampOptions<
   T extends boolean | number,
   C extends FormColors[],
-  ID extends string | undefined
+  ID extends string | undefined,
 > extends FormValueOptions<T, ID> {
   /**Sets the lamp colors */
   colors: C;
@@ -19,7 +19,7 @@ interface FormLampOptions<
 class FormLamp<
   T extends boolean | number,
   C extends FormColors[],
-  ID extends string | undefined
+  ID extends string | undefined,
 > extends FormValue<T, ID> {
   static element_name() {
     return "lamp";
@@ -78,15 +78,15 @@ function from<ID extends string | undefined>(
     number,
     [FormColors, FormColors, FormColors, ...FormColors[]],
     ID
-  >
+  >,
 ): FormLamp<number, [FormColors, FormColors, FormColors, ...FormColors[]], ID>;
 function from<ID extends string | undefined>(
-  options?: FormLampOptions<boolean, [FormColors, FormColors], ID>
+  options?: FormLampOptions<boolean, [FormColors, FormColors], ID>,
 ): FormLamp<boolean, [FormColors, FormColors], ID>;
 function from<
   T extends boolean | number,
   C extends FormColors[],
-  ID extends string | undefined
+  ID extends string | undefined,
 >(options?: FormLampOptions<T, C, ID>): FormLamp<T, C, ID> {
   const lamp = new FormLamp<T, C, ID>(options?.id);
   if (options) {
