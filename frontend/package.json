@@ -11,14 +11,20 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@chocbite/ts-lib-base": "^1.0.0",
+    "@chocbite/ts-lib-base": "^1.0.4",
     "@chocbite/ts-lib-colors": "1.0.0",
     "@chocbite/ts-lib-common": "^1.0.0",
+    "@chocbite/ts-lib-context-menu": "^1.0.0",
+    "@chocbite/ts-lib-document": "^1.0.0",
     "@chocbite/ts-lib-event": "1.0.0",
+    "@chocbite/ts-lib-icons": "^1.0.2",
     "@chocbite/ts-lib-math": "1.0.0",
     "@chocbite/ts-lib-result": "1.0.0",
+    "@chocbite/ts-lib-settings": "^1.0.0",
+    "@chocbite/ts-lib-spinner": "^1.0.0",
     "@chocbite/ts-lib-state": "^1.0.0",
-    "@chocbite/ts-lib-svg": "1.0.1"
+    "@chocbite/ts-lib-svg": "1.0.1",
+    "@chocbite/ts-lib-theme": "^1.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

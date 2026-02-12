@@ -1,10 +1,10 @@
+import { AccessTypes, define_element } from "@chocbite/ts-lib-base";
 import type { Prettify } from "@chocbite/ts-lib-common";
-import { err, ok, type Result } from "@chocbite/ts-lib-result";
-import { AccessTypes, define_element } from "@libBase";
 import {
   material_navigation_unfold_less_rounded,
   material_navigation_unfold_more_rounded,
-} from "@libIcons";
+} from "@chocbite/ts-lib-icons";
+import { err, ok, type Result } from "@chocbite/ts-lib-result";
 import { FormElement, FormValue, type FormValueOptions } from "../base";
 import "./group.scss";
 

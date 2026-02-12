@@ -1,7 +1,7 @@
+import { define_element } from "@chocbite/ts-lib-base";
 import { set_cursor_end } from "@chocbite/ts-lib-common";
+import { material_editor_drag_handle_rounded } from "@chocbite/ts-lib-icons";
 import { err, type Result } from "@chocbite/ts-lib-result";
-import { define_element } from "@libBase";
-import { material_editor_drag_handle_rounded } from "@libIcons";
 import { string_byte_length, string_byte_limit } from "@libString";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./textMultiLine.scss";

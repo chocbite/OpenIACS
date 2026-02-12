@@ -1,12 +1,12 @@
+import { define_element } from "@chocbite/ts-lib-base";
 import { sleep } from "@chocbite/ts-lib-common";
-import { number_step_start_decimal } from "@chocbite/ts-lib-math";
-import { err, type Result } from "@chocbite/ts-lib-result";
-import type { SVGFunc } from "@chocbite/ts-lib-svg";
-import { define_element } from "@libBase";
 import {
   material_content_add_rounded,
   material_content_remove_rounded,
-} from "@libIcons";
+} from "@chocbite/ts-lib-icons";
+import { number_step_start_decimal } from "@chocbite/ts-lib-math";
+import { err, type Result } from "@chocbite/ts-lib-result";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormNumberWrite, type FormStepperBaseOptions } from "../numberBase";
 import "./stepper.scss";
 

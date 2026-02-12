@@ -14,19 +14,11 @@
 
       //Lib
       "@libComposition": ["./src/lib/composition/index"],
-      "@libContextmenu": ["./src/lib/contextmenu/index"],
-      "@libDocument": ["./src/lib/document/index"],
       "@libEditor": ["./src/lib/editor/index"],
       "@libForm": ["./src/lib/form/index"],
-      "@libIcons": ["./src/lib/icons/index"],
-      "@libIconsFonts": ["./src/lib/icons/font.scss"],
       "@libList": ["./src/lib/list/index"],
       "@libRepository": ["./src/lib/repository/index"],
-      "@libSettings": ["./src/lib/settings/index"],
-      "@libSpinners": ["./src/lib/spinners/index"],
-      "@libString": ["./src/lib/string/index"],
-      "@libTheme": ["./src/lib/theme/index"],
-      "@libThemeCommon": ["./src/lib/theme/builtIn"]
+      "@libString": ["./src/lib/string/index"]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

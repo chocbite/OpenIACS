@@ -1,4 +1,4 @@
-import { px_to_rem } from "@libTheme";
+import { px_to_rem } from "@chocbite/ts-lib-theme";
 import "./container.scss";
 import { Panel, type PanelOptions, type PanelContainer as PC } from "./panel";
 import "./shared";
@@ -103,6 +103,6 @@ declare global {
 }
 
 export const main_panel_container = create_panel_container(
-  document.documentElement
+  document.documentElement,
 );
 document.panel_container = main_panel_container;

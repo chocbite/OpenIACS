@@ -1,4 +1,4 @@
-import { Base, define_element } from "@libBase";
+import { Base, define_element } from "@chocbite/ts-lib-base";
 import "./field.scss";
 
 export abstract class ListField extends Base {

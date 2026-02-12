@@ -1,3 +1,4 @@
+import { define_element } from "@chocbite/ts-lib-base";
 import {
   get_cursor_position,
   IPAddress,
@@ -6,7 +7,6 @@ import {
   set_selection_all,
   sleep,
 } from "@chocbite/ts-lib-common";
-import { define_element } from "@libBase";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./ipInput.scss";
 

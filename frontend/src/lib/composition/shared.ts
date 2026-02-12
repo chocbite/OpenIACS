@@ -1,5 +1,5 @@
 import { GREY, ORANGE } from "@chocbite/ts-lib-colors";
-import { theme_init_variable_root } from "@libTheme";
+import { theme_init_variable_root } from "@chocbite/ts-lib-theme";
 
 const theme_root = theme_init_variable_root(
   "ui",

@@ -1,4 +1,4 @@
-import { define_element } from "@libBase";
+import { define_element } from "@chocbite/ts-lib-base";
 import { FormElement } from "../../base";
 import "./text.scss";
 

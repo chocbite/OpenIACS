@@ -1,10 +1,10 @@
-import type { SVGFunc } from "@chocbite/ts-lib-svg";
-import { Base, define_element } from "@libBase";
+import { Base, define_element } from "@chocbite/ts-lib-base";
 import {
   material_navigation_close_rounded,
   material_navigation_unfold_less_rounded,
   material_navigation_unfold_more_rounded,
-} from "@libIcons";
+} from "@chocbite/ts-lib-icons";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import {
   FormSelectorBase,
   type FormSelectorBaseOptions,

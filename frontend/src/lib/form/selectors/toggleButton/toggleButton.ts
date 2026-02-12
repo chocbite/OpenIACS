@@ -1,4 +1,4 @@
-import { define_element } from "@libBase";
+import { define_element } from "@chocbite/ts-lib-base";
 import {
   FormSelectorBase,
   type FormSelectorBaseOptions,
@@ -14,7 +14,7 @@ interface SelOptions {
 /**Toggle buttons, displays all options in a multi toggler*/
 export class FormToggleButton<
   RT,
-  ID extends string | undefined
+  ID extends string | undefined,
 > extends FormSelectorBase<RT, ID> {
   /**Returns the name used to define the element*/
   static element_name() {
@@ -74,7 +74,7 @@ export class FormToggleButton<
     if (sel) sel.top.appendChild(this.warn_input);
     const y = Math.min(
       this.#values.length - 1,
-      Math.max(0, dir ? this.#selected + 1 : this.#selected - 1)
+      Math.max(0, dir ? this.#selected + 1 : this.#selected - 1),
     );
     if (y !== this.#selected) this.set_value_check(this.#values[y]);
   }
@@ -110,7 +110,7 @@ define_element(FormToggleButton);
 
 /**Creates a toggle button form element */
 export function form_toggle_button<RT, ID extends string | undefined>(
-  options?: FormSelectorBaseOptions<RT, ID>
+  options?: FormSelectorBaseOptions<RT, ID>,
 ): FormToggleButton<RT, ID> {
   const togg = new FormToggleButton<RT, ID>(options?.id);
   if (options) FormSelectorBase.apply_options(togg, options);

@@ -1,3 +1,4 @@
+import { define_element } from "@chocbite/ts-lib-base";
 import {
   get_cursor_position,
   set_cursor_end,
@@ -6,7 +7,6 @@ import {
 } from "@chocbite/ts-lib-common";
 import { number_step_start_decimal } from "@chocbite/ts-lib-math";
 import { err, type Result } from "@chocbite/ts-lib-result";
-import { define_element } from "@libBase";
 import { FormNumberWrite, type FormNumberWriteOptions } from "../numberBase";
 import "./numberInput.scss";
 

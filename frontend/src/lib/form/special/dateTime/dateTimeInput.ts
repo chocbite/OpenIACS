@@ -1,13 +1,15 @@
-import { define_element } from "@libBase";
+import { define_element } from "@chocbite/ts-lib-base";
 import {
   material_action_calendar_month_rounded,
   material_action_schedule_rounded,
-} from "@libIcons";
+} from "@chocbite/ts-lib-icons";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./dateTimeInput.scss";
 
-export interface DateTimeInputOptions<RT, ID extends string | undefined>
-  extends FormValueOptions<RT, ID> {
+export interface DateTimeInputOptions<
+  RT,
+  ID extends string | undefined,
+> extends FormValueOptions<RT, ID> {
   /**Type of date time*/
   type?: FormDateTimeType;
 }
@@ -28,7 +30,7 @@ const DateTimeMode = {
 
 class FormDateTimeInput<
   RT extends Date | string | number,
-  ID extends string | undefined
+  ID extends string | undefined,
 > extends FormValueWrite<RT, ID> {
   static element_name() {
     return "datetimeinput";
@@ -109,7 +111,7 @@ define_element(FormDateTimeInput);
 /**Creates a color input form element */
 export function form_date_time_input<
   RT extends Date | string | number,
-  ID extends string | undefined
+  ID extends string | undefined,
 >(options?: DateTimeInputOptions<RT, ID>): FormDateTimeInput<RT, ID> {
   const input = new FormDateTimeInput<RT, ID>(options?.id);
   if (options) {

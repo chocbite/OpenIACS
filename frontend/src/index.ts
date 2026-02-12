@@ -1,3 +1,4 @@
+import "@chocbite/ts-lib-base";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
 import type { StateSyncROSWS } from "@chocbite/ts-lib-state";
 import { state } from "@chocbite/ts-lib-state";

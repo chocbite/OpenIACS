@@ -1,7 +1,7 @@
+import { Base, define_element } from "@chocbite/ts-lib-base";
 import { some } from "@chocbite/ts-lib-result";
 import { state, type State } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
-import { Base, define_element } from "@libBase";
 import "./add_row.scss";
 import { ListKeyField } from "./key_field";
 import type { ListRowParent, ListType } from "./types";

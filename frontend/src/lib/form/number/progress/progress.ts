@@ -1,4 +1,4 @@
-import { define_element } from "@libBase";
+import { define_element } from "@chocbite/ts-lib-base";
 import { FormValue } from "../../base";
 import { type FormNumberOptions } from "../numberBase";
 import "./progress.scss";
@@ -64,7 +64,7 @@ define_element(FormProgress);
 
 /**Creates a progress form element */
 export function form_progress<ID extends string | undefined>(
-  options?: FormNumberOptions<ID>
+  options?: FormNumberOptions<ID>,
 ): FormProgress<ID> {
   const prog = new FormProgress<ID>(options?.id);
   if (options) {

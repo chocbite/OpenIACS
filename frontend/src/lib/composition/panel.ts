@@ -1,5 +1,5 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
-import { px_to_rem, rem_to_px } from "@libTheme";
+import { px_to_rem, rem_to_px } from "@chocbite/ts-lib-theme";
 import { ContentBase } from "./content";
 import "./panel.scss";
 import "./shared";

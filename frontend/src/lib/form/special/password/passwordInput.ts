@@ -1,9 +1,10 @@
-import { define_element } from "@libBase";
+import { define_element } from "@chocbite/ts-lib-base";
 import { FormValue, FormValueWrite, type FormValueOptions } from "../../base";
 import "./passwordInput.scss";
 
-export interface FormPasswordInputOptions<ID extends string | undefined>
-  extends FormValueOptions<string, ID> {
+export interface FormPasswordInputOptions<
+  ID extends string | undefined,
+> extends FormValueOptions<string, ID> {
   /**Allowed characters for the password input */
   filter?: RegExp;
 }
@@ -56,7 +57,7 @@ define_element(FormPasswordInput);
 
 /**Creates a dropdown form element */
 export function form_password_input<ID extends string | undefined>(
-  options?: FormPasswordInputOptions<ID>
+  options?: FormPasswordInputOptions<ID>,
 ): FormPasswordInput<ID> {
   const input = new FormPasswordInput<ID>(options?.id);
   if (options) {

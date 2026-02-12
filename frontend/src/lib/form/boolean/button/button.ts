@@ -1,5 +1,5 @@
+import { define_element } from "@chocbite/ts-lib-base";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
-import { define_element } from "@libBase";
 import {
   FormColors,
   FormValue,

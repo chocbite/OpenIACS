@@ -1,4 +1,4 @@
-@use "@libIconsFonts" as font;
+@use "@chocbite/ts-lib-icons/mixins" as icons;
 
 list-keyfield {
   --list-row-size: var(--list-size-row_min);
@@ -90,7 +90,7 @@ list-keyfield {
     }
 
     > div {
-      @include font.material-symbols-rounded;
+      @include icons.material-symbols-rounded;
       color: var(--list-colors-icon-sub_opener);
       position: relative;
       display: none;
@@ -115,7 +115,7 @@ list-keyfield {
       }
 
       &::before {
-        @include font.material-symbols-rounded;
+        @include icons.material-symbols-rounded;
         content: "\e5cc";
         display: flex;
         align-items: center;
