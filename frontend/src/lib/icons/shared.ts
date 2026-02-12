@@ -1,5 +1,5 @@
-import { node_clone } from "@libCommon";
-import type { SVGFunc } from "@libSVG";
+import { node_clone } from "@chocbite/ts-lib-common";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 
 export function generate_function(name: string, icon: string): SVGFunc {
   let svg: SVGSVGElement;

@@ -1,7 +1,7 @@
 import { none, type Option } from "@chocbite/ts-lib-result";
+import { state, type StateROS } from "@chocbite/ts-lib-state";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { Base, define_element } from "@libBase";
-import state, { type StateROS } from "@libState";
-import type { SVGFunc } from "@libSVG";
 import "./content.scss";
 import "./shared";
 

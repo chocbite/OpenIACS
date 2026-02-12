@@ -27,7 +27,6 @@ export default defineConfig({
 
       //Lib
       "@libBase": path.resolve(__dirname, "src/lib/base/index"),
-      "@libCommon": path.resolve(__dirname, "./src/lib/common/index"),
       "@libComposition": path.resolve(__dirname, "./src/lib/composition/index"),
       "@libContextmenu": path.resolve(__dirname, "./src/lib/contextmenu/index"),
       "@libDocument": path.resolve(__dirname, "./src/lib/document/index"),
@@ -39,7 +38,6 @@ export default defineConfig({
       "@libRepository": path.resolve(__dirname, "./src/lib/repository/index"),
       "@libSettings": path.resolve(__dirname, "./src/lib/settings/index"),
       "@libSpinners": path.resolve(__dirname, "./src/lib/spinners/index"),
-      "@libState": path.resolve(__dirname, "./src/lib/state/index"),
       "@libString": path.resolve(__dirname, "./src/lib/string/index"),
       "@libTheme": path.resolve(__dirname, "./src/lib/theme/index"),
       "@libThemeCommon": path.resolve(__dirname, "./src/lib/theme/builtIn"),

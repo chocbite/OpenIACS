@@ -1,10 +1,10 @@
 import type { Result } from "@chocbite/ts-lib-result";
 import {
-  default as st,
+  state as st,
   type StateArray,
   type StateArrayRead,
   type StateSub,
-} from "@libState";
+} from "@chocbite/ts-lib-state";
 import { Base } from "./base";
 
 interface A<T, E extends Node> {

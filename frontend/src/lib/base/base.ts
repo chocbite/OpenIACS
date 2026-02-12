@@ -1,12 +1,13 @@
 import { EventHandler } from "@chocbite/ts-lib-event";
 import { some, type Option } from "@chocbite/ts-lib-result";
-import state, {
+import {
+  state,
   type State,
   type StateInferSub,
   type StateREA,
   type StateROA,
   type StateSub,
-} from "@libState";
+} from "@chocbite/ts-lib-state";
 import { AccessTypes } from "./access";
 import "./base.scss";
 import { BaseObserver, type BaseObserverOptions } from "./observer";

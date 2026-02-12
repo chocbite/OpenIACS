@@ -1,4 +1,4 @@
-import state from "@libState";
+import { state } from "@chocbite/ts-lib-state";
 
 /**Enum of possible access types for base element*/
 export const AccessTypes = {

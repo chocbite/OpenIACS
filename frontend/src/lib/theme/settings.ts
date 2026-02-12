@@ -1,3 +1,4 @@
+import { state as st } from "@chocbite/ts-lib-state";
 import {
   material_action_touch_app_rounded,
   material_device_dark_mode_rounded,
@@ -6,14 +7,13 @@ import {
   material_image_edit_rounded,
 } from "@libIcons";
 import { settings_init } from "@libSettings";
-import st from "@libState";
 import { name, version } from "@package";
 
 const SETTINGS = settings_init(
   name,
   version,
   "Theme/UI",
-  "Settings for UI elements and and color themes"
+  "Settings for UI elements and and color themes",
 );
 
 //      _______ _    _ ______ __  __ ______
@@ -48,10 +48,10 @@ const PRIVATE_THEME = st.s.ros_ws.ok(
     window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches
       ? (Themes.Dark as Themes)
-      : (Themes.Light as Themes)
+      : (Themes.Light as Themes),
   ),
   true,
-  st.h.enums.helper(THEMES)
+  st.h.enums.helper(THEMES),
 );
 SETTINGS.register(THEME_ID, "Theme", "Theme to use for the UI", PRIVATE_THEME);
 
@@ -74,7 +74,7 @@ const SCALE_ID = "scale";
 const PRIVATE_SCALE = st.s.ros_ws.ok(
   SETTINGS.get(SCALE_ID, 100),
   true,
-  st.h.nums.helper(50, 400, "%", 0, 1)
+  st.h.nums.helper(50, 400, "%", 0, 1),
 );
 SETTINGS.register(SCALE_ID, "Scale", "UI scale", PRIVATE_SCALE);
 export const SCALE = PRIVATE_SCALE.read_write;
@@ -109,13 +109,13 @@ const SCROLLBAR_ID = "scrollbar";
 const PRIVATE_SCROLLBAR_MODE = st.s.ros_ws.ok(
   SETTINGS.get(SCROLLBAR_ID, ScrollbarModes.Thin as ScrollbarModes),
   true,
-  st.h.enums.helper(SCROLLBAR_MODES)
+  st.h.enums.helper(SCROLLBAR_MODES),
 );
 SETTINGS.register(
   "scrollbar",
   "Scrollbar Mode",
   "Size of the scrollbar to use",
-  PRIVATE_SCROLLBAR_MODE
+  PRIVATE_SCROLLBAR_MODE,
 );
 
 export const SCROLLBAR_MODE = PRIVATE_SCROLLBAR_MODE.read_write;
@@ -157,16 +157,16 @@ const PRIVATE_INPUT_MODE = st.s.ros_ws.ok(
     INPUT_MODE_ID,
     matchMedia("(pointer: coarse)").matches
       ? InputModes.Touch
-      : (InputModes.Mouse as InputModes)
+      : (InputModes.Mouse as InputModes),
   ),
   true,
-  st.h.enums.helper(INPUT_MODES)
+  st.h.enums.helper(INPUT_MODES),
 );
 SETTINGS.register(
   INPUT_MODE_ID,
   "Input Mode",
   "Setting for preffered input mode, changes UI elements to be more optimized for the selected input mode",
-  PRIVATE_INPUT_MODE
+  PRIVATE_INPUT_MODE,
 );
 
 export const INPUT_MODE = PRIVATE_INPUT_MODE.read_write;
@@ -198,13 +198,13 @@ const ANIMATION_LEVEL_ID = "animation";
 const PRIVATE_ANIMATION_LEVEL = st.s.ros_ws.ok(
   SETTINGS.get(ANIMATION_LEVEL_ID, AnimationLevels.None as AnimationLevels),
   true,
-  st.h.enums.helper(ANIMATION_LEVELS)
+  st.h.enums.helper(ANIMATION_LEVELS),
 );
 SETTINGS.register(
   ANIMATION_LEVEL_ID,
   "Animation Level",
   "Setting for animation level, changes the amount of animations used in the UI",
-  PRIVATE_ANIMATION_LEVEL
+  PRIVATE_ANIMATION_LEVEL,
 );
 
 export const ANIMATION_LEVEL = PRIVATE_ANIMATION_LEVEL.read_write;

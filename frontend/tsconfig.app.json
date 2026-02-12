@@ -14,7 +14,6 @@
 
       //Lib
       "@libBase": ["./src/lib/base/index"],
-      "@libCommon": ["./src/lib/common/index"],
       "@libComposition": ["./src/lib/composition/index"],
       "@libContextmenu": ["./src/lib/contextmenu/index"],
       "@libDocument": ["./src/lib/document/index"],
@@ -26,7 +25,6 @@
       "@libRepository": ["./src/lib/repository/index"],
       "@libSettings": ["./src/lib/settings/index"],
       "@libSpinners": ["./src/lib/spinners/index"],
-      "@libState": ["./src/lib/state/index"],
       "@libString": ["./src/lib/string/index"],
       "@libTheme": ["./src/lib/theme/index"],
       "@libThemeCommon": ["./src/lib/theme/builtIn"]

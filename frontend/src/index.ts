@@ -1,7 +1,7 @@
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
+import type { StateSyncROSWS } from "@chocbite/ts-lib-state";
+import { state } from "@chocbite/ts-lib-state";
 import { viewport, ViewportElementTest } from "@libEditor";
-import type { StateSyncROSWS } from "@libState";
-import { default as st, default as state } from "@libState";
 import "./index.scss";
 import "./lib/composition";
 
@@ -34,7 +34,7 @@ class Fact extends Part {
   constructor(game: Game, uuid: string, desc: string, owner: Entity) {
     super(uuid);
     this.#game = game;
-    this.#description = st.s.ros_ws.ok(desc);
+    this.#description = state.s.ros_ws.ok(desc);
     this.description = this.#description.read_write;
     this.owner = owner;
     this.#game.push_fact(this);
@@ -48,7 +48,7 @@ class Entity extends Part {
 
   constructor(uuid: string, desc: string) {
     super(uuid);
-    this.#description = st.s.ros_ws.ok(desc);
+    this.#description = state.s.ros_ws.ok(desc);
     this.description = this.#description.read_write;
   }
 }
@@ -63,7 +63,7 @@ class Character {
 
   constructor(uuid: string = crypto.randomUUID(), name: string) {
     this.uuid = uuid;
-    this.#name = st.s.ros_ws.ok(name);
+    this.#name = state.s.ros_ws.ok(name);
   }
 
   static deserialize(data: Partial<CharacterData>): Result<Character, string> {
