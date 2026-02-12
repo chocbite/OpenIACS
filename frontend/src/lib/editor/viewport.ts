@@ -1,3 +1,4 @@
+import { Base, define_element } from "@chocbite/ts-lib-base";
 import type {
   State,
   StateArray,
@@ -6,7 +7,6 @@ import type {
 } from "@chocbite/ts-lib-state";
 import { state } from "@chocbite/ts-lib-state";
 import { svg } from "@chocbite/ts-lib-svg";
-import { Base, define_element } from "@libBase";
 import type { ViewportElement } from "@libEditor";
 import "./viewport.scss";
 import { ViewportMover } from "./viewport_mover";

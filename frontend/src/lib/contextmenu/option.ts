@@ -1,4 +1,4 @@
-import { define_element } from "../base";
+import { define_element } from "@chocbite/ts-lib-base";
 import { ContextMenuLine } from "./line";
 import { ContextMenu } from "./menu";
 import "./option.scss";
@@ -16,7 +16,7 @@ export class ContextMenuOption extends ContextMenuLine {
     func: () => void,
     icon?: SVGSVGElement,
     shortcut?: string,
-    checkmark?: boolean
+    checkmark?: boolean,
   ) {
     super();
     this.func = func;
@@ -73,7 +73,7 @@ export function context_line(
   func: () => void,
   icon?: SVGSVGElement,
   shortcut?: string,
-  checkmark?: boolean
+  checkmark?: boolean,
 ) {
   return new ContextMenuOption(text, func, icon, shortcut, checkmark);
 }

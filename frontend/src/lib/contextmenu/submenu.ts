@@ -1,4 +1,4 @@
-import { define_element } from "../base";
+import { define_element } from "@chocbite/ts-lib-base";
 import { material_navigation_chevron_right_rounded } from "../icons";
 import { ContextMenuLine } from "./line";
 import { ContextMenu } from "./menu";
@@ -120,7 +120,7 @@ define_element(ContextMenuSub);
 export function context_sub(
   text: string,
   menu: ContextMenu,
-  icon?: SVGSVGElement
+  icon?: SVGSVGElement,
 ) {
   return new ContextMenuSub(text, menu, icon);
 }

@@ -1,4 +1,4 @@
-import { Base, define_element } from "../base";
+import { Base, define_element } from "@chocbite/ts-lib-base";
 import "./container.scss";
 import { ContextMenu } from "./menu";
 

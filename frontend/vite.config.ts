@@ -26,7 +26,6 @@ export default defineConfig({
       "@package": path.resolve(__dirname, "package.json"),
 
       //Lib
-      "@libBase": path.resolve(__dirname, "src/lib/base/index"),
       "@libComposition": path.resolve(__dirname, "./src/lib/composition/index"),
       "@libContextmenu": path.resolve(__dirname, "./src/lib/contextmenu/index"),
       "@libDocument": path.resolve(__dirname, "./src/lib/document/index"),

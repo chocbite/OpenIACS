@@ -1,4 +1,4 @@
-import { Base } from "../base";
+import { Base } from "@chocbite/ts-lib-base";
 import "./option.scss";
 import "./shared";
 
@@ -22,7 +22,7 @@ export abstract class ContextMenuLine extends Base {
         (this.previousElementSibling as ContextMenuLine).do_focus(true);
       } else if (this.parentElement?.lastElementChild !== this) {
         (this.parentElement?.lastElementChild as ContextMenuLine).do_focus(
-          true
+          true,
         );
       }
     } else {

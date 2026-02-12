@@ -1,4 +1,4 @@
-import { Base, define_element } from "@libBase";
+import { Base, define_element } from "@chocbite/ts-lib-base";
 import { px_to_rem, rem_to_px } from "@libTheme";
 import { ContentBase } from "./content";
 import "./panel.scss";
@@ -68,7 +68,7 @@ export class Panel extends Base {
 
   constructor(
     container: PanelContainer,
-    options: PanelOptions & { layer: number }
+    options: PanelOptions & { layer: number },
   ) {
     super();
 
@@ -100,14 +100,14 @@ export class Panel extends Base {
         const px_width = rem_to_px(width);
         if (this.left + width / 2 > this.#container_width / 2)
           this.right = px_to_rem(
-            window.innerWidth - (orig_left + delta_x + px_width)
+            window.innerWidth - (orig_left + delta_x + px_width),
           );
         else this.left = px_to_rem(orig_left + delta_x);
         const height = this.height;
         const px_height = rem_to_px(height);
         if (this.top + height / 2 > this.#container_height / 2)
           this.bottom = px_to_rem(
-            window.innerHeight - (orig_top + delta_y + px_height)
+            window.innerHeight - (orig_top + delta_y + px_height),
           );
         else this.top = px_to_rem(orig_top + delta_y);
       };
@@ -270,7 +270,7 @@ export class Panel extends Base {
     const height = this.height;
     this.#bottom = Math.max(
       Math.min(value, this.#container_height - height),
-      -height + 2
+      -height + 2,
     );
     this.#top = undefined;
     this.style.bottom = this.#bottom + "rem";
@@ -286,7 +286,7 @@ export class Panel extends Base {
   set left(value: number) {
     this.#left = Math.max(
       Math.min(value, this.#container_width - this.width / 2),
-      -(this.width / 2)
+      -(this.width / 2),
     );
     this.#right = undefined;
     this.style.left = this.#left + "rem";
@@ -299,7 +299,7 @@ export class Panel extends Base {
   set right(value: number) {
     this.#right = Math.max(
       Math.min(value, this.#container_width - this.width / 2),
-      -(this.width / 2)
+      -(this.width / 2),
     );
     this.#left = undefined;
     this.style.right = this.#right + "rem";
@@ -417,7 +417,7 @@ export class Panel extends Base {
     }
     this.#height = Math.min(
       Math.max(value, MIN_HEIGHT),
-      this.#container_height
+      this.#container_height,
     );
     this.style.height = this.#height + "rem";
   }

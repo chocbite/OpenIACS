@@ -1,4 +1,4 @@
-import { Base, define_element } from "../base";
+import { Base, define_element } from "@chocbite/ts-lib-base";
 import { material_navigation_close_rounded } from "../icons";
 import { Buffer } from "./buffer";
 import { Container } from "./container";
@@ -46,7 +46,7 @@ export class ContextMenu extends Base {
         )
       | (() =>
           | (ContextMenuLine | undefined)[]
-          | Promise<(ContextMenuLine | undefined)[]>)
+          | Promise<(ContextMenuLine | undefined)[]>),
   ) {
     super();
     lines = typeof lines === "function" ? lines() : lines;
@@ -85,7 +85,7 @@ export class ContextMenu extends Base {
     this.ownerDocument.defaultView?.addEventListener(
       "resize",
       this.#window_resize_handler,
-      { passive: true }
+      { passive: true },
     );
   }
 
@@ -93,7 +93,7 @@ export class ContextMenu extends Base {
     super.disconnectedCallback();
     this.ownerDocument.defaultView?.removeEventListener(
       "resize",
-      this.#window_resize_handler
+      this.#window_resize_handler,
     );
   }
 
@@ -120,7 +120,7 @@ export class ContextMenu extends Base {
       this.#closer = new ContextMenuOption(
         "Close",
         () => {},
-        material_navigation_close_rounded()
+        material_navigation_close_rounded(),
       );
       this.#closer.onclick = (e) => {
         e.stopPropagation();
@@ -230,7 +230,7 @@ export function context_menu(
         | Promise<(ContextMenuLine | undefined)[]>
       )
     | (() => (ContextMenuLine | undefined)[])
-    | (() => Promise<(ContextMenuLine | undefined)[]>)
+    | (() => Promise<(ContextMenuLine | undefined)[]>),
 ): ContextMenu {
   return new ContextMenu(lines);
 }

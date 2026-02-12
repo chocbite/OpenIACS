@@ -1,4 +1,4 @@
-import { define_element } from "../base";
+import { define_element } from "@chocbite/ts-lib-base";
 import "./devider.scss";
 import { ContextMenuLine } from "./line";
 

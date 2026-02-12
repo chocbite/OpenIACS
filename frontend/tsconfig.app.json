@@ -13,7 +13,6 @@
       "@package": ["./package.json"],
 
       //Lib
-      "@libBase": ["./src/lib/base/index"],
       "@libComposition": ["./src/lib/composition/index"],
       "@libContextmenu": ["./src/lib/contextmenu/index"],
       "@libDocument": ["./src/lib/document/index"],
