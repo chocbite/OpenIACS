@@ -29,6 +29,7 @@ export abstract class ViewportElement {
   //     |_|     \____/|_____/|_____|  |_|  |_____\____/|_| \_|
   #position_x = 0;
   #position_y = 0;
+  #rotation = 0;
 
   set position_x(value: number) {
     this.canvas.setAttribute("x", value.toString());
@@ -44,6 +45,17 @@ export abstract class ViewportElement {
   }
   get position_y(): number {
     return this.#position_y;
+  }
+
+  set rotation(value: number) {
+    this.canvas.setAttribute(
+      "transform",
+      `rotate(${value} ${this.position_x} ${this.position_y})`,
+    );
+    this.#rotation = value;
+  }
+  get rotation(): number {
+    return this.#rotation;
   }
 }
 

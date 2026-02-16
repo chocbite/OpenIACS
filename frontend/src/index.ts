@@ -90,4 +90,5 @@ console.warn(Character.deserialize({ uuid: "1234", name: "Hero" }));
 
 const vp = viewport.create_viewport(1000, 1000, false);
 document.getElementById("app")?.replaceChildren(vp);
-vp.elements = [new ViewportElementTest()];
+const elem = new ViewportElementTest();
+vp.elements = [elem];
