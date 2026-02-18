@@ -1,7 +1,7 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import { set_cursor_end } from "@chocbite/ts-lib-common";
 import { err, type Result } from "@chocbite/ts-lib-result";
-import { string_byte_length, string_byte_limit } from "@libString";
+import { string_byte_length, string_byte_limit } from "@chocbite/ts-lib-string";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./textInput.scss";
 

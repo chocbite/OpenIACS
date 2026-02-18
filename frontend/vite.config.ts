@@ -31,7 +31,6 @@ export default defineConfig({
       "@libForm": path.resolve(__dirname, "./src/lib/form/index"),
       "@libList": path.resolve(__dirname, "./src/lib/list/index"),
       "@libRepository": path.resolve(__dirname, "./src/lib/repository/index"),
-      "@libString": path.resolve(__dirname, "./src/lib/string/index"),
     },
   },
 });
