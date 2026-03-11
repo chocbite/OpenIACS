@@ -9,7 +9,7 @@ export const TopBarSides = {
 } as const;
 export type TopBarSides = (typeof TopBarSides)[keyof typeof TopBarSides];
 
-export class Topbar extends Base {
+class Topbar extends Base {
   static element_name() {
     return "topbar";
   }
@@ -42,7 +42,11 @@ export class Topbar extends Base {
 }
 define_element(Topbar);
 
-export class TopbarButton extends Base {
+export function topbar(): Topbar {
+  return new Topbar();
+}
+
+class TopbarButton extends Base {
   static element_name() {
     return "topbar-button";
   }
@@ -64,7 +68,14 @@ export class TopbarButton extends Base {
 }
 define_element(TopbarButton);
 
-export class TopbarButtonIcon extends Base {
+export function topbar_button(text: string, on_click: () => void) {
+  const button = new TopbarButton();
+  button.text = text;
+  button.on_click = on_click;
+  return button;
+}
+
+class TopbarButtonIcon extends Base {
   static element_name() {
     return "topbar-button-icon";
   }
@@ -86,7 +97,14 @@ export class TopbarButtonIcon extends Base {
 }
 define_element(TopbarButtonIcon);
 
-export class TopbarLabel extends Base {
+export function topbar_button_icon(icon: SVGFunc, on_click: () => void) {
+  const button = new TopbarButtonIcon();
+  button.icon = icon;
+  button.on_click = on_click;
+  return button;
+}
+
+class TopbarLabel extends Base {
   static element_name() {
     return "topbar-label";
   }
@@ -103,3 +121,9 @@ export class TopbarLabel extends Base {
   }
 }
 define_element(TopbarLabel);
+
+export function topbar_label(text: string) {
+  const label = new TopbarLabel();
+  label.text = text;
+  return label;
+}

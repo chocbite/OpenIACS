@@ -6,15 +6,9 @@ import { state } from "@chocbite/ts-lib-state";
 import { viewport, ViewportElementTest } from "@libEditor";
 import "./index.scss";
 import "./lib/composition";
-import {
-  Topbar,
-  TopbarButton,
-  TopbarButtonIcon,
-  TopbarLabel,
-  TopBarSides,
-} from "./lib/composition";
+import { comp, TopBarSides } from "./lib/composition";
 
-const topbar = new Topbar();
+const topbar = comp.topbar();
 document.body.prepend(topbar);
 topbar.add_item(
   document.createElement("button"),
@@ -22,12 +16,15 @@ topbar.add_item(
 ).textContent = "Left";
 topbar.add_item(document.createElement("div"), TopBarSides.LEFT).textContent =
   "Left";
-const butt = topbar.add_item(new TopbarButton(), TopBarSides.MID);
-butt.text = "Mid";
-const lab = topbar.add_item(new TopbarLabel(), TopBarSides.RIGHT);
-lab.text = "Right";
-const butt2 = topbar.add_item(new TopbarButtonIcon(), TopBarSides.RIGHT);
-butt2.icon = material_action_123_rounded;
+const butt = topbar.add_item(
+  comp.topbar_button("Mid", () => {}),
+  TopBarSides.MID,
+);
+const lab = topbar.add_item(comp.topbar_label("Right"), TopBarSides.RIGHT);
+const butt2 = topbar.add_item(
+  comp.topbar_button_icon(material_action_123_rounded, () => {}),
+  TopBarSides.RIGHT,
+);
 
 class Game {
   //Stores all facts in the game
