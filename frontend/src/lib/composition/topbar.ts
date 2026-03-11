@@ -1,4 +1,5 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import "./topbar.scss";
 
 export const TopBarSides = {
@@ -56,8 +57,34 @@ export class TopbarButton extends Base {
   set text(text: string) {
     this.textContent = text;
   }
+
+  set on_click(func: () => void) {
+    this.onclick = func;
+  }
 }
 define_element(TopbarButton);
+
+export class TopbarButtonIcon extends Base {
+  static element_name() {
+    return "topbar-button-icon";
+  }
+  static element_name_space() {
+    return "ui";
+  }
+
+  constructor() {
+    super();
+  }
+
+  set icon(svg: SVGFunc) {
+    this.replaceChildren(svg());
+  }
+
+  set on_click(func: () => void) {
+    this.onclick = func;
+  }
+}
+define_element(TopbarButtonIcon);
 
 export class TopbarLabel extends Base {
   static element_name() {

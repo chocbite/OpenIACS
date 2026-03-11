@@ -5,6 +5,8 @@ ui-topbar {
   align-items: stretch;
   width: 100%;
   height: 3rem;
+  background-color: var(--ui-colors-titlebar);
+  color: var(--ui-colors-titlebarText);
 
   > div {
     display: flex;
@@ -13,7 +15,8 @@ ui-topbar {
   }
 }
 
-ui-topbar-button {
+ui-topbar-button,
+ui-topbar-button-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +27,13 @@ ui-topbar-button {
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--ui-colors-titlebarHover);
+  }
+
+  > svg {
+    height: 100%;
+    width: auto;
+    fill: currentColor;
   }
 }
 

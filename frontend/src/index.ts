@@ -1,4 +1,5 @@
 import "@chocbite/ts-lib-base";
+import { material_action_123_rounded } from "@chocbite/ts-lib-icons";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
 import type { StateSyncROSWS } from "@chocbite/ts-lib-state";
 import { state } from "@chocbite/ts-lib-state";
@@ -8,6 +9,7 @@ import "./lib/composition";
 import {
   Topbar,
   TopbarButton,
+  TopbarButtonIcon,
   TopbarLabel,
   TopBarSides,
 } from "./lib/composition";
@@ -24,6 +26,8 @@ const butt = topbar.add_item(new TopbarButton(), TopBarSides.MID);
 butt.text = "Mid";
 const lab = topbar.add_item(new TopbarLabel(), TopBarSides.RIGHT);
 lab.text = "Right";
+const butt2 = topbar.add_item(new TopbarButtonIcon(), TopBarSides.RIGHT);
+butt2.icon = material_action_123_rounded;
 
 class Game {
   //Stores all facts in the game

@@ -1,6 +1,11 @@
 import { GREY, ORANGE } from "@chocbite/ts-lib-colors";
 import { theme_init_variable_root } from "@chocbite/ts-lib-theme";
 
+export interface CompMinSize {
+  width: number;
+  height: number;
+}
+
 const theme_root = theme_init_variable_root(
   "ui",
   "UI Elements",
@@ -24,7 +29,27 @@ colors.make_variable(
   "Title Bar Background",
   "Background color for the title bar of UI panels",
   GREY[500],
+  GREY[800],
+  "Color",
+  undefined,
+);
+
+colors.make_variable(
+  "titlebarHover",
+  "Title Bar Hover Background",
+  "Background color for the title bar of UI panels when hovered",
+  GREY[400],
   GREY[700],
+  "Color",
+  undefined,
+);
+
+colors.make_variable(
+  "titlebarText",
+  "Title Bar Text",
+  "Text color for the title bar of UI panels",
+  GREY[900],
+  GREY[50],
   "Color",
   undefined,
 );

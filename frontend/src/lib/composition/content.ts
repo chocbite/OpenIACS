@@ -4,6 +4,7 @@ import { state, type StateROS } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import "./content.scss";
 import "./shared";
+import type { CompMinSize } from "./shared";
 
 const PRIVATE_FOCUSED_CONTENT = state.err<ContentBase>("No content focused");
 export const FOCUSED_CONTENT = PRIVATE_FOCUSED_CONTENT.read_only;
@@ -18,6 +19,8 @@ export abstract class ContentBase<Close = void> extends Base {
 
   abstract readonly name: StateROS<string>;
   abstract readonly icon: StateROS<Option<SVGFunc>>;
+  abstract readonly closable: StateROS<boolean>;
+  abstract readonly min_size: StateROS<Option<CompMinSize>>;
   abstract close(args: Close): Promise<Option<Close>>;
   abstract on_close(): Promise<Close>;
 
@@ -36,20 +39,36 @@ export class Content extends ContentBase {
     return "ui";
   }
 
-  private _name = state.s.ros.ok("");
+  #name = state.s.ros.ok("");
   get name() {
-    return this._name.read_only;
+    return this.#name.read_only;
   }
   set_name(value: string) {
-    this._name.set_ok(value);
+    this.#name.set_ok(value);
   }
 
-  private _icon = state.s.ros.ok<Option<SVGFunc>>(none());
+  #icon = state.s.ros.ok<Option<SVGFunc>>(none());
   get icon() {
-    return this._icon.read_only;
+    return this.#icon.read_only;
   }
   set_icon(value: Option<SVGFunc>) {
-    this._icon.set_ok(value);
+    this.#icon.set_ok(value);
+  }
+
+  #closable = state.s.ros.ok(false);
+  get closable() {
+    return this.#closable.read_only;
+  }
+  set_closable(value: boolean) {
+    this.#closable.set_ok(value);
+  }
+
+  #min_size = state.s.ros.ok<Option<CompMinSize>>(none());
+  get min_size() {
+    return this.#min_size.read_only;
+  }
+  set_min_size(value: Option<CompMinSize>) {
+    this.#min_size.set_ok(value);
   }
 
   async close(_args: void): Promise<Option<void>> {
