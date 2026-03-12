@@ -30,6 +30,10 @@ ui-topbar-button-icon {
     background-color: var(--ui-colors-titlebarHover);
   }
 
+  &:has(> svg) {
+    padding-block: 0.4rem;
+  }
+
   > svg {
     height: 100%;
     width: auto;

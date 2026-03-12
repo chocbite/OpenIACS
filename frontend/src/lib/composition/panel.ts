@@ -81,6 +81,7 @@ export class Panel extends Base {
     this.width = options.width;
     this.height = options.height;
 
+    //Titlebar
     this.#titlebar = this.appendChild(document.createElement("div"));
     this.#titlebar.tabIndex = 0;
     this.#titlebar.onpointerdown = (e) => {
@@ -133,10 +134,10 @@ export class Panel extends Base {
         if (this.#left !== undefined) this.left = this.left + offset;
         else this.right = this.right - offset;
       } else return;
-
       e.preventDefault();
       e.stopPropagation();
     };
+    this.show_titlebar = options.show_titlebar ?? true;
 
     this.#content = this.appendChild(document.createElement("div"));
     if (options.content) this.#content.appendChild(options.content);
@@ -194,6 +195,14 @@ export class Panel extends Base {
   //      / ____ \ |___| |____| |____ ____) |___) | |__| | | \ \ _| |_| |____ ____) |
   //     /_/    \_\_____\_____|______|_____/_____/ \____/|_|  \_\_____|______|_____/
   #titlebar: HTMLDivElement;
+
+  set show_titlebar(show: boolean) {
+    if (show) this.#titlebar.classList.remove("hidden");
+    else this.#titlebar.classList.add("hidden");
+  }
+  get show_titlebar(): boolean {
+    return !this.#titlebar.classList.contains("hidden");
+  }
 
   #content: HTMLDivElement;
   set content(cont: ContentBase) {

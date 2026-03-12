@@ -20,14 +20,30 @@ form-group {
     border-radius: base.$size_cornerRadius;
   }
 
+  & + form-group {
+    &:not(.collapsible) {
+      padding-top: 0rem;
+    }
+
+    &.collapsible {
+      > div {
+        padding-top: 0rem;
+      }
+    }
+  }
+
   &:not(.collapsible) {
     max-height: var(--max_height);
     overflow-y: auto;
-    padding: 0.8rem;
+    padding: 0.5rem;
     min-width: fit-content;
 
     &.outset {
       box-shadow: base.$shadow_out;
+    }
+
+    &:empty {
+      display: none;
     }
   }
 
@@ -35,7 +51,7 @@ form-group {
     > div {
       max-height: var(--max_height);
       overflow-y: auto;
-      padding: 0.8rem;
+      padding: 0.5rem;
       min-width: fit-content;
 
       &.collapsed {
@@ -48,7 +64,6 @@ form-group {
       min-height: base.$size_height;
       box-shadow: base.$shadow_out;
       border-radius: base.$size_cornerRadius;
-      margin: -(base.$border_thickness);
       background-color: base.$color_background;
       display: flex;
       justify-content: space-between;

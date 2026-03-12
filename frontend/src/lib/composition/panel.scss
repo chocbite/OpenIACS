@@ -124,6 +124,10 @@ ui-panel {
       cursor: grabbing;
     }
 
+    &.hidden {
+      display: none;
+    }
+
     .touch & {
       height: 2.6rem;
     }
@@ -142,6 +146,12 @@ ui-panel {
     flex-grow: 1;
     overflow: auto;
     border-radius: 0 0 $radius $radius;
+  }
+
+  &:has(> div:nth-child(2).hidden) {
+    > *:nth-child(3) {
+      border-radius: $radius;
+    }
   }
 
   //       _____ _____ ____________ _____   _____

@@ -35,8 +35,8 @@ export interface FormGroupOptions<
   ID extends string | undefined,
   T,
 > extends FormValueOptions<T, ID> {
-  /**Components to add to the group*/
-  components?: [...L];
+  /**Elements to add to the group*/
+  elements?: [...L];
   /**Wether the group is collapsible, meaning it has a button to collapse and expand all content to the size of that button*/
   collapsible?: boolean;
   /**Wether the group is collapsed initially*/
@@ -49,7 +49,7 @@ export interface FormGroupOptions<
   max_height?: number;
 }
 
-/**Component group class which allows to add components and controls the flow of the components*/
+/**Component group class which allows to add elements and controls the flow of the elements*/
 export class FormGroup<
   RT extends object,
   ID extends string | undefined,
@@ -219,7 +219,7 @@ export function form_group<
   const slide = new FormGroup<T, ID>(options?.id);
   if (options) {
     if (options.border) slide.border = options.border;
-    if (options.components) slide.elements = options.components;
+    if (options.elements) slide.elements = options.elements;
     if (options.collapse_text) slide.collapse_text = options.collapse_text;
     if (options.collapsible) slide.collapsible = options.collapsible;
     if (options.collapsed) slide.collapsed = options.collapsed;

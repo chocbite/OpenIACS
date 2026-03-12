@@ -6,6 +6,19 @@ export interface CompMinSize {
   height: number;
 }
 
+export const CompAnchor = {
+  TOP_RIGHT: "tr",
+  TOP_MID: "tm",
+  TOP_LEFT: "tl",
+  MID_RIGHT: "mr",
+  MID_MID: "mm",
+  MID_LEFT: "ml",
+  BOT_RIGHT: "br",
+  BOT_MID: "bm",
+  BOT_LEFT: "bl",
+} as const;
+export type CompAnchor = (typeof CompAnchor)[keyof typeof CompAnchor];
+
 const theme_root = theme_init_variable_root(
   "ui",
   "UI Elements",

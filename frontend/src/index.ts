@@ -1,9 +1,10 @@
 import "@chocbite/ts-lib-base";
-import { material_action_123_rounded } from "@chocbite/ts-lib-icons";
+import { material_device_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
 import type { StateSyncROSWS } from "@chocbite/ts-lib-state";
 import { state } from "@chocbite/ts-lib-state";
 import { viewport, ViewportElementTest } from "@libEditor";
+import form from "@libForm";
 import "./index.scss";
 import "./lib/composition";
 import { comp, TopBarSides } from "./lib/composition";
@@ -21,10 +22,13 @@ const butt = topbar.add_item(
   TopBarSides.MID,
 );
 const lab = topbar.add_item(comp.topbar_label("Right"), TopBarSides.RIGHT);
-const butt2 = topbar.add_item(
-  comp.topbar_button_icon(material_action_123_rounded, () => {}),
+
+const cust_butt = topbar.add_item(
+  comp.topbar_button_icon(material_device_brightness_medium_rounded, () => {}),
   TopBarSides.RIGHT,
 );
+const cust = comp.customization_panel(cust_butt);
+cust.main_group.elements = [form.text({ text: "Dark Mode" }), form.switch({})];
 
 class Game {
   //Stores all facts in the game

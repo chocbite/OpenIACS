@@ -21,8 +21,11 @@ export abstract class ContentBase<Close = void> extends Base {
   abstract readonly icon: StateROS<Option<SVGFunc>>;
   abstract readonly closable: StateROS<boolean>;
   abstract readonly min_size: StateROS<Option<CompMinSize>>;
-  abstract close(args: Close): Promise<Option<Close>>;
   abstract on_close(): Promise<Close>;
+
+  async close(_args: Close): Promise<Option<Close>> {
+    return none();
+  }
 
   constructor() {
     super();

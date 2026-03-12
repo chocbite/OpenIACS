@@ -52,7 +52,7 @@ export default function example_page() {
       collapsible: true,
       collapsed: true,
       collapse_text: "Theme",
-      components: [
+      elements: [
         form.text({ text: "Theme" }),
         form.toggle_button({ value_by_state: THEME }),
         form.text({ text: "Input Mode" }),
@@ -313,7 +313,7 @@ export default function example_page() {
     form.group({
       border: "outset",
       max_height: 6,
-      components: [
+      elements: [
         form.text({ text: "Button in Group" }),
         form
           .button({
@@ -351,7 +351,7 @@ export default function example_page() {
       border: "outset",
       collapsible: true,
       collapse_text: "Toggle",
-      components: [
+      elements: [
         form.text({ text: "Hello inside group!", size: 2 }),
         form.text({ text: "Button in Group" }),
         form.button({ text: "Click Me" }).opts({ access: "r" }),
@@ -367,7 +367,7 @@ export default function example_page() {
       collapsed: true,
       collapse_text:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel risus sem. Curabitur a morbi.",
-      components: [
+      elements: [
         form.text({ text: "Hello inside group!", size: 2 }),
         form.text({ text: "Button in Group" }),
         form.button({ text: "Click Me" }).opts({ access: "r" }),

@@ -13,8 +13,8 @@ interface PanelContainer {
   readonly active_panel?: Panel;
   /**Creates a panel in the panel container */
   create_panel(options: PanelOptions): Panel;
-  /**Addopts a panel from another panel container */
-  addopt_panel(panel: Panel): void;
+  /**Adopts a panel from another panel container */
+  adopt_panel(panel: Panel): void;
 }
 
 class InternalPanelContainer implements PC, PanelContainer {
@@ -89,7 +89,7 @@ class InternalPanelContainer implements PC, PanelContainer {
     return panel;
   }
 
-  addopt_panel(_panel: Panel): void {}
+  adopt_panel(_panel: Panel): void {}
 }
 
 function create_panel_container(parent: HTMLElement): PanelContainer {
