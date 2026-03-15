@@ -1,6 +1,7 @@
+mod modules;
+use modules::allocator;
 
-
-fn zxcv55()-> Result<u32> {
+fn zxcv55() -> Result<u32> {
     let mut rng = rand::thread_rng();
     let random_number: u32 = rng.gen_range(1..=100);
     Ok(random_number)

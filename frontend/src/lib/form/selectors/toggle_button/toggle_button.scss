@@ -1,9 +1,10 @@
 @use "../../base";
 
+$padding: 0.2rem;
+
 form-togglebutton {
   @include base.base;
-  padding: base.$padding;
-  padding-bottom: 0.1rem;
+  overflow-y: hidden;
   overflow-x: auto;
   -webkit-user-select: none;
   user-select: none;
@@ -35,10 +36,11 @@ form-togglebutton {
       grid-row: 1;
       align-items: center;
       background-color: base.$color_background;
-      padding: base.$padding;
+      padding: $padding;
       border-block: base.$border_thickness solid base.$color_border;
       outline: none;
       min-height: base.$size_height;
+      margin-bottom: 0.2rem;
 
       &.selected {
         background-color: base.$color_background_hover;
@@ -48,7 +50,8 @@ form-togglebutton {
           content: "";
           position: absolute;
           inset: 0;
-          box-shadow: 0 0.21rem 0.2rem 0 base.$color_border,
+          box-shadow:
+            0 0.21rem 0.2rem 0 base.$color_border,
             0 0 0 1px base.$color_border;
           z-index: 1;
         }
@@ -97,14 +100,13 @@ form-togglebutton {
 
       > svg {
         height: calc(
-          base.$size_height - base.$padding * 2 - base.$border_thickness * 2
+          base.$size_height - $padding * 2 - base.$border_thickness * 2
         );
         width: auto;
 
         .touch & {
           height: calc(
-            base.$size_touchHeight - base.$padding * 2 - base.$border_thickness *
-              2
+            base.$size_touchHeight - $padding * 2 - base.$border_thickness * 2
           );
         }
       }
@@ -121,8 +123,10 @@ form-togglebutton {
 
     &:nth-child(even) {
       grid-row: 2;
-      padding: base.$padding;
+      padding: $padding;
+      padding-top: 0;
       padding-bottom: 0;
+      line-height: 1.2rem;
 
       &:empty {
         padding: 0rem;

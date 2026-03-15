@@ -4,7 +4,7 @@ import {
   material_action_schedule_rounded,
 } from "@chocbite/ts-lib-icons";
 import { FormValueWrite, type FormValueOptions } from "../../base";
-import "./dateTimeInput.scss";
+import "./date_time_input.scss";
 
 export interface DateTimeInputOptions<
   RT,

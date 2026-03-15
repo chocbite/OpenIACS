@@ -1,5 +1,7 @@
 @use "../../base";
 
+$padding: 0.2rem;
+
 form-dropdown {
   @include base.base;
   background-color: base.$color_background;
@@ -51,7 +53,7 @@ form-dropdown {
 
   > div {
     color: base.$color_text;
-    padding-left: base.$padding;
+    padding-left: $padding;
     line-height: calc(base.$font_size + 0.2rem);
     box-sizing: border-box;
     vertical-align: middle;
@@ -165,7 +167,7 @@ form-dropdownbox {
           }
 
           &:last-child {
-            padding-left: base.$padding;
+            padding-left: $padding;
             padding-right: 0.4rem;
           }
 
@@ -175,7 +177,7 @@ form-dropdownbox {
 
           > div {
             height: base.$size_height;
-            padding-block: base.$padding;
+            padding-block: $padding;
             line-height: calc(base.$font_size + 0.2rem);
             display: table-cell;
             box-sizing: border-box;
@@ -193,18 +195,18 @@ form-dropdownbox {
               width: base.$size_height;
 
               > svg {
-                height: base.$size_height - base.$padding * 2;
+                height: base.$size_height - $padding * 2;
                 display: block;
                 box-sizing: border-box;
 
                 .touch & {
-                  height: base.$size_touchHeight - base.$padding * 4;
+                  height: base.$size_touchHeight - $padding * 4;
                 }
               }
 
               &:empty {
                 padding: 0;
-                padding-left: base.$padding;
+                padding-left: $padding;
               }
             }
           }

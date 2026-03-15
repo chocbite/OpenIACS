@@ -9,8 +9,8 @@ import {
   FormSelectorBase,
   type FormSelectorBaseOptions,
   type FormSelectorOption,
-} from "../selectorBase";
-import "./dropDown.scss";
+} from "../selector_base";
+import "./drop_down.scss";
 
 interface SelOptions {
   text: string;

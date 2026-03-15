@@ -3,6 +3,7 @@ import { px_to_rem, rem_to_px } from "@chocbite/ts-lib-theme";
 import { ContentBase } from "./content";
 import "./panel.scss";
 import "./shared";
+import type { CompAnchor, CompPosition } from "./shared";
 
 const MIN_WIDTH = 4; //rem
 const MIN_HEIGHT = 4; //rem
@@ -435,3 +436,27 @@ export class Panel extends Base {
   }
 }
 define_element(Panel);
+
+export function panel_position_with_anchor(
+  panel: Panel,
+  position: CompPosition,
+  anchor: CompAnchor,
+) {
+  const width = px_to_rem(panel.ownerDocument.defaultView?.innerWidth ?? 0);
+  const height = px_to_rem(panel.ownerDocument.defaultView?.innerHeight ?? 0);
+  const [f, l] = anchor.split("_");
+  if (position.x < width / 2) {
+    if (l === "left") panel.left = position.x;
+    else panel.left = position.x - panel.width;
+  } else {
+    if (l === "left") panel.right = width - position.x - panel.width;
+    else panel.right = width - position.x;
+  }
+  if (position.y < height / 2) {
+    if (f === "top") panel.top = position.y;
+    else panel.top = position.y - panel.height;
+  } else {
+    if (f === "top") panel.bottom = position.y - panel.height;
+    else panel.bottom = position.y;
+  }
+}

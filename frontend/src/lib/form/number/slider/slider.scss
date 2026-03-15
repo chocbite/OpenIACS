@@ -1,5 +1,5 @@
 @use "../../base";
-@use "../numberBase";
+@use "../number_base";
 
 form-slider {
   @include base.base;
@@ -114,7 +114,7 @@ form-slider {
   }
 
   > svg {
-    @include numberBase.svg-stepper-button;
+    @include number_base.svg-stepper-button;
     z-index: 1;
 
     &:nth-child(2) {

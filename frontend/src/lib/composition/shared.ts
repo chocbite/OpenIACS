@@ -1,5 +1,12 @@
 import { GREY, ORANGE } from "@chocbite/ts-lib-colors";
-import { theme_init_variable_root } from "@chocbite/ts-lib-theme";
+import { px_to_rem, theme_init_variable_root } from "@chocbite/ts-lib-theme";
+
+/** Type to store a position related to composition
+ * position is always in rem*/
+export interface CompPosition {
+  x: number;
+  y: number;
+}
 
 export interface CompMinSize {
   width: number;
@@ -7,17 +14,24 @@ export interface CompMinSize {
 }
 
 export const CompAnchor = {
-  TOP_RIGHT: "tr",
-  TOP_MID: "tm",
-  TOP_LEFT: "tl",
-  MID_RIGHT: "mr",
-  MID_MID: "mm",
-  MID_LEFT: "ml",
-  BOT_RIGHT: "br",
-  BOT_MID: "bm",
-  BOT_LEFT: "bl",
+  TOP_RIGHT: "top_right",
+  TOP_LEFT: "top_left",
+  BOT_RIGHT: "bot_right",
+  BOT_LEFT: "bot_left",
 } as const;
 export type CompAnchor = (typeof CompAnchor)[keyof typeof CompAnchor];
+
+export function get_element_anchor_position(
+  element: Element,
+  anchor: CompAnchor,
+): CompPosition {
+  const rect = element.getBoundingClientRect();
+  const [f, l] = anchor.split("_");
+  return {
+    x: px_to_rem(l === "left" ? rect.left : rect.left + rect.width),
+    y: px_to_rem(f === "top" ? rect.top : rect.top + rect.height),
+  };
+}
 
 const theme_root = theme_init_variable_root(
   "ui",

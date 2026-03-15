@@ -1,5 +1,5 @@
 @use "../../base";
-@use "../numberBase";
+@use "../number_base";
 
 form-progress {
   @include base.base;
@@ -17,7 +17,9 @@ form-progress {
   }
 
   .anim-all & {
-    transition: height base.$animation, background-color base.$animation;
+    transition:
+      height base.$animation,
+      background-color base.$animation;
   }
 
   > div {

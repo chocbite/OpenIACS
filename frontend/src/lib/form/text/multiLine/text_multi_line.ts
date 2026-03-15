@@ -1,9 +1,10 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import { set_cursor_end } from "@chocbite/ts-lib-common";
+import { material_editor_drag_handle_rounded } from "@chocbite/ts-lib-icons";
 import { err, type Result } from "@chocbite/ts-lib-result";
 import { string_byte_length, string_byte_limit } from "@chocbite/ts-lib-string";
 import { FormValueWrite, type FormValueOptions } from "../../base";
-import "./textInput.scss";
+import "./text_multi_line.scss";
 
 export interface FormTextInputOptions<
   ID extends string | undefined,
@@ -19,12 +20,12 @@ export interface FormTextInputOptions<
   filter?: RegExp;
 }
 
-class FormTextInput<ID extends string | undefined> extends FormValueWrite<
+class FormTextMultiline<ID extends string | undefined> extends FormValueWrite<
   string,
   ID
 > {
   static element_name() {
-    return "textinput";
+    return "textmultiline";
   }
   static element_name_space(): string {
     return "form";
@@ -33,13 +34,37 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
   #filter?: RegExp;
   #max_length?: number;
   #max_bytes?: number;
+  #value_box: HTMLTextAreaElement = this.appendChild(
+    document.createElement("textarea"),
+  );
+  #resizer: HTMLDivElement = this.appendChild(document.createElement("div"));
 
   constructor(id?: ID) {
     super(id);
-    this.warn_input.type = "text";
     this.appendChild(this.warn_input);
-    this.warn_input.onchange = () => this.#set();
-    this.onbeforeinput = (e) => {
+    this.#resizer.appendChild(material_editor_drag_handle_rounded());
+    this.#resizer.onpointerdown = (e) => {
+      e.preventDefault();
+      const height = this.#value_box.getBoundingClientRect().height;
+      const start_y = e.clientY;
+      this.#resizer.setPointerCapture(e.pointerId);
+      this.#resizer.onpointermove = (ev) => {
+        const dy = ev.clientY - start_y;
+        this.#value_box.style.height = `${height + dy}px`;
+      };
+      this.#resizer.onpointerup = (_ev) => {
+        this.#resizer.releasePointerCapture(e.pointerId);
+        this.#resizer.onpointermove = null;
+        this.#resizer.onpointerup = null;
+      };
+    };
+    this.#value_box.onkeydown = (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.stopPropagation();
+      }
+    };
+    this.#value_box.onchange = () => this.#set();
+    this.#value_box.onbeforeinput = (e) => {
       this.warn("");
       const data = e.data || e.dataTransfer?.getData("text/plain");
       if (data) {
@@ -49,14 +74,14 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
         } else {
           if (
             this.#max_length &&
-            this.warn_input.value.length + data.length > this.#max_length
+            this.#value_box.value.length + data.length > this.#max_length
           ) {
             e.preventDefault();
             this.warn(`A maximum of ${this.#max_length} characters is allowed`);
           }
           if (
             this.#max_bytes &&
-            string_byte_length(this.warn_input.value) +
+            string_byte_length(this.#value_box.value) +
               string_byte_length(data) >
               this.#max_bytes
           ) {
@@ -66,21 +91,24 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
         }
       }
     };
-    this.onkeydown = (e) => {
+    this.#value_box.onkeydown = (e) => {
       if (e.key === "Escape") {
         e.preventDefault();
         e.stopPropagation();
         if (this.buffer) this.new_value(this.buffer);
         else this.clear_value();
+      } else if (e.key === "Enter" && e.ctrlKey) {
+        e.preventDefault();
+        this.#set();
       }
     };
   }
 
   #set() {
     const buff = this.buffer;
-    this.set_value_check(this.warn_input.value || "").map_err(() => {
+    this.set_value_check(this.#value_box.value || "").map_err(() => {
       this.new_value(buff || "");
-      set_cursor_end(this.warn_input);
+      set_cursor_end(this.#value_box);
     });
   }
 
@@ -92,15 +120,15 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
   }
 
   set placeholder(val: string) {
-    this.warn_input.placeholder = val;
+    this.#value_box.placeholder = val;
   }
   get placeholder(): string {
-    return this.warn_input.placeholder;
+    return this.#value_box.placeholder;
   }
 
   set max_length(val: number | undefined) {
     this.#max_length = val;
-    this.warn_input.maxLength = val ?? -1;
+    this.#value_box.maxLength = val ?? -1;
   }
   get max_length(): number | undefined {
     return this.#max_length;
@@ -114,11 +142,11 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
   }
 
   protected new_value(val: string): void {
-    this.warn_input.value = val;
+    this.#value_box.value = val;
   }
 
   protected clear_value(): void {
-    this.warn_input.value = "";
+    this.#value_box.value = "";
   }
 
   protected new_error(_val: string): void {}
@@ -138,15 +166,14 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
     return super.check_value(val);
   }
 }
-define_element(FormTextInput);
+define_element(FormTextMultiline);
 
-/**Creates a single line text input form element */
-export function form_text_input<ID extends string | undefined>(
+/**Creates a multi line text input form element */
+export function form_text_multiline<ID extends string | undefined>(
   options?: FormTextInputOptions<ID>,
-): FormTextInput<ID> {
-  const input = new FormTextInput<ID>(options?.id);
+): FormTextMultiline<ID> {
+  const input = new FormTextMultiline<ID>(options?.id);
   if (options) {
-    if (options.filter) input.filter = options.filter;
     if (options.placeholder) input.placeholder = options.placeholder;
     if (options.max_length) input.max_length = options.max_length;
     if (options.max_bytes) input.max_bytes = options.max_bytes;

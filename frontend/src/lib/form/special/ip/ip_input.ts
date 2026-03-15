@@ -8,7 +8,7 @@ import {
   sleep,
 } from "@chocbite/ts-lib-common";
 import { FormValueWrite, type FormValueOptions } from "../../base";
-import "./ipInput.scss";
+import "./ip_input.scss";
 
 export interface IpInputOptions<
   ID extends string | undefined,

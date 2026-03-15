@@ -330,16 +330,6 @@ const sizes = theme_root.make_sub_group(
 );
 
 sizes.make_variable(
-  "cornerRadius",
-  "Corner Radius",
-  "Corner radius used in all form elements",
-  "0.4rem",
-  "0.4rem",
-  "Length",
-  { min: 0, max: 4 },
-);
-
-sizes.make_variable(
   "height",
   "Height",
   "Default height used in all form elements",
@@ -387,8 +377,8 @@ animation.make_variable(
   "transitionDuration",
   "Transition Duration",
   "Duration of transitions used in form element animations",
-  "200ms",
-  "200ms",
+  "400ms",
+  "400ms",
   "Time",
   { min: 0, max: 5000 },
 );

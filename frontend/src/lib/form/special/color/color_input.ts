@@ -1,6 +1,6 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import { FormValueWrite, type FormValueOptions } from "../../base";
-import "./colorInput.scss";
+import "./color_input.scss";
 
 export interface FormColorInputOptions<
   ID extends string | undefined,

@@ -1,6 +1,6 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import { FormValue, FormValueWrite, type FormValueOptions } from "../../base";
-import "./passwordInput.scss";
+import "./password_input.scss";
 
 export interface FormPasswordInputOptions<
   ID extends string | undefined,

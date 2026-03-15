@@ -7,7 +7,7 @@ import {
 import { number_step_start_decimal } from "@chocbite/ts-lib-math";
 import { err, type Result } from "@chocbite/ts-lib-result";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
-import { FormNumberWrite, type FormStepperBaseOptions } from "../numberBase";
+import { FormNumberWrite, type FormStepperBaseOptions } from "../number_base";
 import "./stepper.scss";
 
 /**Slide Selector, displays all options in a slider*/

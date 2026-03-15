@@ -3,8 +3,8 @@ import {
   FormSelectorBase,
   type FormSelectorBaseOptions,
   type FormSelectorOption,
-} from "../selectorBase";
-import "./toggleButton.scss";
+} from "../selector_base";
+import "./toggle_button.scss";
 
 interface SelOptions {
   top: HTMLDivElement;

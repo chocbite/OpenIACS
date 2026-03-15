@@ -27,7 +27,12 @@ const cust_butt = topbar.add_item(
   comp.topbar_button_icon(material_device_brightness_medium_rounded, () => {}),
   TopBarSides.RIGHT,
 );
-const cust = comp.customization_panel(cust_butt);
+
+const cust = comp.attach_customization_panel_to_element(
+  cust_butt,
+  "bot_left",
+  "top_left",
+);
 cust.main_group.elements = [form.text({ text: "Dark Mode" }), form.switch({})];
 
 class Game {

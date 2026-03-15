@@ -34,7 +34,7 @@ $color_basic_blue: var(--form-colors-basic-blue);
 $color_basic_yellow: var(--form-colors-basic-yellow);
 
 //Sizes
-$size_cornerRadius: var(--form-size-cornerRadius);
+$size_cornerRadius: 0.6rem;
 $size_height: var(--form-size-height);
 $size_touchHeight: var(--form-size-touchHeight);
 
@@ -57,11 +57,35 @@ $border: $border_thickness solid $color_border;
 $min_width: 14rem;
 $min_width_touch: $min_width * 1.6;
 $scrollbar_width: 0.5rem;
-$padding: 0.2rem;
+$element_spacing: 0.5rem;
 $animation: $animation_transitionType $animation_transitionDuration;
 
 //Mixins
 @mixin base {
+  margin-bottom: $element_spacing;
+
+  .anim-all & *,
+  .anim-all &,
+  .anim-all & *::before,
+  .anim-all & *::after {
+    transition:
+      font-size $animation,
+      width $animation,
+      height $animation,
+      left $animation,
+      border-radius $animation,
+      background-color $animation,
+      box-shadow $animation;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:nth-last-child(1 of :not(:empty)) {
+    margin-bottom: 0;
+  }
+
   &[inert] {
     opacity: 0.6;
     pointer-events: none;
@@ -107,7 +131,8 @@ $value_unit_font_height: max($value_font_size, $unit_font_size) + 0.4rem;
 $touch_value_unit_font_height: max(
     $touch_value_font_size,
     $touch_unit_font_size
-  ) + 0.4rem;
+  ) +
+  0.4rem;
 
 @mixin value-font {
   color: $color_text;

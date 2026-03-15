@@ -7,8 +7,8 @@ import {
 } from "@chocbite/ts-lib-common";
 import { number_step_start_decimal } from "@chocbite/ts-lib-math";
 import { err, type Result } from "@chocbite/ts-lib-result";
-import { FormNumberWrite, type FormNumberWriteOptions } from "../numberBase";
-import "./numberInput.scss";
+import { FormNumberWrite, type FormNumberWriteOptions } from "../number_base";
+import "./number_input.scss";
 
 /**Slide Selector, displays all options in a slider*/
 class NumberInput<ID extends string | undefined> extends FormNumberWrite<ID> {

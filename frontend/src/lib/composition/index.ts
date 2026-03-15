@@ -1,7 +1,11 @@
 export { main_panel_container } from "./container";
 export { Panel, type PanelOptions } from "./panel";
-export { CompAnchor } from "./shared";
-import { customization_panel } from "./customization";
+export { CompAnchor, type CompMinSize, type CompPosition } from "./shared";
+import {
+  attach_customization_panel_to_element,
+  customization_panel,
+} from "./customization";
+import { get_element_anchor_position } from "./shared";
 import {
   topbar,
   topbar_button,
@@ -15,6 +19,8 @@ export const comp = {
   topbar_button_icon,
   topbar_label,
   customization_panel,
+  attach_customization_panel_to_element,
+  get_element_anchor_position,
 };
 
 export { TopBarSides } from "./topbar";

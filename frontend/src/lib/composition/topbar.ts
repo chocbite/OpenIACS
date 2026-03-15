@@ -3,9 +3,9 @@ import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import "./topbar.scss";
 
 export const TopBarSides = {
-  LEFT: "L",
-  MID: "M",
-  RIGHT: "R",
+  LEFT: "left",
+  MID: "mid",
+  RIGHT: "right",
 } as const;
 export type TopBarSides = (typeof TopBarSides)[keyof typeof TopBarSides];
 

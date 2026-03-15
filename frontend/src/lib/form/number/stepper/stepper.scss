@@ -1,5 +1,5 @@
 @use "../../base";
-@use "../numberBase";
+@use "../number_base";
 
 form-stepper {
   @include base.base;
@@ -87,7 +87,7 @@ form-stepper {
   }
 
   > svg {
-    @include numberBase.svg-stepper-button;
+    @include number_base.svg-stepper-button;
 
     &:nth-child(2) {
       left: -(base.$border_thickness);

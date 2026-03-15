@@ -1,5 +1,7 @@
 @use "../base";
 
+$padding: 0.6rem;
+
 form-group {
   @include base.base;
   --max_height: none;
@@ -34,9 +36,16 @@ form-group {
 
   &:not(.collapsible) {
     max-height: var(--max_height);
-    overflow-y: auto;
-    padding: 0.5rem;
+    padding: $padding;
     min-width: fit-content;
+
+    &.max_height {
+      overflow-y: auto;
+    }
+
+    &.embed {
+      padding: 0;
+    }
 
     &.outset {
       box-shadow: base.$shadow_out;
@@ -48,15 +57,24 @@ form-group {
   }
 
   &.collapsible {
+    &.embed {
+      > div {
+        padding: 0;
+        padding-bottom: base.$element_spacing;
+      }
+    }
+
+    &.max_height {
+      > div {
+        overflow-y: auto;
+      }
+    }
+
     > div {
       max-height: var(--max_height);
-      overflow-y: auto;
-      padding: 0.5rem;
+      padding: $padding;
       min-width: fit-content;
-
-      &.collapsed {
-        display: none;
-      }
+      border-radius: 0.5rem;
     }
     > span {
       z-index: 2;

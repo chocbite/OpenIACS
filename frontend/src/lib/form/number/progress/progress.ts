@@ -1,6 +1,6 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import { FormValue } from "../../base";
-import { type FormNumberOptions } from "../numberBase";
+import { type FormNumberOptions } from "../number_base";
 import "./progress.scss";
 
 export class FormProgress<ID extends string | undefined> extends FormValue<

@@ -4,6 +4,7 @@ import { some } from "@chocbite/ts-lib-result";
 import { state } from "@chocbite/ts-lib-state";
 import {
   ANIMATION_LEVEL,
+  ANIMATION_SPEED,
   INPUT_MODE,
   SCALE,
   THEME,
@@ -11,7 +12,8 @@ import {
 import type { Panel } from "@libComposition";
 import form from "@libForm";
 import { ContentBase } from "./content";
-import type { CompAnchor } from "./shared";
+import { panel_position_with_anchor } from "./panel";
+import { get_element_anchor_position, type CompAnchor } from "./shared";
 
 class CustomizationPanel extends ContentBase {
   static element_name() {
@@ -22,20 +24,18 @@ class CustomizationPanel extends ContentBase {
   }
 
   readonly panel: Panel;
+  readonly main_group;
+  readonly advanced_group;
 
-  #main_group = this.appendChild(
-    form.group({
-      elements: [form.toggle_button({ value_by_state: THEME })],
-    }),
-  );
-  readonly main_group = this.appendChild(form.group({}));
-
-  readonly advanced_group = form.group({});
-  #advanced_group = this.appendChild(
-    form.group({
+  constructor(panel: Panel) {
+    super();
+    this.main_group = form.group({ embed: true });
+    this.advanced_group = form.group({});
+    const advanced = form.group({
       collapsible: true,
       collapse_text: "Advanced",
       collapsed: true,
+      embed: true,
       elements: [
         form.text({ text: "UI Scale" }),
         form.stepper({ value_by_state: SCALE }),
@@ -43,13 +43,22 @@ class CustomizationPanel extends ContentBase {
         form.toggle_button({ value_by_state: INPUT_MODE }),
         form.text({ text: "Animation Level" }),
         form.toggle_button({ value_by_state: ANIMATION_LEVEL }),
+        form.text({ text: "Animation Speed" }),
+        form.stepper({ value_by_state: ANIMATION_SPEED }),
         this.advanced_group,
       ],
-    }),
-  );
+    });
+    this.appendChild(
+      form.group({
+        elements: [
+          form.toggle_button({ value_by_state: THEME }),
+          this.main_group,
+          // form.spacer({ space: 1 }),
+          advanced,
+        ],
+      }),
+    );
 
-  constructor(panel: Panel) {
-    super();
     this.panel = panel;
   }
 
@@ -73,8 +82,7 @@ class CustomizationPanel extends ContentBase {
 define_element(CustomizationPanel);
 
 export function customization_panel(
-  element: Element,
-  element_anchor: CompAnchor,
+  element: Element = document.documentElement,
 ): CustomizationPanel {
   const content = new CustomizationPanel(
     element.ownerDocument.panel_container.create_panel({
@@ -87,4 +95,21 @@ export function customization_panel(
   );
   content.panel.content = content;
   return content;
+}
+
+export function attach_customization_panel_to_element(
+  element: Element,
+  element_anchor: CompAnchor,
+  panel_anchor: CompAnchor,
+  c_panel: CustomizationPanel = customization_panel(element),
+): CustomizationPanel {
+  element.addEventListener("click", () => {
+    const element_position = get_element_anchor_position(
+      element,
+      element_anchor,
+    );
+    panel_position_with_anchor(c_panel.panel, element_position, panel_anchor);
+    c_panel.panel.hide = false;
+  });
+  return c_panel;
 }

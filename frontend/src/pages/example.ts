@@ -15,7 +15,7 @@ import list from "@libList";
 import state from "@libState";
 import { ANIMATION_LEVEL, INPUT_MODE, SCALE, THEME } from "@libTheme";
 import { FormColors } from "../lib/form/base";
-import { FormDateTimeType } from "../lib/form/special/dateTime/dateTimeInput";
+import { FormDateTimeType } from "../lib/form/special/date_time/date_time_input";
 
 export default function example_page() {
   const FORM_CONT = document.createElement("div")!;

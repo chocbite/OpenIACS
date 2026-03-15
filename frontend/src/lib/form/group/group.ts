@@ -5,6 +5,11 @@ import {
   material_navigation_unfold_more_rounded,
 } from "@chocbite/ts-lib-icons";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
+import {
+  ANIMATION_LEVEL,
+  ANIMATION_SPEED,
+  AnimationLevels,
+} from "@chocbite/ts-lib-theme";
 import { FormElement, FormValue, type FormValueOptions } from "../base";
 import "./group.scss";
 
@@ -45,6 +50,8 @@ export interface FormGroupOptions<
   collapse_text?: string;
   /**Border style for group*/
   border?: FormGroupBorderStyle;
+  /**Removes padding when true allows for putting groups in groups without padding building up */
+  embed?: boolean;
   /**Group max height in rem, undefined means no limit*/
   max_height?: number;
 }
@@ -125,9 +132,45 @@ export class FormGroup<
 
   set collapsed(collapsed: boolean) {
     if (this.#collapsible) {
-      if (collapsed && !this.#collapsed) this.classList.add("collapsed");
-      else if (!collapsed && this.#collapsed)
+      if (collapsed && !this.#collapsed) {
+        //# Animation
+        if (ANIMATION_LEVEL.get().value === AnimationLevels.All) {
+          this.#collapsible.style.overflowY = "hidden";
+          const full_height =
+            this.#collapsible.getBoundingClientRect().height + "px";
+          const animation = this.#collapsible.animate(
+            [{ height: full_height }, { height: "0" }],
+            {
+              duration: ANIMATION_SPEED.get().value,
+              easing: "ease-in",
+            },
+          );
+          animation.onfinish = () => {
+            this.classList.add("collapsed");
+            if (this.#collapsible) this.#collapsible.style.overflowY = "";
+          };
+        } else {
+          this.classList.add("collapsed");
+        }
+      } else if (!collapsed && this.#collapsed) {
         this.classList.remove("collapsed");
+        //# Animation
+        if (ANIMATION_LEVEL.get().value === AnimationLevels.All) {
+          this.#collapsible.style.overflowY = "hidden";
+          const full_height =
+            this.#collapsible.getBoundingClientRect().height + "px";
+          const animation = this.#collapsible.animate(
+            [{ height: "0" }, { height: full_height }],
+            {
+              duration: ANIMATION_SPEED.get().value,
+              easing: "ease-out",
+            },
+          );
+          animation.onfinish = () => {
+            if (this.#collapsible) this.#collapsible.style.overflowY = "";
+          };
+        }
+      }
       this.#collapsed = collapsed;
     }
   }
@@ -159,6 +202,13 @@ export class FormGroup<
 
   set max_height(height: number | undefined) {
     this.style.setProperty("--max_height", height ? height + "rem" : "none");
+    if (height) this.classList.add("max_height");
+    else this.classList.remove("max_height");
+  }
+
+  set embed(embed: boolean) {
+    if (embed) this.classList.add("embed");
+    else this.classList.remove("embed");
   }
 
   set value(val: RT) {
@@ -224,6 +274,7 @@ export function form_group<
     if (options.collapsible) slide.collapsible = options.collapsible;
     if (options.collapsed) slide.collapsed = options.collapsed;
     if (options.max_height) slide.max_height = options.max_height;
+    if (options.embed) slide.embed = options.embed;
     FormValue.apply_options(slide, options);
   }
   return slide;

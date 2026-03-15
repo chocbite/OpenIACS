@@ -1,6 +1,6 @@
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormValueWrite, type FormValueOptions } from "../base";
-import "./numberBase.scss";
+import "./number_base.scss";
 
 export interface FormNumberOptions<
   ID extends string | undefined,
