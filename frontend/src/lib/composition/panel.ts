@@ -231,8 +231,10 @@ export class Panel extends Base {
     if (this.#bottom !== undefined) this.bottom = this.#bottom;
     if (this.#left !== undefined) this.left = this.#left;
     if (this.#right !== undefined) this.right = this.#right;
-    this.width = Math.min(this.width, this.#container_width);
-    this.height = Math.min(this.height, this.#container_height);
+    if (this.#width !== undefined)
+      this.width = Math.min(this.width, this.#container_width);
+    if (this.#height !== undefined)
+      this.height = Math.min(this.height, this.#container_height);
   }
 
   set moveable(value: boolean) {

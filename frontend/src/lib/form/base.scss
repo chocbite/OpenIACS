@@ -38,10 +38,6 @@ $size_cornerRadius: 0.6rem;
 $size_height: var(--form-size-height);
 $size_touchHeight: var(--form-size-touchHeight);
 
-//Animation
-$animation_transitionType: var(--form-animation-transitionType);
-$animation_transitionDuration: var(--form-animation-transitionDuration);
-
 //Font
 $font_size: var(--form-font-size);
 $touch_font_size: var(--form-font-touch_size);
@@ -58,25 +54,11 @@ $min_width: 14rem;
 $min_width_touch: $min_width * 1.6;
 $scrollbar_width: 0.5rem;
 $element_spacing: 0.5rem;
-$animation: $animation_transitionType $animation_transitionDuration;
+$animation: ease-in-out var(--animation-speed);
 
 //Mixins
 @mixin base {
   margin-bottom: $element_spacing;
-
-  .anim-all & *,
-  .anim-all &,
-  .anim-all & *::before,
-  .anim-all & *::after {
-    transition:
-      font-size $animation,
-      width $animation,
-      height $animation,
-      left $animation,
-      border-radius $animation,
-      background-color $animation,
-      box-shadow $animation;
-  }
 
   &:last-child {
     margin-bottom: 0;

@@ -351,40 +351,6 @@ sizes.make_variable(
 
 //#################################################################################3
 //#################################################################################3
-//               _   _ _____ __  __       _______ _____ ____  _   _
-//         /\   | \ | |_   _|  \/  |   /\|__   __|_   _/ __ \| \ | |
-//        /  \  |  \| | | | | \  / |  /  \  | |    | || |  | |  \| |
-//       / /\ \ | . ` | | | | |\/| | / /\ \ | |    | || |  | | . ` |
-//      / ____ \| |\  |_| |_| |  | |/ ____ \| |   _| || |__| | |\  |
-//     /_/    \_\_| \_|_____|_|  |_/_/    \_\_|  |_____\____/|_| \_|
-const animation = theme_root.make_sub_group(
-  "animation",
-  "Animation",
-  "Animation settings used in all form elements",
-);
-
-animation.make_variable(
-  "transitionType",
-  "Transition Type",
-  "Type of transition used in form element animations",
-  "ease-in-out",
-  "ease-in-out",
-  "TransitionType",
-  undefined,
-);
-
-animation.make_variable(
-  "transitionDuration",
-  "Transition Duration",
-  "Duration of transitions used in form element animations",
-  "400ms",
-  "400ms",
-  "Time",
-  { min: 0, max: 5000 },
-);
-
-//#################################################################################3
-//#################################################################################3
 //      ______ ____  _   _ _______
 //     |  ____/ __ \| \ | |__   __|
 //     | |__ | |  | |  \| |  | |

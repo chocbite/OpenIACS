@@ -149,6 +149,10 @@ ui-panel {
     flex-grow: 1;
     overflow: auto;
     border-radius: 0 0 $radius $radius;
+
+    .anim-all & {
+      transition: background-color ease-in-out var(--animation-speed);
+    }
   }
 
   &:has(> div:nth-child(2).hidden) {
