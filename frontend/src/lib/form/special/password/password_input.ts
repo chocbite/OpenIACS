@@ -1,4 +1,5 @@
 import { define_element } from "@chocbite/ts-lib-base";
+import type { Option } from "@chocbite/ts-lib-result";
 import { FormValue, FormValueWrite, type FormValueOptions } from "../../base";
 import "./password_input.scss";
 
@@ -52,6 +53,8 @@ class FormPasswordInput<ID extends string | undefined> extends FormValueWrite<
   }
 
   protected new_error(_val: string): void {}
+
+  protected state_related(_related: Option<{}>): void {}
 }
 define_element(FormPasswordInput);
 

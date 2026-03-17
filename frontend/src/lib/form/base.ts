@@ -88,11 +88,14 @@ export abstract class FormValue<
   /**This sets the value of the component*/
   set value_by_state(state: State<RT> | undefined) {
     if (this.#func) this.detach_state(this.#func);
-    if (state)
+    if (state) {
       this.attach_state(state, (val) => {
         if (val.ok) this.value = val.value;
         else this.error = val.error;
       });
+      const related = state.related();
+      if (related.some) this.state_related(related.value);
+    }
     this._state = state;
   }
 
@@ -130,6 +133,9 @@ export abstract class FormValue<
 
   /**Called when error is set by error or state*/
   protected abstract new_error(val: string): void;
+
+  /**Called when state has related information */
+  protected abstract state_related(related: {}): void;
 }
 
 //##################################################################################################

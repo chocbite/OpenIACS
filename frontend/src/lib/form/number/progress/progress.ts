@@ -1,4 +1,5 @@
 import { define_element } from "@chocbite/ts-lib-base";
+import type { StateNumberRelated } from "@chocbite/ts-lib-state";
 import { FormValue } from "../../base";
 import { type FormNumberOptions } from "../number_base";
 import "./progress.scss";
@@ -58,6 +59,13 @@ export class FormProgress<ID extends string | undefined> extends FormValue<
 
   protected new_error(err: string): void {
     console.error(err);
+  }
+
+  protected state_related(related: Partial<StateNumberRelated>): void {
+    if (related.min !== undefined) this.min = related.min;
+    if (related.max !== undefined) this.max = related.max;
+    if (related.unit !== undefined) this.unit = related.unit;
+    if (related.decimals !== undefined) this.decimals = related.decimals;
   }
 }
 define_element(FormProgress);

@@ -3,6 +3,7 @@ import {
   material_action_calendar_month_rounded,
   material_action_schedule_rounded,
 } from "@chocbite/ts-lib-icons";
+import type { Option } from "@chocbite/ts-lib-result";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./date_time_input.scss";
 
@@ -105,6 +106,8 @@ class FormDateTimeInput<
   protected clear_value(): void {
     this.warn_input.value = "";
   }
+
+  protected state_related(_related: Option<{}>): void {}
 }
 define_element(FormDateTimeInput);
 

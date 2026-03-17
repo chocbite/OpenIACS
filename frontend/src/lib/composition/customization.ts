@@ -9,7 +9,7 @@ import {
   SCALE,
   THEME,
 } from "@chocbite/ts-lib-theme";
-import type { Panel } from "@libComposition";
+import type { Panel, PanelOptions } from "@libComposition";
 import form from "@libForm";
 import { ContentBase } from "./content";
 import { panel_position_with_anchor } from "./panel";
@@ -44,7 +44,7 @@ class CustomizationPanel extends ContentBase {
         form.text({ text: "Animation Level" }),
         form.toggle_button({ value_by_state: ANIMATION_LEVEL }),
         form.text({ text: "Animation Speed" }),
-        form.stepper({ value_by_state: ANIMATION_SPEED }),
+        form.slider({ value_by_state: ANIMATION_SPEED, live: true }),
         this.advanced_group,
       ],
     });
@@ -53,7 +53,6 @@ class CustomizationPanel extends ContentBase {
         elements: [
           form.toggle_button({ value_by_state: THEME }),
           this.main_group,
-          // form.spacer({ space: 1 }),
           advanced,
         ],
       }),
@@ -83,6 +82,7 @@ define_element(CustomizationPanel);
 
 export function customization_panel(
   element: Element = document.documentElement,
+  panel_option_overrides: PanelOptions = {},
 ): CustomizationPanel {
   const content = new CustomizationPanel(
     element.ownerDocument.panel_container.create_panel({
@@ -90,7 +90,10 @@ export function customization_panel(
       moveable: false,
       sizeable: false,
       show_titlebar: false,
-      width: 18,
+      width: 20,
+      hidden: true,
+      auto_hide: true,
+      ...panel_option_overrides,
     }),
   );
   content.panel.content = content;

@@ -7,6 +7,7 @@ import {
 } from "@chocbite/ts-lib-common";
 import { number_step_start_decimal } from "@chocbite/ts-lib-math";
 import { err, type Result } from "@chocbite/ts-lib-result";
+import type { StateNumberRelated } from "@chocbite/ts-lib-state";
 import { FormNumberWrite, type FormNumberWriteOptions } from "../number_base";
 import "./number_input.scss";
 
@@ -181,6 +182,15 @@ class NumberInput<ID extends string | undefined> extends FormNumberWrite<ID> {
     if (lim < this.#min) lim += this.#step;
     if (lim > this.#max) lim -= this.#step;
     return super.check_value(lim);
+  }
+
+  protected state_related(related: Partial<StateNumberRelated>): void {
+    if (related.min !== undefined) this.min = related.min;
+    if (related.max !== undefined) this.max = related.max;
+    if (related.unit !== undefined) this.unit = related.unit;
+    if (related.decimals !== undefined) this.decimals = related.decimals;
+    if (related.step !== undefined) this.step = related.step;
+    if (related.start !== undefined) this.start = related.start;
   }
 
   #step_value(dir: boolean) {

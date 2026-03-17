@@ -24,6 +24,8 @@ export type PanelSizers =
 export interface PanelOptions {
   show_titlebar?: boolean;
   closeable?: boolean;
+  hidden?: boolean;
+  auto_hide?: boolean;
 
   //Composition
   layer?: number;
@@ -153,7 +155,10 @@ export class Panel extends Base {
     else if (options.right !== undefined) this.right = options.right;
     else pos++;
     if (pos === 2) this.center = true;
+
+    if (options.hidden) this.hide = true;
   }
+
   //       _____ ____  __  __ _____   ____   _____ _____ _______ _____ ____  _   _
   //      / ____/ __ \|  \/  |  __ \ / __ \ / ____|_   _|__   __|_   _/ __ \| \ | |
   //     | |   | |  | | \  / | |__) | |  | | (___   | |    | |    | || |  | |  \| |

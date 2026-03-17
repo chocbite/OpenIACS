@@ -6,6 +6,7 @@ import {
 } from "@chocbite/ts-lib-icons";
 import { number_step_start_decimal } from "@chocbite/ts-lib-math";
 import { err, type Result } from "@chocbite/ts-lib-result";
+import type { StateNumberRelated } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormNumberWrite, type FormStepperBaseOptions } from "../number_base";
 import "./stepper.scss";
@@ -72,12 +73,12 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
         this.#text.onpointermove = (ev) => {
           ev.stopPropagation();
           if (moving) {
-            this.#move_diff(initial_val + (ev.clientX - e.clientX) / 5);
-          } else {
-            if (Math.abs(e.clientX - ev.clientX) > 50) {
-              this.#value_box.contentEditable = "false";
-              moving = true;
-            }
+            this.#move_diff(
+              initial_val + ((ev.clientX - e.clientX) / 10) * (this.#step || 1),
+            );
+          } else if (Math.abs(e.clientX - ev.clientX) > 5) {
+            this.#value_box.contentEditable = "false";
+            moving = true;
           }
         };
         reset = () => {
@@ -99,7 +100,10 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
               selection.addRange(range);
             }
           } else if (moving) {
-            this.#move_diff(initial_val + (ev.clientX - e.clientX) / 5, true);
+            this.#move_diff(
+              initial_val + ((ev.clientX - e.clientX) / 10) * (this.#step || 1),
+              true,
+            );
             moving = false;
           }
         };
@@ -259,6 +263,15 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
     if (lim < this.#min) lim += this.#step;
     if (lim > this.#max) lim -= this.#step;
     return super.check_value(lim);
+  }
+
+  protected state_related(related: Partial<StateNumberRelated>): void {
+    if (related.min !== undefined) this.min = related.min;
+    if (related.max !== undefined) this.max = related.max;
+    if (related.unit !== undefined) this.unit = related.unit;
+    if (related.decimals !== undefined) this.decimals = related.decimals;
+    if (related.step !== undefined) this.step = related.step;
+    if (related.start !== undefined) this.start = related.start;
   }
 
   /**Moves the value to a position by the mouse x coordinates*/

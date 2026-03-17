@@ -1,4 +1,5 @@
 import { define_element } from "@chocbite/ts-lib-base";
+import type { Option } from "@chocbite/ts-lib-result";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import {
   FormColors,
@@ -145,6 +146,8 @@ class FormButton<ID extends string | undefined> extends FormValueWrite<
   protected new_error(err: string): void {
     console.error("TODO", err);
   }
+
+  protected state_related(_related: Option<{}>): void {}
 
   /**Changes whether the button is maintained or momentary*/
   set toggle(toggle: boolean | undefined) {

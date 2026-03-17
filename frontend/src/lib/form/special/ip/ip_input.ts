@@ -7,6 +7,7 @@ import {
   set_selection_all,
   sleep,
 } from "@chocbite/ts-lib-common";
+import type { Option } from "@chocbite/ts-lib-result";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./ip_input.scss";
 
@@ -206,6 +207,8 @@ class FormIpInput<ID extends string | undefined> extends FormValueWrite<
   }
 
   protected new_error(_val: string): void {}
+
+  protected state_related(_related: Option<{}>): void {}
 }
 define_element(FormIpInput);
 

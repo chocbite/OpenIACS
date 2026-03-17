@@ -1,6 +1,7 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import { set_cursor_end } from "@chocbite/ts-lib-common";
 import { err, type Result } from "@chocbite/ts-lib-result";
+import type { StateStringRelated } from "@chocbite/ts-lib-state";
 import { string_byte_length, string_byte_limit } from "@chocbite/ts-lib-string";
 import { FormValueWrite, type FormValueOptions } from "../../base";
 import "./text_input.scss";
@@ -136,6 +137,12 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
     if (this.#max_bytes && string_byte_length(val) > this.#max_bytes)
       return err(`A maximum of ${this.#max_bytes} bytes is allowed`);
     return super.check_value(val);
+  }
+
+  protected state_related(related: Partial<StateStringRelated>): void {
+    if (related.max_length !== undefined) this.max_length = related.max_length;
+    if (related.max_length_bytes !== undefined)
+      this.max_bytes = related.max_length_bytes;
   }
 }
 define_element(FormTextInput);

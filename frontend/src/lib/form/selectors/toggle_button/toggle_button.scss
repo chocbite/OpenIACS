@@ -12,6 +12,7 @@ form-togglebutton {
   grid-template-rows: auto auto;
   grid-auto-columns: 1fr;
   position: relative;
+  margin-bottom: base.$element_spacing - 0.2rem;
 
   .touch & {
     font-size: base.$touch_font_size;
@@ -40,7 +41,6 @@ form-togglebutton {
       border-block: base.$border_thickness solid base.$color_border;
       outline: none;
       min-height: base.$size_height;
-      margin-bottom: 0.2rem;
 
       &.selected {
         background-color: base.$color_background_hover;
@@ -67,8 +67,8 @@ form-togglebutton {
         &::before {
           content: "";
           position: absolute;
-          box-shadow: base.$focus_out;
-          inset: 0;
+          box-shadow: base.$focus_in;
+          inset: -1px;
           z-index: 2;
         }
 
@@ -82,14 +82,6 @@ form-togglebutton {
             border-radius: 0 base.$size_cornerRadius base.$size_cornerRadius 0;
           }
         }
-      }
-
-      &::after {
-        content: "";
-        position: absolute;
-        inset: -(base.$border_thickness);
-        box-shadow: 0 0.155rem 0.1875rem -0.03rem base.$color_border;
-        z-index: -1;
       }
 
       @media (pointer: fine) {
@@ -126,7 +118,7 @@ form-togglebutton {
       padding: $padding;
       padding-top: 0;
       padding-bottom: 0;
-      line-height: 1.2rem;
+      min-height: 0.2rem;
 
       &:empty {
         padding: 0rem;

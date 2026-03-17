@@ -4,7 +4,7 @@ import {
   material_navigation_unfold_less_rounded,
   material_navigation_unfold_more_rounded,
 } from "@chocbite/ts-lib-icons";
-import { err, ok, type Result } from "@chocbite/ts-lib-result";
+import { err, ok, type Option, type Result } from "@chocbite/ts-lib-result";
 import {
   ANIMATION_LEVEL,
   ANIMATION_SPEED,
@@ -240,6 +240,8 @@ export class FormGroup<
   protected new_error(err: string): void {
     console.error(err);
   }
+
+  protected state_related(_related: Option<{}>): void {}
 
   protected on_access(access: AccessTypes): void {
     switch (access) {
