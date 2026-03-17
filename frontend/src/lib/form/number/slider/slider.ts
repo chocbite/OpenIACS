@@ -58,12 +58,13 @@ export class FormSlider<ID extends string | undefined> extends FormNumberWrite<
       e.stopPropagation();
       this.#slider.classList.add("active");
       const box = this.#slider.getBoundingClientRect();
-      const offset =
-        e.clientX >= box.x
+      const offset = this.#slider.contains(e.target as Node)
+        ? e.clientX >= box.x
           ? e.clientX <= box.x + box.width
             ? box.x - e.clientX
             : -box.width
-          : 0;
+          : 0
+        : -box.width / 2;
       if (this.#min === -Infinity || this.#max === Infinity) {
         let value = this.buffer || 0;
         const interval = setInterval(() => {
@@ -137,7 +138,7 @@ export class FormSlider<ID extends string | undefined> extends FormNumberWrite<
         };
       }
     };
-    this.#slider.onkeydown = (e) => {
+    this.#slide.onkeydown = (e) => {
       if (e.key === "ArrowRight") this.#step_value(true);
       else if (e.key === "ArrowLeft") this.#step_value(false);
       else return;

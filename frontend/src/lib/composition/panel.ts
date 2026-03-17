@@ -24,11 +24,13 @@ export type PanelSizers =
 export interface PanelOptions {
   show_titlebar?: boolean;
   closeable?: boolean;
-  hidden?: boolean;
-  auto_hide?: boolean;
 
   //Composition
   layer?: number;
+  hidden?: boolean;
+  auto_hide?: boolean;
+  modal?: boolean;
+  auto_close?: boolean;
 
   //Accessories
   content?: ContentBase;
@@ -77,6 +79,7 @@ export class Panel extends Base {
 
     this.#container = container;
     this.#layer = options.layer;
+    this.tabIndex = 0;
 
     //Sizing
     this.#sizer = this.appendChild(document.createElement("div"));
@@ -156,7 +159,10 @@ export class Panel extends Base {
     else pos++;
     if (pos === 2) this.center = true;
 
+    //Composition
     if (options.hidden) this.hide = true;
+    if (options.auto_hide) this.auto_hide = true;
+    if (options.modal) this.modal = true;
   }
 
   //       _____ ____  __  __ _____   ____   _____ _____ _______ _____ ____  _   _
@@ -182,6 +188,55 @@ export class Panel extends Base {
     return this.classList.contains("hidden");
   }
 
+  #auto_hide_listener?: EventListener;
+  set auto_hide(hide: boolean) {
+    if (hide && !this.#auto_hide_listener) {
+      this.ownerDocument.addEventListener(
+        "pointerdown",
+        (this.#auto_hide_listener = (e) => {
+          console.warn(e.target);
+          if ((hide && !this.contains(e.target as Node)) || e.target === this)
+            this.hide = true;
+        }),
+        { capture: true, passive: true },
+      );
+    } else if (!hide && this.#auto_hide_listener) {
+      this.ownerDocument.removeEventListener(
+        "pointerdown",
+        this.#auto_hide_listener,
+        { capture: true },
+      );
+      this.#auto_hide_listener = undefined;
+    }
+  }
+  get auto_hide(): boolean {
+    return Boolean(this.#auto_hide_listener);
+  }
+
+  #auto_close_listener?: EventListener;
+  set auto_close(close: boolean) {
+    if (close && !this.#auto_close_listener) {
+      this.ownerDocument.addEventListener(
+        "pointerdown",
+        (this.#auto_close_listener = (e) => {
+          if ((close && !this.contains(e.target as Node)) || e.target === this)
+            this.close();
+        }),
+        { capture: true, passive: true },
+      );
+    } else if (!close && this.#auto_close_listener) {
+      this.ownerDocument.removeEventListener(
+        "pointerdown",
+        this.#auto_close_listener,
+        { capture: true },
+      );
+      this.#auto_close_listener = undefined;
+    }
+  }
+  get auto_close(): boolean {
+    return Boolean(this.#auto_close_listener);
+  }
+
   set modal(modal: boolean) {
     if (modal) this.classList.add("modal");
     else this.classList.remove("modal");
@@ -193,6 +248,8 @@ export class Panel extends Base {
   focus_panel(): void {
     this.#container.focus_panel(this);
   }
+
+  close(): void {}
 
   //               _____ _____ ______  _____ _____  ____  _____  _____ ______  _____
   //         /\   / ____/ ____|  ____|/ ____/ ____|/ __ \|  __ \|_   _|  ____|/ ____|

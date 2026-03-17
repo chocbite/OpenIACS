@@ -89,10 +89,11 @@ export function customization_panel(
       closeable: false,
       moveable: false,
       sizeable: false,
-      show_titlebar: false,
+      show_titlebar: true,
       width: 20,
       hidden: true,
       auto_hide: true,
+      modal: true,
       ...panel_option_overrides,
     }),
   );
@@ -113,6 +114,7 @@ export function attach_customization_panel_to_element(
     );
     panel_position_with_anchor(c_panel.panel, element_position, panel_anchor);
     c_panel.panel.hide = false;
+    c_panel.panel.focus_panel();
   });
   return c_panel;
 }
