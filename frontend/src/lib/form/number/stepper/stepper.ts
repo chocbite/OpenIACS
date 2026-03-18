@@ -6,7 +6,6 @@ import {
 } from "@chocbite/ts-lib-icons";
 import { number_step_start_decimal } from "@chocbite/ts-lib-math";
 import { err, type Result } from "@chocbite/ts-lib-result";
-import type { StateNumberRelated } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormNumberWrite, type FormStepperBaseOptions } from "../number_base";
 import "./stepper.scss";
@@ -233,7 +232,7 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
     console.error(err);
   }
 
-  protected limit_value(val: number): Result<number, string> {
+  protected limit_value(val: number): Promise<Result<number, string>> {
     let lim = number_step_start_decimal(
       Math.min(Math.max(val, this.#min), this.#max),
       this.#step,
@@ -245,14 +244,14 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
     return super.limit_value(lim);
   }
 
-  protected check_value(val: number): Result<number, string> {
+  protected check_value(val: number): Promise<Result<number, string>> {
     if (val < this.#min)
-      return err(
-        "Minimum value " + this.#min.toFixed(this.#decimals) + this.#unit,
+      return Promise.resolve(
+        err("Minimum value " + this.#min.toFixed(this.#decimals) + this.#unit),
       );
     if (val > this.#max)
-      return err(
-        "Maximum value " + this.#max.toFixed(this.#decimals) + this.#unit,
+      return Promise.resolve(
+        err("Maximum value " + this.#max.toFixed(this.#decimals) + this.#unit),
       );
     let lim = number_step_start_decimal(
       val,
@@ -265,22 +264,13 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
     return super.check_value(lim);
   }
 
-  protected state_related(related: Partial<StateNumberRelated>): void {
-    if (related.min !== undefined) this.min = related.min;
-    if (related.max !== undefined) this.max = related.max;
-    if (related.unit !== undefined) this.unit = related.unit;
-    if (related.decimals !== undefined) this.decimals = related.decimals;
-    if (related.step !== undefined) this.step = related.step;
-    if (related.start !== undefined) this.start = related.start;
-  }
-
   /**Moves the value to a position by the mouse x coordinates*/
-  #move_diff(value: number, last: boolean = false) {
+  async #move_diff(value: number, last: boolean = false) {
     if (this.#live) this.set_value_limit(value);
     else {
       if (last) this.set_value_limit(value);
       else {
-        const lim = this.limit_value(value);
+        const lim = await this.limit_value(value);
         if (lim.ok) this.#move_value(lim.value);
       }
     }

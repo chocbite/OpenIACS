@@ -1,3 +1,4 @@
+import { FormColors } from "./base";
 import { form_button } from "./boolean/button/button";
 import { form_lamp } from "./boolean/lamp/lamp";
 import { form_switch } from "./boolean/switch/switch";
@@ -11,7 +12,10 @@ import { form_dropdown } from "./selectors/drop_down/drop_down";
 import { form_toggle_button } from "./selectors/toggle_button/toggle_button";
 import { form_spacer } from "./spacing/spacer";
 import { form_color_input } from "./special/color/color_input";
-import { form_date_time_input } from "./special/date_time/date_time_input";
+import {
+  form_date_time_input,
+  FormDateTimeType,
+} from "./special/date_time/date_time_input";
 import { form_ip_input } from "./special/ip/ip_input";
 import { form_password_input } from "./special/password/password_input";
 import { form_text_input } from "./text/input/text_input";
@@ -20,6 +24,8 @@ import { form_text } from "./text/text/text";
 
 /**Form elements with label */
 export const form = {
+  FormColors,
+
   //Boolean
   button: form_button,
   switch: form_switch,
@@ -30,6 +36,7 @@ export const form = {
   //Special
   color_input: form_color_input,
   date_time_input: form_date_time_input,
+  FormDateTimeType,
   ip_input: form_ip_input,
   password_input: form_password_input,
 
@@ -55,3 +62,6 @@ export const form = {
   list_field: form_list_field,
 };
 export default form;
+
+export { FormColors } from "./base";
+export { FormDateTimeType } from "./special/date_time/date_time_input";

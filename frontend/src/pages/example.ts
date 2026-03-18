@@ -1,26 +1,29 @@
-import { ok } from "@chocbite/ts-lib-result";
 import {
   array_from_length,
   array_from_range,
   IPAddress,
   IPVersion,
-} from "@libCommon";
-import ctm from "@libContextmenu";
-import form from "@libForm";
+} from "@chocbite/ts-lib-common";
+import ctm from "@chocbite/ts-lib-context-menu";
 import {
   material_av_add_to_queue_rounded,
   material_av_remove_from_queue_rounded,
-} from "@libIcons";
+} from "@chocbite/ts-lib-icons";
+import { ok } from "@chocbite/ts-lib-result";
+import state from "@chocbite/ts-lib-state";
+import {
+  ANIMATION_LEVEL,
+  INPUT_MODE,
+  SCALE,
+  THEME,
+} from "@chocbite/ts-lib-theme";
+import form, { FormColors, FormDateTimeType } from "@libForm";
 import list from "@libList";
-import state from "@libState";
-import { ANIMATION_LEVEL, INPUT_MODE, SCALE, THEME } from "@libTheme";
-import { FormColors } from "../lib/form/base";
-import { FormDateTimeType } from "../lib/form/special/date_time/date_time_input";
 
 export default function example_page() {
-  const FORM_CONT = document.createElement("div")!;
-  FORM_CONT.style.flexGrow = "1";
-  FORM_CONT.style.overflow = "auto";
+  const form_cont = document.createElement("div");
+  form_cont.style.flexGrow = "1";
+  form_cont.style.overflow = "auto";
 
   // main_panel_container.create_panel({
   //   // top: 5,
@@ -45,7 +48,7 @@ export default function example_page() {
   //   sizeable: "e",
   // });
 
-  FORM_CONT.appendChild(
+  form_cont.appendChild(
     form.group({
       border: "inset",
       max_height: 16,
@@ -87,12 +90,9 @@ export default function example_page() {
       col3: list.column({
         fixed_width: "min",
         title: "Remove",
-        field_apply: (
-          field,
-          v: () => ReturnType<typeof st_rows.write_sync>,
-        ) => {
-          field.element.on_click = () => {
-            v().map_err((err) => field.element.warn(err));
+        field_apply: (field, v: () => ReturnType<typeof st_rows.write>) => {
+          field.element.on_click = async () => {
+            (await v()).map_err((err) => field.element.warn(err));
           };
         },
         field_gen: () => form.list_field(form.button({ text: "Remove" })),
@@ -110,17 +110,17 @@ export default function example_page() {
                 ok(len.value >= 3),
               ),
               text: "Add New Row",
-              on_add: () => sub_rows.write_sync(state.a.push(Math.random())),
+              on_add: () => sub_rows.write(state.a.push(Math.random())),
             }
           : undefined;
       ctm.attach(
         row,
         ctm.menu([
-          ctm.line("Remove", () => stat.write_sync(state.a.pluck(row.index))),
+          ctm.line("Remove", () => stat.write(state.a.pluck(row.index))),
           ctm.line("Add New Row", () =>
-            stat.write_sync(state.a.insert(row.index, Math.random())),
+            stat.write(state.a.insert(row.index, Math.random())),
           ),
-          ctm.line("Empty", () => stat.write_sync(state.a.write([]))),
+          ctm.line("Empty", () => stat.write(state.a.write([]))),
         ]),
       );
       return {
@@ -134,7 +134,7 @@ export default function example_page() {
         values: {
           col1: item,
           col2: item,
-          col3: () => stat.write_sync(state.a.pluck(row.index)),
+          col3: () => stat.write(state.a.pluck(row.index)),
         },
       };
     },
@@ -149,7 +149,7 @@ export default function example_page() {
       },
     },
   );
-  FORM_CONT.appendChild(test_list);
+  form_cont.appendChild(test_list);
 
   //      _____         _____ _______          ______  _____  _____
   //     |  __ \ /\    / ____/ ____\ \        / / __ \|  __ \|  __ \
@@ -157,12 +157,12 @@ export default function example_page() {
   //     |  ___/ /\ \  \___ \\___ \  \ \/  \/ /| |  | |  _  /| |  | |
   //     | |  / ____ \ ____) |___) |  \  /\  / | |__| | | \ \| |__| |
   //     |_| /_/    \_\_____/_____/    \/  \/   \____/|_|  \_\_____/
-  const PASSWORD_STATE = state.s.ros_ws.ok("");
-  PASSWORD_STATE.sub(console.error);
-  FORM_CONT.appendChild(form.text({ text: "IP Input" }));
-  FORM_CONT.appendChild(
+  const password_state = state.s.ros_ws.ok("");
+  password_state.sub(console.error);
+  form_cont.appendChild(form.text({ text: "IP Input" }));
+  form_cont.appendChild(
     form.password_input({
-      value_by_state: PASSWORD_STATE,
+      value_by_state: password_state,
       filter: /[0-9]/,
     }),
   );
@@ -173,16 +173,16 @@ export default function example_page() {
   //       | | |  ___/    | | | . ` |  ___/| |  | |  | |
   //      _| |_| |       _| |_| |\  | |    | |__| |  | |
   //     |_____|_|      |_____|_| \_|_|     \____/   |_|
-  const IP_STATE = state.s.ros_ws.ok(new IPAddress("192.168.1.1"));
-  FORM_CONT.appendChild(form.text({ text: "IP Input" }));
-  FORM_CONT.appendChild(
+  const ip_state = state.s.ros_ws.ok(new IPAddress("192.168.1.1"));
+  form_cont.appendChild(form.text({ text: "IP Input" }));
+  form_cont.appendChild(
     form.ip_input({
       type: IPVersion.V4,
-      value_by_state: IP_STATE,
+      value_by_state: ip_state,
     }),
   );
-  FORM_CONT.appendChild(form.text({ text: "IP Input" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "IP Input" }));
+  form_cont.appendChild(
     form.ip_input({
       type: IPVersion.V6,
     }),
@@ -194,18 +194,18 @@ export default function example_page() {
   //     | |   | |  | | |   | |  | |  _  /    | | | . ` |  ___/| |  | |  | |
   //     | |___| |__| | |___| |__| | | \ \   _| |_| |\  | |    | |__| |  | |
   //      \_____\____/|______\____/|_|  \_\ |_____|_| \_|_|     \____/   |_|
-  const COLOR_STATE = state.s.ros_ws.ok("#00ff00");
-  FORM_CONT.appendChild(form.text({ text: "Color Input" }));
-  FORM_CONT.appendChild(
+  const color_state = state.s.ros_ws.ok("#00ff00");
+  form_cont.appendChild(form.text({ text: "Color Input" }));
+  form_cont.appendChild(
     form.color_input({
-      value_by_state: COLOR_STATE,
+      value_by_state: color_state,
     }),
   );
-  FORM_CONT.appendChild(form.text({ text: "Color Input 2" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Color Input 2" }));
+  form_cont.appendChild(
     form.color_input({
       live: true,
-      value_by_state: COLOR_STATE,
+      value_by_state: color_state,
     }),
   );
 
@@ -215,22 +215,22 @@ export default function example_page() {
   //     | |  | |/ /\ \ | |  |  __|    | |    | | | |\/| |  __|
   //     | |__| / ____ \| |  | |____   | |   _| |_| |  | | |____
   //     |_____/_/    \_\_|  |______|  |_|  |_____|_|  |_|______|
-  const DATE_TIME_STATE = state.s.ros_ws.ok(new Date());
-  FORM_CONT.appendChild(form.text({ text: "Date Time Input" }));
-  FORM_CONT.appendChild(
+  const date_time_state = state.s.ros_ws.ok(new Date());
+  form_cont.appendChild(form.text({ text: "Date Time Input" }));
+  form_cont.appendChild(
     form.date_time_input({
       type: FormDateTimeType.TIME,
-      value_by_state: DATE_TIME_STATE,
+      value_by_state: date_time_state,
     }),
   );
-  FORM_CONT.appendChild(form.text({ text: "Date Time Input" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Date Time Input" }));
+  form_cont.appendChild(
     form.date_time_input({
-      value_by_state: DATE_TIME_STATE,
+      value_by_state: date_time_state,
     }),
   );
-  FORM_CONT.appendChild(form.text({ text: "Date Time Input" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Date Time Input" }));
+  form_cont.appendChild(
     form.date_time_input({
       value: 5000 as number,
     }),
@@ -242,45 +242,45 @@ export default function example_page() {
   //        | |  |  __|   > <    | |      | | | . ` |  ___/| |  | |  | |
   //        | |  | |____ / . \   | |     _| |_| |\  | |    | |__| |  | |
   //        |_|  |______/_/ \_\  |_|    |_____|_| \_|_|     \____/   |_|
-  const TEXT_STATE = state.s.ros_ws.ok("");
-  FORM_CONT.appendChild(form.text({ text: "Text Input" }));
-  FORM_CONT.appendChild(
+  const text_state = state.s.ros_ws.ok("");
+  form_cont.appendChild(form.text({ text: "Text Input" }));
+  form_cont.appendChild(
     form.input_text({
       placeholder: "Enter text here...",
       max_length: 20,
       max_bytes: 20,
-      value_by_state: TEXT_STATE,
+      value_by_state: text_state,
       filter: /[a-zA-Z ]/,
     }),
   );
-  FORM_CONT.appendChild(form.text({ text: "Text Input 2" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Text Input 2" }));
+  form_cont.appendChild(
     form.input_text({
       placeholder: "Enter text here...",
       max_length: 20,
       max_bytes: 20,
-      value_by_state: TEXT_STATE,
+      value_by_state: text_state,
     }),
   );
 
-  const MULTI_LINE_TEXT_STATE = state.s.ros_ws.ok("");
-  FORM_CONT.appendChild(form.text({ text: "Multiline Text Input" }));
-  FORM_CONT.appendChild(
+  const multi_line_text_state = state.s.ros_ws.ok("");
+  form_cont.appendChild(form.text({ text: "Multiline Text Input" }));
+  form_cont.appendChild(
     form.multiline_text({
       placeholder: "Enter text here...",
       max_length: 20,
       max_bytes: 20,
-      value_by_state: MULTI_LINE_TEXT_STATE,
+      value_by_state: multi_line_text_state,
     }),
   );
 
-  FORM_CONT.appendChild(form.text({ text: "Multiline Text Input2" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Multiline Text Input2" }));
+  form_cont.appendChild(
     form.multiline_text({
       placeholder: "Enter text here...",
       max_length: 20,
       max_bytes: 20,
-      value_by_state: MULTI_LINE_TEXT_STATE,
+      value_by_state: multi_line_text_state,
     }),
   );
 
@@ -290,8 +290,8 @@ export default function example_page() {
   //     | . ` | |  | | |\/| |  _ <|  __| |  _  /    | | | . ` |  ___/| |  | |  | |
   //     | |\  | |__| | |  | | |_) | |____| | \ \   _| |_| |\  | |    | |__| |  | |
   //     |_| \_|\____/|_|  |_|____/|______|_|  \_\ |_____|_| \_|_|     \____/   |_|
-  FORM_CONT.appendChild(form.text({ text: "Number Input" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Number Input" }));
+  form_cont.appendChild(
     form.input_number({
       unit: "mA",
       min: -100,
@@ -308,8 +308,8 @@ export default function example_page() {
   //     | | |_ |  _  /| |  | | |  | |  ___/
   //     | |__| | | \ \| |__| | |__| | |
   //      \_____|_|  \_\\____/ \____/|_|
-  FORM_CONT.appendChild(form.text({ text: "Group Box" }));
-  const grouptest = FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Group Box" }));
+  const grouptest = form_cont.appendChild(
     form.group({
       border: "outset",
       max_height: 6,
@@ -345,8 +345,8 @@ export default function example_page() {
   };
   grouptest.value.map(console.error);
 
-  FORM_CONT.appendChild(form.text({ text: "Group Box" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Group Box" }));
+  form_cont.appendChild(
     form.group({
       border: "outset",
       collapsible: true,
@@ -359,8 +359,8 @@ export default function example_page() {
     }),
   );
 
-  FORM_CONT.appendChild(form.text({ text: "Group Box" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Group Box" }));
+  form_cont.appendChild(
     form.group({
       border: "inset",
       collapsible: true,
@@ -375,7 +375,7 @@ export default function example_page() {
     }),
   );
 
-  FORM_CONT.appendChild(
+  form_cont.appendChild(
     form.text({
       text: "Hello World!",
       size: 2,
@@ -383,8 +383,8 @@ export default function example_page() {
   );
 
   const bool = state.s.ros_ws.ok(false);
-  FORM_CONT.appendChild(form.text({ text: "YOYOYOY" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "YOYOYOY" }));
+  form_cont.appendChild(
     form
       .button({
         id: "test",
@@ -397,10 +397,10 @@ export default function example_page() {
       }),
   ).value_by_state = bool;
 
-  FORM_CONT.appendChild(form.text({ text: "Toggle Me" }));
-  FORM_CONT.appendChild(form.switch({})).value_by_state = bool;
+  form_cont.appendChild(form.text({ text: "Toggle Me" }));
+  form_cont.appendChild(form.switch({})).value_by_state = bool;
 
-  FORM_CONT.appendChild(
+  form_cont.appendChild(
     form.lamp({
       text: "Status Lamp",
       colors: [FormColors.Red, FormColors.Green],
@@ -415,8 +415,8 @@ export default function example_page() {
   //     | |__| | | \ \| |__| | |    | |__| | |__| | \  /\  /  | |\  |
   //     |_____/|_|  \_\\____/|_|    |_____/ \____/   \/  \/   |_| \_|
   const num = state.s.ros_ws.ok(0);
-  FORM_CONT.appendChild(form.text({ text: "Dropdown" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Dropdown" }));
+  form_cont.appendChild(
     form.dropdown({
       selections: [
         {
@@ -438,8 +438,8 @@ export default function example_page() {
     }),
   ).value_by_state = num;
 
-  FORM_CONT.appendChild(form.text({ text: "Dropdown" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Dropdown" }));
+  form_cont.appendChild(
     form.dropdown({
       default:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel risus sem. Curabitur a morbi.",
@@ -454,8 +454,8 @@ export default function example_page() {
     }),
   ).value_by_state = num;
 
-  FORM_CONT.appendChild(form.text({ text: "Dropdown" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Dropdown" }));
+  form_cont.appendChild(
     form.dropdown({
       default:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel risus sem. Curabitur a morbi.",
@@ -475,8 +475,8 @@ export default function example_page() {
   //        | | | |  | | | |_ | | |_ | |    |  __|   |  _ <| |  | |  | |     | | | |  | | . ` |\___ \
   //        | | | |__| | |__| | |__| | |____| |____  | |_) | |__| |  | |     | | | |__| | |\  |____) |
   //        |_|  \____/ \_____|\_____|______|______| |____/ \____/   |_|     |_|  \____/|_| \_|_____/
-  FORM_CONT.appendChild(form.text({ text: "Toggle Buttons" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Toggle Buttons" }));
+  form_cont.appendChild(
     form.toggle_button({
       selections: [
         {
@@ -498,8 +498,8 @@ export default function example_page() {
     }),
   ).value_by_state = num;
 
-  FORM_CONT.appendChild(form.text({ text: "Toggle Buttons" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Toggle Buttons" }));
+  form_cont.appendChild(
     form.toggle_button({
       selections: array_from_range(0, 5, (i) => {
         return {
@@ -511,8 +511,8 @@ export default function example_page() {
     }),
   ).value_by_state = num;
 
-  FORM_CONT.appendChild(form.text({ text: "Toggle Buttons" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Toggle Buttons" }));
+  form_cont.appendChild(
     form.toggle_button({
       selections: array_from_range(0, 20, (i) => {
         return {
@@ -529,9 +529,9 @@ export default function example_page() {
   //      \___ \| |      | | | |  | |  __| |  _  /
   //      ____) | |____ _| |_| |__| | |____| | \ \
   //     |_____/|______|_____|_____/|______|_|  \_\
-  const SLIDER_NUM = state.s.ros_ws.ok(0);
-  FORM_CONT.appendChild(form.text({ text: "Slider" }));
-  FORM_CONT.appendChild(
+  const slider_num = state.s.ros_ws.ok(0);
+  form_cont.appendChild(form.text({ text: "Slider" }));
+  form_cont.appendChild(
     form.slider({
       unit: "mA",
       max: 50,
@@ -539,9 +539,9 @@ export default function example_page() {
       start: 0.1,
       decimals: 1,
     }),
-  ).value_by_state = SLIDER_NUM;
-  FORM_CONT.appendChild(form.text({ text: "Slider" }));
-  FORM_CONT.appendChild(
+  ).value_by_state = slider_num;
+  form_cont.appendChild(form.text({ text: "Slider" }));
+  form_cont.appendChild(
     form.slider({
       unit: "mA",
       live: true,
@@ -550,9 +550,9 @@ export default function example_page() {
       start: 0.1,
       decimals: 1,
     }),
-  ).value_by_state = SLIDER_NUM;
-  FORM_CONT.appendChild(form.text({ text: "Slider" }));
-  FORM_CONT.appendChild(
+  ).value_by_state = slider_num;
+  form_cont.appendChild(form.text({ text: "Slider" }));
+  form_cont.appendChild(
     form.slider({
       unit: "mA",
       min: -50,
@@ -561,9 +561,9 @@ export default function example_page() {
       start: 0.1,
       decimals: 1,
     }),
-  ).value_by_state = SLIDER_NUM;
-  FORM_CONT.appendChild(form.text({ text: "Slider" }));
-  FORM_CONT.appendChild(
+  ).value_by_state = slider_num;
+  form_cont.appendChild(form.text({ text: "Slider" }));
+  form_cont.appendChild(
     form.slider({
       unit: "mA",
       min: -50,
@@ -573,10 +573,10 @@ export default function example_page() {
       decimals: 1,
       live: true,
     }),
-  ).value_by_state = SLIDER_NUM;
+  ).value_by_state = slider_num;
 
-  FORM_CONT.appendChild(form.text({ text: "Slider" }));
-  FORM_CONT.appendChild(
+  form_cont.appendChild(form.text({ text: "Slider" }));
+  form_cont.appendChild(
     form.slider({
       unit: "mA",
       min: -50,
@@ -594,18 +594,18 @@ export default function example_page() {
   //      \___ \   | |  |  __| |  ___/|  ___/|  __| |  _  /
   //      ____) |  | |  | |____| |    | |    | |____| | \ \
   //     |_____/   |_|  |______|_|    |_|    |______|_|  \_\
-  const STEPPER_NUM = state.s.ros_ws.ok(0);
-  FORM_CONT.appendChild(form.text({ text: "Stepper" }));
-  FORM_CONT.appendChild(
+  const stepper_num = state.s.ros_ws.ok(0);
+  form_cont.appendChild(form.text({ text: "Stepper" }));
+  form_cont.appendChild(
     form.stepper({
       unit: "mA",
       step: 0.5,
       start: 0.1,
       decimals: 1,
     }),
-  ).value_by_state = STEPPER_NUM;
-  FORM_CONT.appendChild(form.text({ text: "Stepper" }));
-  FORM_CONT.appendChild(
+  ).value_by_state = stepper_num;
+  form_cont.appendChild(form.text({ text: "Stepper" }));
+  form_cont.appendChild(
     form.stepper({
       unit: "mA",
       live: true,
@@ -614,9 +614,9 @@ export default function example_page() {
       start: 0.1,
       decimals: 1,
     }),
-  ).value_by_state = STEPPER_NUM;
-  FORM_CONT.appendChild(form.text({ text: "Stepper" }));
-  FORM_CONT.appendChild(
+  ).value_by_state = stepper_num;
+  form_cont.appendChild(form.text({ text: "Stepper" }));
+  form_cont.appendChild(
     form.stepper({
       unit: "mA",
       min: -50,
@@ -625,9 +625,9 @@ export default function example_page() {
       start: 0.1,
       decimals: 1,
     }),
-  ).value_by_state = STEPPER_NUM;
-  FORM_CONT.appendChild(form.text({ text: "Stepper" }));
-  FORM_CONT.appendChild(
+  ).value_by_state = stepper_num;
+  form_cont.appendChild(form.text({ text: "Stepper" }));
+  form_cont.appendChild(
     form.stepper({
       unit: "mA",
       min: -50,
@@ -644,8 +644,8 @@ export default function example_page() {
   //     |  ___/|  _  /| |  | | | |_ |  _  /|  __|  \___ \\___ \
   //     | |    | | \ \| |__| | |__| | | \ \| |____ ____) |___) |
   //     |_|    |_|  \_\\____/ \_____|_|  \_\______|_____/_____/
-  FORM_CONT.appendChild(form.text({ text: "Progress" }));
-  FORM_CONT.appendChild(form.progress({ unit: "mA" })).value_by_state = num;
+  form_cont.appendChild(form.text({ text: "Progress" }));
+  form_cont.appendChild(form.progress({ unit: "mA" })).value_by_state = num;
 
   ctm.default(
     ctm.menu([
@@ -674,5 +674,5 @@ export default function example_page() {
     ]),
   );
 
-  return FORM_CONT;
+  return form_cont;
 }

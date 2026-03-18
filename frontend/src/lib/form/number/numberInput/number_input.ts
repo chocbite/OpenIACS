@@ -7,7 +7,6 @@ import {
 } from "@chocbite/ts-lib-common";
 import { number_step_start_decimal } from "@chocbite/ts-lib-math";
 import { err, type Result } from "@chocbite/ts-lib-result";
-import type { StateNumberRelated } from "@chocbite/ts-lib-state";
 import { FormNumberWrite, type FormNumberWriteOptions } from "../number_base";
 import "./number_input.scss";
 
@@ -79,11 +78,13 @@ class NumberInput<ID extends string | undefined> extends FormNumberWrite<ID> {
     };
   }
 
-  #set(cur: boolean) {
+  async #set(cur: boolean) {
     const sel = get_cursor_position(this.#value_box);
     const buff = this.buffer;
-    this.set_value_check(
-      parseFloat(this.#value_box.textContent?.replace(",", ".") || "") || 0,
+    (
+      await this.set_value_check(
+        parseFloat(this.#value_box.textContent?.replace(",", ".") || "") || 0,
+      )
     )
       .map_err(() => {
         this.new_value(buff || Math.max(Math.min(0, this.#max), this.#min));
@@ -152,7 +153,7 @@ class NumberInput<ID extends string | undefined> extends FormNumberWrite<ID> {
 
   protected new_error(_val: string): void {}
 
-  protected limit_value(val: number): Result<number, string> {
+  protected limit_value(val: number): Promise<Result<number, string>> {
     let lim = number_step_start_decimal(
       Math.min(Math.max(val, this.#min), this.#max),
       this.#step,
@@ -164,14 +165,14 @@ class NumberInput<ID extends string | undefined> extends FormNumberWrite<ID> {
     return super.limit_value(lim);
   }
 
-  protected check_value(val: number): Result<number, string> {
+  protected check_value(val: number): Promise<Result<number, string>> {
     if (val < this.#min)
-      return err(
-        "Minimum value " + this.#min.toFixed(this.#decimals) + this.#unit,
+      return Promise.resolve(
+        err("Minimum value " + this.#min.toFixed(this.#decimals) + this.#unit),
       );
     if (val > this.#max)
-      return err(
-        "Maximum value " + this.#max.toFixed(this.#decimals) + this.#unit,
+      return Promise.resolve(
+        err("Maximum value " + this.#max.toFixed(this.#decimals) + this.#unit),
       );
     let lim = number_step_start_decimal(
       val,
@@ -182,15 +183,6 @@ class NumberInput<ID extends string | undefined> extends FormNumberWrite<ID> {
     if (lim < this.#min) lim += this.#step;
     if (lim > this.#max) lim -= this.#step;
     return super.check_value(lim);
-  }
-
-  protected state_related(related: Partial<StateNumberRelated>): void {
-    if (related.min !== undefined) this.min = related.min;
-    if (related.max !== undefined) this.max = related.max;
-    if (related.unit !== undefined) this.unit = related.unit;
-    if (related.decimals !== undefined) this.decimals = related.decimals;
-    if (related.step !== undefined) this.step = related.step;
-    if (related.start !== undefined) this.start = related.start;
   }
 
   #step_value(dir: boolean) {

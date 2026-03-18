@@ -1,3 +1,5 @@
+import { none } from "@chocbite/ts-lib-result";
+import type { StateNumberRelated } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormValueWrite, type FormValueOptions } from "../base";
 import "./number_base.scss";
@@ -72,4 +74,25 @@ export abstract class FormNumberWrite<
 
   /**Sets the unit of the element*/
   abstract set unit(unit: string | undefined);
+
+  protected state_related(related: Partial<StateNumberRelated>): void {
+    if (related.min)
+      this.attach_state_to_prop("min", related.min, () => none());
+    else this.detach_state_from_prop("min");
+    if (related.max)
+      this.attach_state_to_prop("max", related.max, () => none());
+    else this.detach_state_from_prop("max");
+    if (related.step)
+      this.attach_state_to_prop("step", related.step, () => none());
+    else this.detach_state_from_prop("step");
+    if (related.start)
+      this.attach_state_to_prop("start", related.start, () => none());
+    else this.detach_state_from_prop("start");
+    if (related.decimals)
+      this.attach_state_to_prop("decimals", related.decimals, () => none());
+    else this.detach_state_from_prop("decimals");
+    if (related.unit)
+      this.attach_state_to_prop("unit", related.unit, () => none());
+    else this.detach_state_from_prop("unit");
+  }
 }

@@ -1,6 +1,6 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import { set_cursor_end } from "@chocbite/ts-lib-common";
-import { err, type Result } from "@chocbite/ts-lib-result";
+import { err, none, type Result } from "@chocbite/ts-lib-result";
 import type { StateStringRelated } from "@chocbite/ts-lib-state";
 import { string_byte_length, string_byte_limit } from "@chocbite/ts-lib-string";
 import { FormValueWrite, type FormValueOptions } from "../../base";
@@ -77,9 +77,9 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
     };
   }
 
-  #set() {
+  async #set() {
     const buff = this.buffer;
-    this.set_value_check(this.warn_input.value || "").map_err(() => {
+    (await this.set_value_check(this.warn_input.value || "")).map_err(() => {
       this.new_value(buff || "");
       set_cursor_end(this.warn_input);
     });
@@ -124,25 +124,34 @@ class FormTextInput<ID extends string | undefined> extends FormValueWrite<
 
   protected new_error(_val: string): void {}
 
-  protected limit_value(val: string): Result<string, string> {
+  protected limit_value(val: string): Promise<Result<string, string>> {
     if (this.#max_length && val.length > this.#max_length)
       val = val.slice(0, this.#max_length);
     if (this.#max_bytes) val = string_byte_limit(val, this.#max_bytes);
     return super.limit_value(val);
   }
 
-  protected check_value(val: string): Result<string, string> {
+  protected check_value(val: string): Promise<Result<string, string>> {
     if (this.#max_length && val.length > this.#max_length)
-      return err(`A maximum of ${this.#max_length} characters is allowed`);
+      return Promise.resolve(
+        err(`A maximum of ${this.#max_length} characters is allowed`),
+      );
     if (this.#max_bytes && string_byte_length(val) > this.#max_bytes)
-      return err(`A maximum of ${this.#max_bytes} bytes is allowed`);
+      return Promise.resolve(
+        err(`A maximum of ${this.#max_bytes} bytes is allowed`),
+      );
     return super.check_value(val);
   }
 
   protected state_related(related: Partial<StateStringRelated>): void {
-    if (related.max_length !== undefined) this.max_length = related.max_length;
-    if (related.max_length_bytes !== undefined)
-      this.max_bytes = related.max_length_bytes;
+    if (related.max_length)
+      this.attach_state_to_prop("max_length", related.max_length, () => none());
+    else this.detach_state_from_prop("max_length");
+    if (related.max_length_bytes)
+      this.attach_state_to_prop("max_bytes", related.max_length_bytes, () =>
+        none(),
+      );
+    else this.detach_state_from_prop("max_bytes");
   }
 }
 define_element(FormTextInput);

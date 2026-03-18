@@ -1,3 +1,4 @@
+import { some } from "@chocbite/ts-lib-result";
 import { StateEnumHelper } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormValueWrite, type FormValueOptions } from "../base";
@@ -35,19 +36,24 @@ export abstract class FormSelectorBase<
     super.apply_options(element, options);
   }
 
-  protected state_related(
-    related: Partial<StateEnumHelper<any, any, any>>,
-  ): void {
-    console.warn(related);
-
+  protected state_related(related: Partial<StateEnumHelper>): void {
     if (related instanceof StateEnumHelper) {
-      this.selections = related.map((key, val) => {
-        return {
-          text: val.name,
-          value: key as RT,
-          icon: val.icon,
-        };
-      });
+      this.attach_state_to_prop_map(
+        "selections",
+        related.list,
+        () => some([]),
+        (val) => {
+          return some(
+            related.map((key, val) => {
+              return {
+                text: val.name,
+                value: key as RT,
+                icon: val.icon,
+              };
+            }),
+          );
+        },
+      );
     }
   }
 }

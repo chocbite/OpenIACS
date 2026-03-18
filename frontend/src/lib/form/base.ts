@@ -95,7 +95,7 @@ export abstract class FormValue<
       });
       const related = state.related();
       if (related.some) this.state_related(related.value);
-    }
+    } else this.state_related({});
     this._state = state;
   }
 
@@ -187,24 +187,24 @@ export abstract class FormValueWrite<
   }
 
   /**Function to limit value entered */
-  protected limit_value(val: RT): Result<RT, string> {
+  protected limit_value(val: RT): Promise<Result<RT, string>> {
     if (this._state) {
       if (this._state.writable) return this._state.limit(val);
-      else return err("Not writable");
-    } else return ok(val);
+      else return Promise.resolve(err("Not writable"));
+    } else return Promise.resolve(ok(val));
   }
 
   /**Function to check value */
-  protected check_value(val: RT): Result<RT, string> {
+  protected check_value(val: RT): Promise<Result<RT, string>> {
     if (this._state) {
       if (this._state.writable) return this._state.check(val);
-      else return err("Not writable");
-    } else return ok(val);
+      else return Promise.resolve(err("Not writable"));
+    } else return Promise.resolve(ok(val));
   }
 
   /**Function to update value*/
-  protected set_value_limit(val: RT): Result<RT, string> {
-    const limited = this.limit_value(val);
+  protected async set_value_limit(val: RT): Promise<Result<RT, string>> {
+    const limited = await this.limit_value(val);
     if (limited.err) {
       this.warn(limited.error);
       return limited;
@@ -214,8 +214,8 @@ export abstract class FormValueWrite<
   }
 
   /**Function to update value*/
-  protected set_value_check(val: RT): Result<RT, string> {
-    const checked = this.check_value(val);
+  protected async set_value_check(val: RT): Promise<Result<RT, string>> {
+    const checked = await this.check_value(val);
     if (checked.err) {
       this.warn(checked.error);
       return checked;
