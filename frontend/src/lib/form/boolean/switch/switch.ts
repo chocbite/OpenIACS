@@ -115,8 +115,12 @@ export class FormSwitch<ID extends string | undefined> extends FormValueWrite<
     else this.#switch.setAttribute("on-color", color);
   }
   set off_color(color: FormColors) {
-    if (color === FormColors.None) this.#switch.removeAttribute("on-color");
+    if (color === FormColors.None) this.#switch.removeAttribute("off-color");
     else this.#switch.setAttribute("off-color", color);
+  }
+  set error_color(color: FormColors) {
+    if (color === FormColors.None) this.#switch.removeAttribute("error-color");
+    else this.#switch.setAttribute("error-color", color);
   }
 
   /**Called when value is changed */
@@ -129,8 +133,12 @@ export class FormSwitch<ID extends string | undefined> extends FormValueWrite<
     this.new_value(false);
   }
 
-  protected new_error(err: string): void {
-    console.error(err);
+  protected new_error(_err: string): void {
+    this.#switch.classList.add("error");
+  }
+
+  protected clear_error(): void {
+    this.#switch.classList.remove("error");
   }
 
   protected state_related(_related: Option<{}>): void {}
