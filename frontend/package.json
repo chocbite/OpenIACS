@@ -24,10 +24,10 @@
     "@chocbite/ts-lib-result": "1.0.0",
     "@chocbite/ts-lib-settings": "^1.1.0",
     "@chocbite/ts-lib-spinner": "^1.0.0",
-    "@chocbite/ts-lib-state": "^1.1.1",
+    "@chocbite/ts-lib-state": "^1.1.5",
     "@chocbite/ts-lib-string": "^1.0.0",
     "@chocbite/ts-lib-svg": "1.0.1",
-    "@chocbite/ts-lib-theme": "^1.1.0"
+    "@chocbite/ts-lib-theme": "^1.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

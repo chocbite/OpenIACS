@@ -71,6 +71,8 @@ class FormLamp<
     console.error(err);
   }
 
+  protected clear_error(): void {}
+
   protected state_related(_related: Option<{}>): void {}
 }
 define_element(FormLamp);

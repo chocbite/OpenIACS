@@ -62,6 +62,8 @@ export class FormProgress<ID extends string | undefined> extends FormValue<
     console.error(err);
   }
 
+  protected clear_error(): void {}
+
   protected state_related(related: Partial<StateNumberRelated>): void {
     if (related.min)
       this.attach_state_to_prop("min", related.min, () => none());

@@ -153,6 +153,8 @@ class NumberInput<ID extends string | undefined> extends FormNumberWrite<ID> {
 
   protected new_error(_val: string): void {}
 
+  protected clear_error(): void {}
+
   protected limit_value(val: number): Promise<Result<number, string>> {
     let lim = number_step_start_decimal(
       Math.min(Math.max(val, this.#min), this.#max),

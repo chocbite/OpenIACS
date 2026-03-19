@@ -173,6 +173,8 @@ export class FormDropdown<
 
   protected new_error(_val: string): void {}
 
+  protected clear_error(): void {}
+
   warn(message: string): void {
     setTimeout(() => {
       super.warn(message);

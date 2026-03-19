@@ -152,6 +152,8 @@ class FormTextMultiline<ID extends string | undefined> extends FormValueWrite<
 
   protected new_error(_val: string): void {}
 
+  protected clear_error(): void {}
+
   protected limit_value(val: string): Promise<Result<string, string>> {
     if (this.#max_length && val.length > this.#max_length)
       val = val.slice(0, this.#max_length);

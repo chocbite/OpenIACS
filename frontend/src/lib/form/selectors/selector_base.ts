@@ -1,5 +1,5 @@
 import { some } from "@chocbite/ts-lib-result";
-import { StateEnumHelper, type StateEnumRelated } from "@chocbite/ts-lib-state";
+import state, { type StateEnumRelated } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { FormValueWrite, type FormValueOptions } from "../base";
 
@@ -36,15 +36,15 @@ export abstract class FormSelectorBase<
     super.apply_options(element, options);
   }
 
-  protected state_related(related: Partial<StateEnumRelated<any>>): void {
-    if (related instanceof StateEnumHelper) {
+  protected state_related(related: Partial<StateEnumRelated>): void {
+    if (related.list) {
       this.attach_state_to_prop_map(
         "selections",
         related.list,
         () => some([]),
         (val) => {
           return some(
-            related.map((key, val) => {
+            state.h.enums.map(val, (key, val) => {
               return {
                 text: val.name,
                 value: key as RT,

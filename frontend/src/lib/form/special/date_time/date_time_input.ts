@@ -100,12 +100,13 @@ class FormDateTimeInput<
     else time = value.getTime();
     this.warn_input.valueAsNumber = time;
   }
-
-  protected new_error(_val: string): void {}
-
   protected clear_value(): void {
     this.warn_input.value = "";
   }
+
+  protected new_error(_val: string): void {}
+
+  protected clear_error(): void {}
 
   protected state_related(_related: Option<{}>): void {}
 }

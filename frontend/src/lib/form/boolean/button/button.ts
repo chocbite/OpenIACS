@@ -147,6 +147,8 @@ class FormButton<ID extends string | undefined> extends FormValueWrite<
     console.error("TODO", err);
   }
 
+  protected clear_error(): void {}
+
   protected state_related(_related: Option<{}>): void {}
 
   /**Changes whether the button is maintained or momentary*/

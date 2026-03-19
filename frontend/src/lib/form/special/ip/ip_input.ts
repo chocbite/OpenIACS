@@ -208,6 +208,8 @@ class FormIpInput<ID extends string | undefined> extends FormValueWrite<
 
   protected new_error(_val: string): void {}
 
+  protected clear_error(): void {}
+
   protected state_related(_related: Option<{}>): void {}
 }
 define_element(FormIpInput);

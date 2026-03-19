@@ -33,6 +33,7 @@ export class FormToggleButton<
       this.#map.clear();
       this.#values = [];
       this.#selected = -1;
+      this.replaceChildren();
     }
     for (let i = 0; selections && i < selections.length; i++) {
       const { value } = selections[i];
@@ -96,8 +97,6 @@ export class FormToggleButton<
     }
   }
 
-  protected new_error(_val: string): void {}
-
   protected clear_value(): void {
     const prev = this.#map.get(this.#values[this.#selected]);
     if (prev) {
@@ -105,6 +104,10 @@ export class FormToggleButton<
       prev.bot.classList.remove("selected");
     }
   }
+
+  protected new_error(_val: string): void {}
+
+  protected clear_error(): void {}
 }
 define_element(FormToggleButton);
 

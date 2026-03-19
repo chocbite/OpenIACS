@@ -241,6 +241,8 @@ export class FormGroup<
     console.error(err);
   }
 
+  protected clear_error(): void {}
+
   protected state_related(_related: Option<{}>): void {}
 
   protected on_access(access: AccessTypes): void {

@@ -181,36 +181,49 @@ export class Panel extends Base {
   }
 
   set hide(hide: boolean) {
-    if (hide) this.classList.add("hidden");
-    else this.classList.remove("hidden");
+    if (hide) {
+      this.classList.add("hidden");
+      if (this.auto_hide) this.#detach_auto_hide_listener();
+    } else {
+      this.classList.remove("hidden");
+      if (this.auto_hide) this.#attach_auto_hide_listener();
+    }
   }
   get hide(): boolean {
     return this.classList.contains("hidden");
   }
 
-  #auto_hide_listener?: EventListener;
-  set auto_hide(hide: boolean) {
-    if (hide && !this.#auto_hide_listener) {
-      this.ownerDocument.addEventListener(
-        "pointerdown",
-        (this.#auto_hide_listener = (e) => {
-          console.warn(e.target);
-          if ((hide && !this.contains(e.target as Node)) || e.target === this)
-            this.hide = true;
-        }),
-        { capture: true, passive: true },
-      );
-    } else if (!hide && this.#auto_hide_listener) {
-      this.ownerDocument.removeEventListener(
-        "pointerdown",
-        this.#auto_hide_listener,
-        { capture: true },
-      );
+  set auto_hide(auto_hide: boolean) {
+    if (auto_hide && !this.#auto_hide_listener) {
+      this.#auto_hide_listener = (e) => {
+        if (!this.contains(e.target as Node) || e.target === this)
+          this.hide = true;
+      };
+      if (!this.hide) this.#attach_auto_hide_listener();
+    } else if (!auto_hide && this.#auto_hide_listener) {
+      this.#detach_auto_hide_listener();
       this.#auto_hide_listener = undefined;
     }
   }
   get auto_hide(): boolean {
     return Boolean(this.#auto_hide_listener);
+  }
+  #auto_hide_listener?: EventListener;
+  #attach_auto_hide_listener() {
+    if (!this.#auto_hide_listener) return;
+    this.ownerDocument.addEventListener(
+      "pointerdown",
+      this.#auto_hide_listener,
+      { capture: true, passive: true },
+    );
+  }
+  #detach_auto_hide_listener() {
+    if (!this.#auto_hide_listener) return;
+    this.ownerDocument.removeEventListener(
+      "pointerdown",
+      this.#auto_hide_listener,
+      { capture: true },
+    );
   }
 
   #auto_close_listener?: EventListener;
