@@ -1,18 +1,16 @@
 import type { BaseObserver } from "@chocbite/ts-lib-base";
 import { type Option } from "@chocbite/ts-lib-result";
-import type { State, StateArray } from "@chocbite/ts-lib-state";
+import type { State } from "@chocbite/ts-lib-state";
 import type { ListField } from "./field";
 import type { ListRow, ListRowOptions } from "./row";
 
-export type ListType<R> = R[] | State<R[]> | StateArray<R>;
+export type ListType<R> = R[] | State<R[]>;
 
 export type ListTypeExtract<A extends ListType<any>> = A extends (infer U)[]
   ? U
   : A extends State<(infer U)[]>
     ? U
-    : A extends StateArray<infer V>
-      ? V
-      : never;
+    : never;
 
 export const ListDataType = {
   number: "number",

@@ -1,19 +1,13 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
 import { some, type Option } from "@chocbite/ts-lib-result";
-import {
-  state,
-  type State,
-  type StateArray,
-  type StateArrayRead,
-  type StateInferSub,
-} from "@chocbite/ts-lib-state";
+import { state, type State, type StateInferSub } from "@chocbite/ts-lib-state";
 import { ListAddRow, type ListAddRowOptions } from "./add_row";
 import type { ListField } from "./field";
 import { ListKeyField, type ListKeyFieldOptions } from "./key_field";
 import "./row.scss";
 import type { ListRoot, ListRowParent, ListType } from "./types";
 
-export type ListSubRows<R> = () => R[] | State<R[]> | StateArray<R>;
+export type ListSubRows<R> = () => R[] | State<R[]>;
 
 export interface ListRowOptions<R, T extends {}> {
   opened?: boolean;
@@ -43,7 +37,7 @@ export class ListRow<R, T extends {}, A extends ListType<R>>
   #child_box: HTMLSpanElement;
   #add_row?: ListAddRow<A>;
   #fields: ListField[];
-  #state_sub?: StateInferSub<State<R[]> | StateArray<R>>;
+  #state_sub?: StateInferSub<State<R[]>>;
   state!: A;
 
   constructor(root: ListRoot<R, T, A>, parent: ListRowParent<A>, data: R) {

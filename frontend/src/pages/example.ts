@@ -68,7 +68,7 @@ export default function example_page() {
     }),
   );
 
-  const st_rows = state.a.ros_ws.ok(
+  const st_rows = state.s.rosw.ok(
     array_from_length(10, (i) => i),
     true,
   );
@@ -99,28 +99,30 @@ export default function example_page() {
       }),
     },
     (item, row, stat) => {
-      const sub_rows = state.a.ros_ws.ok(
+      const sub_rows = state.s.rosw.ok(
         array_from_length(3, (i) => i),
         true,
       );
       const add_row =
         Math.random() > 0.5
           ? {
-              disabled: state.p.ros(sub_rows.length_state, (len) =>
+              disabled: state.p.ros(sub_rows.array.length_state, (len) =>
                 ok(len.value >= 3),
               ),
               text: "Add New Row",
-              on_add: () => sub_rows.write(state.a.push(Math.random())),
+              on_add: () => sub_rows.write(state.a.write.push(Math.random())),
             }
           : undefined;
       ctm.attach(
         row,
         ctm.menu([
-          ctm.line("Remove", () => stat.write(state.a.pluck(row.index))),
-          ctm.line("Add New Row", () =>
-            stat.write(state.a.insert(row.index, Math.random())),
+          ctm.line("Remove", () =>
+            stat.write(state.a.write.splice(row.index, 1)),
           ),
-          ctm.line("Empty", () => stat.write(state.a.write([]))),
+          ctm.line("Add New Row", () =>
+            stat.write(state.a.write.insert(row.index, Math.random())),
+          ),
+          ctm.line("Empty", () => stat.write(state.a.write.fresh([]))),
         ]),
       );
       return {
@@ -134,7 +136,7 @@ export default function example_page() {
         values: {
           col1: item,
           col2: item,
-          col3: () => stat.write(state.a.pluck(row.index)),
+          col3: () => stat.write(state.a.write.pluck(row.index)),
         },
       };
     },
@@ -144,7 +146,7 @@ export default function example_page() {
       add_row: {
         text: "Add Row",
         on_add: () => {
-          st_rows.push(st_rows.length);
+          st_rows.array.push(st_rows.array.length);
         },
       },
     },
@@ -157,7 +159,7 @@ export default function example_page() {
   //     |  ___/ /\ \  \___ \\___ \  \ \/  \/ /| |  | |  _  /| |  | |
   //     | |  / ____ \ ____) |___) |  \  /\  / | |__| | | \ \| |__| |
   //     |_| /_/    \_\_____/_____/    \/  \/   \____/|_|  \_\_____/
-  const password_state = state.s.ros_ws.ok("");
+  const password_state = state.s.rosw.ok("");
   password_state.sub(console.error);
   form_cont.appendChild(form.text({ text: "IP Input" }));
   form_cont.appendChild(
@@ -173,7 +175,7 @@ export default function example_page() {
   //       | | |  ___/    | | | . ` |  ___/| |  | |  | |
   //      _| |_| |       _| |_| |\  | |    | |__| |  | |
   //     |_____|_|      |_____|_| \_|_|     \____/   |_|
-  const ip_state = state.s.ros_ws.ok(new IPAddress("192.168.1.1"));
+  const ip_state = state.s.rosw.ok(new IPAddress("192.168.1.1"));
   form_cont.appendChild(form.text({ text: "IP Input" }));
   form_cont.appendChild(
     form.ip_input({
@@ -194,7 +196,7 @@ export default function example_page() {
   //     | |   | |  | | |   | |  | |  _  /    | | | . ` |  ___/| |  | |  | |
   //     | |___| |__| | |___| |__| | | \ \   _| |_| |\  | |    | |__| |  | |
   //      \_____\____/|______\____/|_|  \_\ |_____|_| \_|_|     \____/   |_|
-  const color_state = state.s.ros_ws.ok("#00ff00");
+  const color_state = state.s.rosw.ok("#00ff00");
   form_cont.appendChild(form.text({ text: "Color Input" }));
   form_cont.appendChild(
     form.color_input({
@@ -215,7 +217,7 @@ export default function example_page() {
   //     | |  | |/ /\ \ | |  |  __|    | |    | | | |\/| |  __|
   //     | |__| / ____ \| |  | |____   | |   _| |_| |  | | |____
   //     |_____/_/    \_\_|  |______|  |_|  |_____|_|  |_|______|
-  const date_time_state = state.s.ros_ws.ok(new Date());
+  const date_time_state = state.s.rosw.ok(new Date());
   form_cont.appendChild(form.text({ text: "Date Time Input" }));
   form_cont.appendChild(
     form.date_time_input({
@@ -242,7 +244,7 @@ export default function example_page() {
   //        | |  |  __|   > <    | |      | | | . ` |  ___/| |  | |  | |
   //        | |  | |____ / . \   | |     _| |_| |\  | |    | |__| |  | |
   //        |_|  |______/_/ \_\  |_|    |_____|_| \_|_|     \____/   |_|
-  const text_state = state.s.ros_ws.ok("");
+  const text_state = state.s.rosw.ok("");
   form_cont.appendChild(form.text({ text: "Text Input" }));
   form_cont.appendChild(
     form.input_text({
@@ -263,7 +265,7 @@ export default function example_page() {
     }),
   );
 
-  const multi_line_text_state = state.s.ros_ws.ok("");
+  const multi_line_text_state = state.s.rosw.ok("");
   form_cont.appendChild(form.text({ text: "Multiline Text Input" }));
   form_cont.appendChild(
     form.multiline_text({
@@ -382,7 +384,7 @@ export default function example_page() {
     }),
   );
 
-  const bool = state.s.ros_ws.ok(false);
+  const bool = state.s.rosw.ok(false);
   form_cont.appendChild(form.text({ text: "YOYOYOY" }));
   form_cont.appendChild(
     form
@@ -414,7 +416,7 @@ export default function example_page() {
   //     | |  | |  _  /| |  | |  ___/| |  | | |  | |\ \/  \/ / | . ` |
   //     | |__| | | \ \| |__| | |    | |__| | |__| | \  /\  /  | |\  |
   //     |_____/|_|  \_\\____/|_|    |_____/ \____/   \/  \/   |_| \_|
-  const num = state.s.ros_ws.ok(0);
+  const num = state.s.rosw.ok(0);
   form_cont.appendChild(form.text({ text: "Dropdown" }));
   form_cont.appendChild(
     form.dropdown({
@@ -529,7 +531,7 @@ export default function example_page() {
   //      \___ \| |      | | | |  | |  __| |  _  /
   //      ____) | |____ _| |_| |__| | |____| | \ \
   //     |_____/|______|_____|_____/|______|_|  \_\
-  const slider_num = state.s.ros_ws.ok(0);
+  const slider_num = state.s.rosw.ok(0);
   form_cont.appendChild(form.text({ text: "Slider" }));
   form_cont.appendChild(
     form.slider({
@@ -594,7 +596,7 @@ export default function example_page() {
   //      \___ \   | |  |  __| |  ___/|  ___/|  __| |  _  /
   //      ____) |  | |  | |____| |    | |    | |____| | \ \
   //     |_____/   |_|  |______|_|    |_|    |______|_|  \_\
-  const stepper_num = state.s.ros_ws.ok(0);
+  const stepper_num = state.s.rosw.ok(0);
   form_cont.appendChild(form.text({ text: "Stepper" }));
   form_cont.appendChild(
     form.stepper({

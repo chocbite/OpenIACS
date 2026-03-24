@@ -1,8 +1,7 @@
 import "@chocbite/ts-lib-base";
 import { material_device_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
-import type { StateSyncROSWS } from "@chocbite/ts-lib-state";
-import { state } from "@chocbite/ts-lib-state";
+import { state, type StateSyncROSW } from "@chocbite/ts-lib-state";
 import { viewport, ViewportElementTest } from "@libEditor";
 import form from "@libForm";
 import "./index.scss";
@@ -37,14 +36,14 @@ cust.main_group.elements = [form.text({ text: "Dark Mode" }), form.switch({})];
 
 class Game {
   //Stores all facts in the game
-  #fact_store = state.a.ros_ws.ok<Fact>([], true);
+  #fact_store = state.s.rosw.ok<Fact[]>([], true);
   push_fact(fact: Fact) {
-    this.#fact_store.push(fact);
+    this.#fact_store.array.push(fact);
   }
   //Stores all entities in the game
-  #entity_store = state.a.ros_ws.ok<Entity>([], true);
+  #entity_store = state.s.rosw.ok<Entity[]>([], true);
   push_entity(entity: Entity) {
-    this.#entity_store.push(entity);
+    this.#entity_store.array.push(entity);
   }
 }
 
@@ -64,7 +63,7 @@ class Fact extends Part {
   constructor(game: Game, uuid: string, desc: string, owner: Entity) {
     super(uuid);
     this.#game = game;
-    this.#description = state.s.ros_ws.ok(desc);
+    this.#description = state.s.rosw.ok(desc);
     this.description = this.#description.read_write;
     this.owner = owner;
     this.#game.push_fact(this);
@@ -74,11 +73,11 @@ class Fact extends Part {
 class Entity extends Part {
   #description;
   readonly description;
-  #fact_store = state.a.ros_ws.ok<Fact>([], true);
+  #fact_store = state.s.rosw.ok<Fact[]>([], true);
 
   constructor(uuid: string, desc: string) {
     super(uuid);
-    this.#description = state.s.ros_ws.ok(desc);
+    this.#description = state.s.rosw.ok(desc);
     this.description = this.#description.read_write;
   }
 }
@@ -89,11 +88,11 @@ interface CharacterData {
 }
 class Character {
   readonly uuid: string;
-  #name: StateSyncROSWS<string>;
+  #name: StateSyncROSW<string>;
 
   constructor(uuid: string = crypto.randomUUID(), name: string) {
     this.uuid = uuid;
-    this.#name = state.s.ros_ws.ok(name);
+    this.#name = state.s.rosw.ok(name);
   }
 
   static deserialize(data: Partial<CharacterData>): Result<Character, string> {

@@ -3,13 +3,7 @@ import {
   define_element,
   type BaseObserverOptions,
 } from "@chocbite/ts-lib-base";
-import {
-  state,
-  type State,
-  type StateArray,
-  type StateArrayRead,
-  type StateInferSub,
-} from "@chocbite/ts-lib-state";
+import { state, type State, type StateInferSub } from "@chocbite/ts-lib-state";
 import { px_to_rem } from "@chocbite/ts-lib-theme";
 import { ListAddRow, type ListAddRowOptions } from "./add_row.ts";
 import "./container.scss";
@@ -120,7 +114,7 @@ class Container<
   #header: HeaderRow;
   #child_box: HTMLDivElement;
   #add_row?: ListAddRow<A>;
-  #state_sub?: StateInferSub<State<R[]> | StateArray<R>>;
+  #state_sub?: StateInferSub<State<R[]>>;
 
   constructor(
     columns: { [K in keyof T]: ListColumnOptions<T[K], any> },
@@ -223,24 +217,19 @@ class Container<
     return count;
   }
 
-  set rows(rows: R[] | State<R[]> | StateArray<R>) {
+  set rows(rows: R[] | State<R[]>) {
     if (this.#state_sub) this.detach_state(this.#state_sub);
     this.#state_sub = undefined;
     this.#parent.state = rows as A;
     if (state.is(rows)) {
-      if (state.a.is(rows))
-        this.#state_sub = this.attach_state(rows, (r) => {
-          if (r.ok) this.#update_rows_by_state_array_read(r.value);
-          else this.#update_rows([]);
-        });
-      else
-        this.#state_sub = this.attach_state(rows, (r) =>
-          this.#update_rows(r.ok ? r.value : []),
-        );
+      this.#state_sub = this.attach_state(rows, (r) =>
+        this.#update_rows(r.ok ? r.value : []),
+      );
     } else this.#update_rows(rows);
   }
 
   #update_rows(rows: readonly R[]) {
+    const yo = state.a.read(rows);
     if (rows.length === 0) this.#child_box.replaceChildren();
     else {
       const min = Math.min(this.#child_box.childElementCount, rows.length);

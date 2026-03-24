@@ -9,36 +9,36 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest",
-    "upgrades": "npx npm-check-updates",
-    "upgrade": "npx npm-check-updates -u && npm install"
+    "upgrades": "npx npm-check-updates --target semver",
+    "upgrade": "npx npm-check-updates --target semver -u && npm install"
   },
   "dependencies": {
     "@chocbite/ts-lib-base": "^1.1.0",
-    "@chocbite/ts-lib-colors": "1.0.0",
+    "@chocbite/ts-lib-colors": "^1.0.0",
     "@chocbite/ts-lib-common": "^1.0.0",
     "@chocbite/ts-lib-context-menu": "^1.0.0",
     "@chocbite/ts-lib-document": "^1.0.0",
-    "@chocbite/ts-lib-event": "1.0.0",
+    "@chocbite/ts-lib-event": "^1.0.0",
     "@chocbite/ts-lib-icons": "^1.1.0",
-    "@chocbite/ts-lib-math": "1.0.0",
-    "@chocbite/ts-lib-result": "1.0.0",
+    "@chocbite/ts-lib-math": "^1.0.0",
+    "@chocbite/ts-lib-result": "^1.1.2",
     "@chocbite/ts-lib-settings": "^1.1.0",
     "@chocbite/ts-lib-spinner": "^1.0.0",
-    "@chocbite/ts-lib-state": "^1.1.5",
+    "@chocbite/ts-lib-state": "^1.2.0",
     "@chocbite/ts-lib-string": "^1.0.0",
-    "@chocbite/ts-lib-svg": "1.0.1",
-    "@chocbite/ts-lib-theme": "^1.1.1"
+    "@chocbite/ts-lib-svg": "^1.0.1",
+    "@chocbite/ts-lib-theme": "^1.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^25.5.0",
-    "@vitest/browser-playwright": "^4.1.0",
-    "eslint": "^10.0.3",
+    "@vitest/browser-playwright": "^4.1.1",
+    "eslint": "^10.1.0",
     "sass": "^1.98.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.1",
-    "vite": "^8.0.1",
+    "typescript-eslint": "^8.57.2",
+    "vite": "^8.0.2",
     "vite-plugin-singlefile": "^2.3.2",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.1"
   }
 }
