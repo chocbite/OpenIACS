@@ -1,6 +1,6 @@
 import { Base } from "@chocbite/ts-lib-base";
 import { sync_resolve } from "@chocbite/ts-lib-common";
-import { err, ok, type Result } from "@chocbite/ts-lib-result";
+import { err, ok, type Option, type Result } from "@chocbite/ts-lib-result";
 import type { State, StateSub } from "@chocbite/ts-lib-state";
 import "./shared";
 
@@ -38,7 +38,7 @@ export interface FormValueOptions<RT, ID extends string | undefined> {
   id?: ID;
   /**Value for form element */
   value?: RT;
-  value_by_state?: State<RT>;
+  value_by_state?: State<RT, Option<{}>, RT>;
   /**Longer description what form element does */
   description?: string;
   /**Change listener function*/
@@ -84,10 +84,10 @@ export abstract class FormValue<
     return this._buffer;
   }
 
-  protected _state?: State<RT>;
+  protected _state?: State<RT, Option<{}>, RT>;
   #func?: StateSub<Result<RT, string>>;
   /**This sets the value of the component*/
-  set value_by_state(state: State<RT> | undefined) {
+  set value_by_state(state: State<RT, Option<{}>, RT> | undefined) {
     if (this.#func) this.detach_state(this.#func);
     if (state) {
       this.attach_state(state, (val) => {

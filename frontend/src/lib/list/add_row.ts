@@ -8,7 +8,7 @@ import type { ListRowParent, ListType } from "./types";
 
 export interface ListAddRowOptions {
   text: string | State<string>;
-  disabled?: boolean | State<boolean, any, any>;
+  disabled?: boolean | State<boolean>;
   icon?: SVGFunc | State<SVGFunc>;
   on_add: () => void;
 }
