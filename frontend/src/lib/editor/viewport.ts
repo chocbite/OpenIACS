@@ -1,10 +1,5 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
-import type {
-  State,
-  StateArray,
-  StateArrayRead,
-  StateInferSub,
-} from "@chocbite/ts-lib-state";
+import type { State, StateInferSub } from "@chocbite/ts-lib-state";
 import { state } from "@chocbite/ts-lib-state";
 import { svg } from "@chocbite/ts-lib-svg";
 import type { ViewportElement } from "@libEditor";
@@ -267,56 +262,47 @@ export class Viewport extends Base {
   //     |  __| | |    |  __| | |\/| |  __| | . ` |  | |  \___ \
   //     | |____| |____| |____| |  | | |____| |\  |  | |  ____) |
   //     |______|______|______|_|  |_|______|_| \_|  |_| |_____/
-  #state_sub?: StateInferSub<
-    State<ViewportElement[]> | StateArray<ViewportElement>
-  >;
+  #state_sub?: StateInferSub<State<ViewportElement[]>>;
 
-  set elements(
-    elements:
-      | ViewportElement[]
-      | State<ViewportElement[]>
-      | StateArray<ViewportElement>,
-  ) {
+  set elements(elements: ViewportElement[] | State<ViewportElement[]>) {
     if (this.#state_sub) this.detach_state(this.#state_sub);
     this.#state_sub = undefined;
-    if (state.is(elements)) {
-      if (state.a.is(elements))
-        this.#state_sub = this.attach_state(elements, (r) => {
-          if (r.ok) this.#update_rows_by_state_array_read(r.value);
-          else this.#update_rows([]);
-        });
-      else
-        this.#state_sub = this.attach_state(elements, (r) =>
-          this.#update_rows(r.ok ? r.value : []),
-        );
+    if (state.is.state(elements)) {
+      this.#state_sub = this.attach_state(elements, (r) =>
+        this.#update_rows(r.ok ? r.value : []),
+      );
     } else this.#update_rows(elements);
   }
 
   #update_rows(rows: readonly ViewportElement[]) {
-    this.#canvas_elements.replaceChildren(...rows.map((row) => row.canvas));
+    if (rows.length === 0) this.#canvas_elements.replaceChildren();
+    const read = state.a.read(rows);
+    for (let i = 0; i < rows.length; i++) {
+      const row = read[i];
+      if (row.type === "fresh")
+        this.#canvas_elements.replaceChildren(
+          ...row.items.map((i) => i.canvas),
+        );
+      else if (row.type === "added") {
+        const child = this.#canvas_elements.children[row.index] as
+          | SVGSVGElement
+          | undefined;
+        const rows = row.items.map((i) => i.canvas);
+        if (child) child.before(...rows);
+        else this.#canvas_elements.append(...rows);
+      } else if (row.type === "removed")
+        for (let i = 0; i < row.items.length; i++)
+          this.#canvas_elements.children[row.index].remove();
+      else if (row.type === "changed") {
+        for (let i = 0; i < row.items.length; i++)
+          this.#canvas_elements.replaceChild(
+            row.items[i].canvas,
+            this.#canvas_elements.children[row.index + i],
+          );
+      }
+    }
   }
 
-  #update_rows_by_state_array_read(sar: StateArrayRead<ViewportElement>) {
-    if (sar.type === "added") {
-      const child = this.#canvas_elements.children[sar.index] as
-        | SVGSVGElement
-        | undefined;
-      const rows = sar.items.map((row) => row.canvas);
-      if (child) child.before(...rows);
-      else this.#canvas_elements.append(...rows);
-    } else if (sar.type === "removed") {
-      if (sar.array.length === 0) this.#update_rows([]);
-      else
-        for (let i = 0; i < sar.items.length; i++)
-          this.#canvas_elements.children[sar.index].remove();
-    } else if (sar.type === "changed")
-      for (let i = 0; i < sar.items.length; i++)
-        this.#canvas_elements.replaceChild(
-          sar.items[i].canvas,
-          this.#canvas_elements.children[sar.index + i],
-        );
-    else this.#update_rows(sar.array);
-  }
   //      __  __  ______      ________ _____
   //     |  \/  |/ __ \ \    / /  ____|  __ \
   //     | \  / | |  | \ \  / /| |__  | |__) |

@@ -1,7 +1,7 @@
 import "@chocbite/ts-lib-base";
 import { material_device_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
-import { state, type StateSyncROSW } from "@chocbite/ts-lib-state";
+import { state, type StateLocalROSW } from "@chocbite/ts-lib-state";
 import { viewport, ViewportElementTest } from "@libEditor";
 import form from "@libForm";
 import "./index.scss";
@@ -36,12 +36,12 @@ cust.main_group.elements = [form.text({ text: "Dark Mode" }), form.switch({})];
 
 class Game {
   //Stores all facts in the game
-  #fact_store = state.s.rosw.ok<Fact[]>([], true);
+  #fact_store = state.ok_w<Fact[]>([]);
   push_fact(fact: Fact) {
     this.#fact_store.array.push(fact);
   }
   //Stores all entities in the game
-  #entity_store = state.s.rosw.ok<Entity[]>([], true);
+  #entity_store = state.ok_w<Entity[]>([]);
   push_entity(entity: Entity) {
     this.#entity_store.array.push(entity);
   }
@@ -63,7 +63,7 @@ class Fact extends Part {
   constructor(game: Game, uuid: string, desc: string, owner: Entity) {
     super(uuid);
     this.#game = game;
-    this.#description = state.s.rosw.ok(desc);
+    this.#description = state.ok_w(desc);
     this.description = this.#description.read_write;
     this.owner = owner;
     this.#game.push_fact(this);
@@ -73,11 +73,11 @@ class Fact extends Part {
 class Entity extends Part {
   #description;
   readonly description;
-  #fact_store = state.s.rosw.ok<Fact[]>([], true);
+  #fact_store = state.ok_w<Fact[]>([]);
 
   constructor(uuid: string, desc: string) {
     super(uuid);
-    this.#description = state.s.rosw.ok(desc);
+    this.#description = state.ok_w(desc);
     this.description = this.#description.read_write;
   }
 }
@@ -88,11 +88,11 @@ interface CharacterData {
 }
 class Character {
   readonly uuid: string;
-  #name: StateSyncROSW<string>;
+  #name: StateLocalROSW<string>;
 
   constructor(uuid: string = crypto.randomUUID(), name: string) {
     this.uuid = uuid;
-    this.#name = state.s.rosw.ok(name);
+    this.#name = state.ok_w(name);
   }
 
   static deserialize(data: Partial<CharacterData>): Result<Character, string> {
@@ -108,9 +108,6 @@ class Character {
     };
   }
 }
-
-const yo = state.l.ros.ok(() => 1);
-yo.ok();
 
 console.warn(Character.deserialize({ uuid: "1234", name: "Hero" }));
 

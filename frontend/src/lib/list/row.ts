@@ -125,7 +125,7 @@ export class ListRow<R, T extends {}, A extends ListType<R>>
     });
 
     //Setup openable
-    if (state.is(row_options.openable))
+    if (state.is.state(row_options.openable))
       this.attach_state_to_prop("openable", row_options.openable, () => {
         this.open = false;
         return some(false);
@@ -210,66 +210,57 @@ export class ListRow<R, T extends {}, A extends ListType<R>>
     return count;
   }
 
-  set rows(rows: R[] | State<R[]> | StateArray<R>) {
+  set rows(rows: R[] | State<R[]>) {
     if (this.#state_sub) this.detach_state(this.#state_sub);
     this.#state_sub = undefined;
     this.state = rows as A;
-    if (state.is(rows))
-      if (state.a.is(rows))
-        this.#state_sub = this.attach_state(rows, (r) => {
-          if (r.ok) this.#update_rows_by_state_array_read(r.value);
-          else this.#update_rows([]);
-        });
-      else
-        this.#state_sub = this.attach_state(rows, (r) =>
-          this.#update_rows(r.ok ? r.value : []),
-        );
+    if (state.is.state(rows))
+      this.#state_sub = this.attach_state(rows, (r) =>
+        this.#update_rows(r.ok ? r.value : []),
+      );
     else this.#update_rows(rows);
   }
 
   #update_rows(rows: readonly R[]) {
     if (rows.length === 0) this.#child_box.replaceChildren();
-    else {
-      const min = Math.min(this.#child_box.childElementCount, rows.length);
-      for (let i = 0; i < min; i++)
-        (this.#child_box.children[i] as ListRow<R, T, A>).data = rows[i];
-      if (rows.length > this.#child_box.childElementCount)
-        this.#child_box.append(
-          ...rows
-            .slice(this.#child_box.childElementCount)
-            .map((row) => new ListRow<R, T, A>(this.#root, this, row)),
+    const read = state.a.read(rows);
+    for (let i = 0; i < rows.length; i++) {
+      const row = read[i];
+      if (row.type === "fresh") {
+        const min = Math.min(this.#child_box.childElementCount, rows.length);
+        for (let i = 0; i < min; i++)
+          (this.#child_box.children[i] as ListRow<R, T, A>).data = rows[i];
+        if (rows.length > this.#child_box.childElementCount)
+          this.#child_box.append(
+            ...rows
+              .slice(this.#child_box.childElementCount)
+              .map((row) => new ListRow<R, T, A>(this.#root, this, row)),
+          );
+        else if (rows.length < this.#child_box.childElementCount) {
+          for (
+            let i = this.#child_box.childElementCount - 1;
+            i >= rows.length;
+            i--
+          )
+            (this.#child_box.children[i] as ListRow<R, T, A>).remove();
+        }
+      } else if (row.type === "added") {
+        const child = this.#child_box.children[row.index] as
+          | ListRow<R, T, A>
+          | undefined;
+        const rows = row.items.map(
+          (row) => new ListRow<R, T, A>(this.#root, this, row),
         );
-      else if (rows.length < this.#child_box.childElementCount) {
-        for (
-          let i = this.#child_box.childElementCount - 1;
-          i >= rows.length;
-          i--
-        )
-          (this.#child_box.children[i] as ListRow<R, T, A>).remove();
-      }
+        if (child) child.before(...rows);
+        else this.#child_box.append(...rows);
+      } else if (row.type === "removed")
+        for (let i = 0; i < row.items.length; i++)
+          this.#child_box.children[row.index].remove();
+      else if (row.type === "changed")
+        for (let i = 0; i < row.items.length; i++)
+          (this.#child_box.children[row.index + i] as ListRow<R, T, A>).data =
+            row.items[i];
     }
-  }
-
-  #update_rows_by_state_array_read(sar: StateArrayRead<R>) {
-    if (sar.type === "added") {
-      const child = this.#child_box.children[sar.index] as
-        | ListRow<R, T, A>
-        | undefined;
-      const rows = sar.items.map(
-        (row) => new ListRow<R, T, A>(this.#root, this, row),
-      );
-      if (child) child.before(...rows);
-      else this.#child_box.append(...rows);
-    } else if (sar.type === "removed") {
-      if (sar.array.length === 0) this.#update_rows([]);
-      else
-        for (let i = 0; i < sar.items.length; i++)
-          this.#child_box.children[sar.index].remove();
-    } else if (sar.type === "changed")
-      for (let i = 0; i < sar.items.length; i++)
-        (this.#child_box.children[sar.index + i] as ListRow<R, T, A>).data =
-          sar.items[i];
-    else this.#update_rows(sar.array);
   }
 }
 define_element(ListRow);

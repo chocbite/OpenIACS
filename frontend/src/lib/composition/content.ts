@@ -1,5 +1,5 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
-import { none, type Option } from "@chocbite/ts-lib-result";
+import { none, ok, type Option } from "@chocbite/ts-lib-result";
 import { state, type StateROS } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import "./content.scss";
@@ -42,7 +42,7 @@ export class Content extends ContentBase {
     return "ui";
   }
 
-  #name = state.s.ros.ok("");
+  #name = state.ros(ok(""));
   get name() {
     return this.#name.read_only;
   }
@@ -50,7 +50,7 @@ export class Content extends ContentBase {
     this.#name.set_ok(value);
   }
 
-  #icon = state.s.ros.ok<Option<SVGFunc>>(none());
+  #icon = state.ros(ok<Option<SVGFunc>>(none()));
   get icon() {
     return this.#icon.read_only;
   }
@@ -58,7 +58,7 @@ export class Content extends ContentBase {
     this.#icon.set_ok(value);
   }
 
-  #closable = state.s.ros.ok(false);
+  #closable = state.ros(ok(false));
   get closable() {
     return this.#closable.read_only;
   }
@@ -66,7 +66,7 @@ export class Content extends ContentBase {
     this.#closable.set_ok(value);
   }
 
-  #min_size = state.s.ros.ok<Option<CompMinSize>>(none());
+  #min_size = state.ros(ok<Option<CompMinSize>>(none()));
   get min_size() {
     return this.#min_size.read_only;
   }

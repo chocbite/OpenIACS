@@ -1,5 +1,5 @@
 import { define_element } from "@chocbite/ts-lib-base";
-import { set_cursor_end } from "@chocbite/ts-lib-common";
+import { set_cursor_end, sync_resolve } from "@chocbite/ts-lib-common";
 import { material_editor_drag_handle_rounded } from "@chocbite/ts-lib-icons";
 import { err, none, type Result } from "@chocbite/ts-lib-result";
 import type { StateStringRelated } from "@chocbite/ts-lib-state";
@@ -154,20 +154,20 @@ class FormTextMultiline<ID extends string | undefined> extends FormValueWrite<
 
   protected clear_error(): void {}
 
-  protected limit_value(val: string): Promise<Result<string, string>> {
+  protected limit_value(val: string): PromiseLike<Result<string, string>> {
     if (this.#max_length && val.length > this.#max_length)
       val = val.slice(0, this.#max_length);
     if (this.#max_bytes) val = string_byte_limit(val, this.#max_bytes);
     return super.limit_value(val);
   }
 
-  protected check_value(val: string): Promise<Result<string, string>> {
+  protected check_value(val: string): PromiseLike<Result<string, string>> {
     if (this.#max_length && val.length > this.#max_length)
-      return Promise.resolve(
+      return sync_resolve(
         err(`A maximum of ${this.#max_length} characters is allowed`),
       );
     if (this.#max_bytes && string_byte_length(val) > this.#max_bytes)
-      return Promise.resolve(
+      return sync_resolve(
         err(`A maximum of ${this.#max_bytes} bytes is allowed`),
       );
     return super.check_value(val);

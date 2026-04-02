@@ -54,7 +54,7 @@ export class ListKeyField<A extends ListType<any>> extends Base {
   }
 
   set options(options: ListKeyFieldOptions | undefined) {
-    if (state.is(options?.icon)) {
+    if (state.is.state(options?.icon)) {
       this.attach_state_to_prop("icon", options.icon, () => some(undefined));
     } else this.icon = options?.icon;
   }

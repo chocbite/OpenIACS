@@ -44,7 +44,7 @@ export abstract class FormSelectorBase<
         () => some([]),
         (val) => {
           return some(
-            state.h.enums.map(val, (key, val) => {
+            state.e.map(val, (key, val) => {
               return {
                 text: val.name,
                 value: key as RT,

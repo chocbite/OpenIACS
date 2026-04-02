@@ -8,7 +8,7 @@ import type { ListRowParent, ListType } from "./types";
 
 export interface ListAddRowOptions {
   text: string | State<string>;
-  disabled?: boolean | State<boolean>;
+  disabled?: boolean | State<boolean, any, any>;
   icon?: SVGFunc | State<SVGFunc>;
   on_add: () => void;
 }
@@ -38,10 +38,10 @@ export class ListAddRow<A extends ListType<any>>
   set options(options: ListAddRowOptions) {
     this.#button.onclick = options.on_add;
 
-    if (state.is(options.text))
+    if (state.is.state(options.text))
       this.attach_state_to_prop("text", options.text, (e) => some(e));
     else this.text = options.text;
-    if (state.is(options.disabled))
+    if (state.is.state(options.disabled))
       this.attach_state_to_prop("disabled", options.disabled, () =>
         some(false),
       );

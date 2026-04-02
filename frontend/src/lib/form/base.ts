@@ -1,4 +1,5 @@
 import { Base } from "@chocbite/ts-lib-base";
+import { sync_resolve } from "@chocbite/ts-lib-common";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
 import type { State, StateSub } from "@chocbite/ts-lib-state";
 import "./shared";
@@ -200,19 +201,19 @@ export abstract class FormValueWrite<
   }
 
   /**Function to limit value entered */
-  protected limit_value(val: RT): Promise<Result<RT, string>> {
+  protected limit_value(val: RT): PromiseLike<Result<RT, string>> {
     if (this._state) {
       if (this._state.writable) return this._state.limit(val);
-      else return Promise.resolve(err("Not writable"));
-    } else return Promise.resolve(ok(val));
+      else return sync_resolve(err("Not writable"));
+    } else return sync_resolve(ok(val));
   }
 
   /**Function to check value */
-  protected check_value(val: RT): Promise<Result<RT, string>> {
+  protected check_value(val: RT): PromiseLike<Result<RT, string>> {
     if (this._state) {
       if (this._state.writable) return this._state.check(val);
-      else return Promise.resolve(err("Not writable"));
-    } else return Promise.resolve(ok(val));
+      else return sync_resolve(err("Not writable"));
+    } else return sync_resolve(ok(val));
   }
 
   /**Function to update value*/

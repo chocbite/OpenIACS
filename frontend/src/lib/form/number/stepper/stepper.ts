@@ -1,5 +1,5 @@
 import { define_element } from "@chocbite/ts-lib-base";
-import { sleep } from "@chocbite/ts-lib-common";
+import { sleep, sync_resolve } from "@chocbite/ts-lib-common";
 import {
   material_content_add_rounded,
   material_content_remove_rounded,
@@ -234,7 +234,7 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
 
   protected clear_error(): void {}
 
-  protected limit_value(val: number): Promise<Result<number, string>> {
+  protected limit_value(val: number): PromiseLike<Result<number, string>> {
     let lim = number_step_start_decimal(
       Math.min(Math.max(val, this.#min), this.#max),
       this.#step,
@@ -246,13 +246,13 @@ export class FormStepper<ID extends string | undefined> extends FormNumberWrite<
     return super.limit_value(lim);
   }
 
-  protected check_value(val: number): Promise<Result<number, string>> {
+  protected check_value(val: number): PromiseLike<Result<number, string>> {
     if (val < this.#min)
-      return Promise.resolve(
+      return sync_resolve(
         err("Minimum value " + this.#min.toFixed(this.#decimals) + this.#unit),
       );
     if (val > this.#max)
-      return Promise.resolve(
+      return sync_resolve(
         err("Maximum value " + this.#max.toFixed(this.#decimals) + this.#unit),
       );
     let lim = number_step_start_decimal(
