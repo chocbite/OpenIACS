@@ -113,7 +113,8 @@ console.warn(Character.deserialize({ uuid: "1234", name: "Hero" }));
 
 // document.getElementById("app")?.replaceChildren(example_page());
 
-const vp = viewport.create_viewport(1000, 1000, false);
+const vp = viewport.create_viewport(100, 100, false);
 document.getElementById("app")?.replaceChildren(vp);
 const elem = new ViewportElementTest();
 vp.elements = [elem];
+vp.attach_mover(elem);

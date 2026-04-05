@@ -1,4 +1,6 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
+import { sync_resolve } from "@chocbite/ts-lib-common";
+import { ok } from "@chocbite/ts-lib-result";
 import type { State, StateInferSub } from "@chocbite/ts-lib-state";
 import { state } from "@chocbite/ts-lib-state";
 import { svg } from "@chocbite/ts-lib-svg";
@@ -23,10 +25,10 @@ export class Viewport extends Base {
     this.#viewport_width_half = this.#viewport_width / 2;
     this.#viewport_height = a[0].contentRect.height;
     this.#viewport_height_half = this.#viewport_height / 2;
-    this.canvas_x =
-      this.#mover_x + (a[0].contentRect.width - this.#viewport_width) / 2;
-    this.canvas_y =
-      this.#mover_y + (a[0].contentRect.height - this.#viewport_height) / 2;
+    this.#pan_coordinates(
+      this.#pan_x.ok() + (a[0].contentRect.width - this.#viewport_width) / 2,
+      this.#pan_y.ok() + (a[0].contentRect.height - this.#viewport_height) / 2,
+    );
 
     this.#root.setAttribute(
       "viewBox",
@@ -34,11 +36,8 @@ export class Viewport extends Base {
     );
   });
   #root = this.appendChild(svg.create("svg").elem);
-  #mover;
-  #mover_x = 0;
-  #mover_y = 0;
+  #panner;
   #zoomer;
-  #zoomer_scale = 1;
 
   constructor(
     canvas_width: number,
@@ -49,15 +48,15 @@ export class Viewport extends Base {
     this.#resize_observer.observe(this);
     this.#canvas_width = canvas_width;
     this.#canvas_height = canvas_height;
-    //Mover
-    this.#mover = this.#root.appendChild(
+    //Panning
+    this.#panner = this.#root.appendChild(
       svg
         .create("svg")
         .a("width", canvas_width.toString())
         .a("height", canvas_height.toString()).elem,
     );
     //Zoomer
-    this.#zoomer = this.#mover.appendChild(
+    this.#zoomer = this.#panner.appendChild(
       svg
         .create("svg")
         .a("x", "-50%")
@@ -113,11 +112,13 @@ export class Viewport extends Base {
           //Double Click Reset Position
           const now = performance.now();
           if (now - double_click < 300) {
-            this.canvas_x = 0;
-            this.canvas_y = 0;
-            this.canvas_scale = Math.min(
-              this.#viewport_height / this.#canvas_height,
-              this.#viewport_width / this.#canvas_width,
+            this.#zoom_coordinates(
+              Math.min(
+                this.#viewport_height / this.#canvas_height,
+                this.#viewport_width / this.#canvas_width,
+              ),
+              0,
+              0,
             );
             return;
           }
@@ -125,8 +126,8 @@ export class Viewport extends Base {
           //Dragging
           this.setPointerCapture(e.pointerId);
           if (count === 0) {
-            mover_x = this.#mover_x;
-            mover_y = this.#mover_y;
+            mover_x = this.#pan_x.ok();
+            mover_y = this.#pan_y.ok();
             initial_x = e.offsetX;
             initial_y = e.offsetY;
             initial_id = e.pointerId;
@@ -143,12 +144,16 @@ export class Viewport extends Base {
     this.onpointermove = (ev) => {
       if (count === 0) return;
       if (ev.pointerId === initial_id) {
-        this.canvas_x = mover_x + (ev.offsetX - initial_x) / count;
-        this.canvas_y = mover_y + (ev.offsetY - initial_y) / count;
+        this.#pan_coordinates(
+          mover_x + (ev.offsetX - initial_x) / count,
+          mover_y + (ev.offsetY - initial_y) / count,
+        );
       } else if (ev.pointerId === second_initial_id) {
         if (count < 2) return;
-        this.canvas_x = mover_x + (ev.offsetX - initial_x) / count;
-        this.canvas_y = mover_y + (ev.offsetY - initial_y) / count;
+        this.#pan_coordinates(
+          mover_x + (ev.offsetX - initial_x) / count,
+          mover_y + (ev.offsetY - initial_y) / count,
+        );
       }
     };
     this.onpointerup = (ev) => {
@@ -171,7 +176,10 @@ export class Viewport extends Base {
             ? 2
             : 0.5;
         if (e.ctrlKey) {
-          this.canvas_y = this.#mover_y - e.deltaY * move_scale;
+          this.#pan_coordinates(
+            undefined,
+            this.#pan_y.ok() - e.deltaY * move_scale,
+          );
         } else {
           const scale_scale = e.shiftKey
             ? e.altKey
@@ -180,28 +188,50 @@ export class Viewport extends Base {
             : e.altKey
               ? 0.005
               : 0.001;
-          const scale = this.#zoomer_scale * (1 - e.deltaY * scale_scale);
+          const scale = this.#zoom.ok() * (1 - e.deltaY * scale_scale);
           this.#zoom_coordinates(
             scale,
             e.offsetX - this.#viewport_width / 2,
             e.offsetY - this.#viewport_height / 2,
           );
         }
-        this.canvas_x = this.#mover_x - e.deltaX * move_scale;
+        this.#pan_coordinates(
+          this.#pan_x.ok() - e.deltaX * move_scale,
+          undefined,
+        );
       },
       { capture: true },
     );
+  }
+
+  #pan_coordinates(x?: number, y?: number) {
+    if (x !== undefined) {
+      this.#panner.setAttribute(
+        "x",
+        (this.#viewport_width_half + x).toFixed(0),
+      );
+      this.#pan_x.set_ok(x);
+    }
+    if (y !== undefined) {
+      this.#panner.setAttribute(
+        "y",
+        (this.#viewport_height_half + y).toFixed(0),
+      );
+      this.#pan_y.set_ok(y);
+    }
   }
 
   /**Zooms coordinate aware to offset canvas position so hover position stays
    * coordinates are relative to the center */
   #zoom_coordinates(scale: number, x: number, y: number) {
     scale = Math.max(0.001, Math.min(10000, scale));
-    const zoom_factor = scale / this.#zoomer_scale;
-    this.canvas_x = this.#mover_x * zoom_factor + x * (1 - zoom_factor);
-    this.canvas_y = this.#mover_y * zoom_factor + y * (1 - zoom_factor);
+    const zoom_factor = scale / this.#zoom.ok();
+    this.#pan_coordinates(
+      this.#pan_x.ok() * zoom_factor + x * (1 - zoom_factor),
+      this.#pan_y.ok() * zoom_factor + y * (1 - zoom_factor),
+    );
     this.#zoomer.style.scale = scale.toString();
-    this.#zoomer_scale = scale;
+    this.#zoom.set_ok(scale);
   }
 
   //       _____          _   ___      __      _____
@@ -233,28 +263,21 @@ export class Viewport extends Base {
   get canvas_height(): number {
     return this.#canvas_height;
   }
-  set canvas_x(x: number) {
-    console.error();
 
-    this.#mover.setAttribute("x", (this.#viewport_width_half + x).toFixed(0));
-    this.#mover_x = x;
-  }
-  get canvas_x(): number {
-    return this.#mover_x;
-  }
-  set canvas_y(y: number) {
-    this.#mover.setAttribute("y", (this.#viewport_height_half + y).toFixed(0));
-    this.#mover_y = y;
-  }
-  get canvas_y(): number {
-    return this.#mover_y;
-  }
-  set canvas_scale(value: number) {
-    this.#zoom_coordinates(value, 0, 0);
-  }
-  get canvas_scale(): number {
-    return this.#zoomer_scale;
-  }
+  #pan_x = state.rosw(ok(1), (value) => {
+    return sync_resolve(ok(this.#pan_coordinates(value, undefined)));
+  });
+  readonly pan_x = this.#pan_x.read_write;
+
+  #pan_y = state.rosw(ok(1), (value) => {
+    return sync_resolve(ok(this.#pan_coordinates(undefined, value)));
+  });
+  readonly pan_y = this.#pan_y.read_write;
+
+  #zoom = state.rosw(ok(1), (value) =>
+    sync_resolve(ok(this.#zoom_coordinates(value, 0, 0))),
+  );
+  readonly zoom = this.#zoom.read_write;
 
   //      ______ _      ______ __  __ ______ _   _ _______ _____
   //     |  ____| |    |  ____|  \/  |  ____| \ | |__   __/ ____|
@@ -293,12 +316,28 @@ export class Viewport extends Base {
       } else if (row.type === "removed")
         for (let i = 0; i < row.items.length; i++)
           this.#canvas_elements.children[row.index].remove();
-      else if (row.type === "changed") {
+      else if (row.type === "changed")
         for (let i = 0; i < row.items.length; i++)
           this.#canvas_elements.replaceChild(
             row.items[i].canvas,
             this.#canvas_elements.children[row.index + i],
           );
+      else if (row.type === "moved") {
+        const extracted = [];
+        for (let i = 0; i < row.items.length; i++) {
+          const child = this.#canvas_elements.children[
+            row.from_index + i
+          ] as SVGSVGElement;
+          if (child) extracted.push(child);
+          child.remove();
+        }
+        const child = this.#canvas_elements.children[row.to_index] as
+          | SVGSVGElement
+          | undefined;
+        for (let i = 0; i < extracted.length; i++) {
+          if (child) child.before(extracted[i]);
+          else this.#canvas_elements.append(extracted[i]);
+        }
       }
     }
   }
@@ -309,10 +348,13 @@ export class Viewport extends Base {
   //     | |\/| | |  | |\ \/ / |  __| |  _  /
   //     | |  | | |__| | \  /  | |____| | \ \
   //     |_|  |_|\____/   \/   |______|_|  \_\
-  #element_mover?: ViewportMover;
+  #mover?: ViewportMover;
 
-  #attach_mover(mover: ViewportElement) {
-    if (!this.#element_mover) this.#element_mover = new ViewportMover();
+  attach_mover(move: ViewportElement) {
+    (this.#mover ??= new ViewportMover(this.#zoom)).attach_to_element(
+      move,
+      this.#canvas,
+    );
   }
 }
 define_element(Viewport);

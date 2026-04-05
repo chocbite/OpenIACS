@@ -2,6 +2,9 @@ import { some, type Option } from "@chocbite/ts-lib-result";
 import { svg } from "@chocbite/ts-lib-svg";
 
 export abstract class ViewportElement {
+  protected abstract element_name(): string;
+  protected abstract element_name_space(): string;
+
   /**Default width of element when created */
   abstract default_width(): number;
   /**Default height of element when created */
@@ -15,11 +18,16 @@ export abstract class ViewportElement {
     return some(w / h);
   }
 
-  readonly canvas: SVGSVGElement = svg.svg(
-    this.default_width(),
-    this.default_height(),
-    `0 0 ${this.default_width()} ${this.default_height()}`,
-  ).elem;
+  readonly canvas: SVGSVGElement = svg
+    .svg(
+      this.default_width(),
+      this.default_height(),
+      `0 0 ${this.default_width()} ${this.default_height()}`,
+    )
+    .cl(
+      "viewport-element",
+      `${this.element_name_space()}-${this.element_name()}`,
+    ).elem;
 
   //      _____   ____   _____ _____ _______ _____ ____  _   _
   //     |  __ \ / __ \ / ____|_   _|__   __|_   _/ __ \| \ | |
@@ -60,6 +68,13 @@ export abstract class ViewportElement {
 }
 
 export class ViewportElementTest extends ViewportElement {
+  protected element_name(): string {
+    return "viewport";
+  }
+  protected element_name_space(): string {
+    return "editor";
+  }
+
   default_width(): number {
     return 64;
   }

@@ -269,6 +269,25 @@ class Container<
         for (let i = 0; i < row.items.length; i++)
           (this.#child_box.children[row.index + i] as ListRow<R, T, A>).data =
             row.items[i];
+      else if (row.type === "moved") {
+        const extracted = [];
+        for (let i = 0; i < row.items.length; i++) {
+          const child = this.#child_box.children[row.from_index + i] as ListRow<
+            R,
+            T,
+            A
+          >;
+          extracted.push(child);
+          child.remove();
+        }
+        const child = this.#child_box.children[row.to_index] as
+          | ListRow<R, T, A>
+          | undefined;
+        for (let i = 0; i < extracted.length; i++) {
+          if (child) child.before(extracted[i]);
+          else this.#child_box.append(extracted[i]);
+        }
+      }
     }
   }
 }
