@@ -5,6 +5,7 @@ svg.viewport-mover {
     fill: transparent;
     stroke: pink;
     stroke-width: 2px;
+    pointer-events: none;
   }
 
   > svg {

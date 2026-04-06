@@ -26,7 +26,7 @@
     "@chocbite/ts-lib-spinner": "^1.0.0",
     "@chocbite/ts-lib-state": "^2.1.0",
     "@chocbite/ts-lib-string": "^1.0.0",
-    "@chocbite/ts-lib-svg": "^1.1.0",
+    "@chocbite/ts-lib-svg": "^1.1.2",
     "@chocbite/ts-lib-theme": "^1.2.1"
   },
   "devDependencies": {

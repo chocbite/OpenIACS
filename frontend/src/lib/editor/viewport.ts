@@ -29,7 +29,6 @@ export class Viewport extends Base {
       this.#pan_x.ok() + (a[0].contentRect.width - this.#viewport_width) / 2,
       this.#pan_y.ok() + (a[0].contentRect.height - this.#viewport_height) / 2,
     );
-
     this.#root.setAttribute(
       "viewBox",
       `0 0 ${this.#viewport_width} ${this.#viewport_height}`,
@@ -103,44 +102,41 @@ export class Viewport extends Base {
 
     //Middle Mouse
     let double_click = 0;
-    this.addEventListener(
-      "pointerdown",
-      (e) => {
-        if (e.pointerType === "mouse" || e.pointerType === "touch") {
-          e.preventDefault();
-          e.stopPropagation();
-          //Double Click Reset Position
-          const now = performance.now();
-          if (now - double_click < 300) {
-            this.#zoom_coordinates(
-              Math.min(
-                this.#viewport_height / this.#canvas_height,
-                this.#viewport_width / this.#canvas_width,
-              ),
-              0,
-              0,
-            );
-            return;
-          }
-          double_click = now;
-          //Dragging
-          this.setPointerCapture(e.pointerId);
-          if (count === 0) {
-            mover_x = this.#pan_x.ok();
-            mover_y = this.#pan_y.ok();
-            initial_x = e.offsetX;
-            initial_y = e.offsetY;
-            initial_id = e.pointerId;
-          } else if (count === 1) {
-            second_initial_x = e.offsetX;
-            second_initial_y = e.offsetY;
-            second_initial_id = e.pointerId;
-          }
-          count++;
+    this.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" || e.pointerType === "touch") {
+        e.preventDefault();
+        e.stopPropagation();
+        //Double Click Reset Position
+        const now = performance.now();
+        if (now - double_click < 300) {
+          this.#pan_coordinates(0, 0);
+          this.#zoom_coordinates(
+            Math.min(
+              this.#viewport_height / this.#canvas_height,
+              this.#viewport_width / this.#canvas_width,
+            ),
+            0,
+            0,
+          );
+          return;
         }
-      },
-      { capture: true },
-    );
+        double_click = now;
+        //Dragging
+        this.setPointerCapture(e.pointerId);
+        if (count === 0) {
+          mover_x = this.#pan_x.ok();
+          mover_y = this.#pan_y.ok();
+          initial_x = e.offsetX;
+          initial_y = e.offsetY;
+          initial_id = e.pointerId;
+        } else if (count === 1) {
+          second_initial_x = e.offsetX;
+          second_initial_y = e.offsetY;
+          second_initial_id = e.pointerId;
+        }
+        count++;
+      }
+    });
     this.onpointermove = (ev) => {
       if (count === 0) return;
       if (ev.pointerId === initial_id) {
@@ -279,6 +275,24 @@ export class Viewport extends Base {
   );
   readonly zoom = this.#zoom.read_write;
 
+  //       _____ _____  _____ _____
+  //      / ____|  __ \|_   _|  __ \
+  //     | |  __| |__) | | | | |  | |
+  //     | | |_ |  _  /  | | | |  | |
+  //     | |__| | | \ \ _| |_| |__| |
+  //      \_____|_|  \_\_____|_____/
+  #grid_x = state.rosw(ok(10), (value) => {
+    this.#grid_x.set_ok(value);
+    return sync_resolve(ok(undefined));
+  });
+  readonly grid_x = this.#grid_x.read_write;
+
+  #grid_y = state.rosw(ok(10), (value) => {
+    this.#grid_y.set_ok(value);
+    return sync_resolve(ok(undefined));
+  });
+  readonly grid_y = this.#grid_y.read_write;
+
   //      ______ _      ______ __  __ ______ _   _ _______ _____
   //     |  ____| |    |  ____|  \/  |  ____| \ | |__   __/ ____|
   //     | |__  | |    | |__  | \  / | |__  |  \| |  | | | (___
@@ -351,10 +365,11 @@ export class Viewport extends Base {
   #mover?: ViewportMover;
 
   attach_mover(move: ViewportElement) {
-    (this.#mover ??= new ViewportMover(this.#zoom)).attach_to_element(
-      move,
-      this.#canvas,
-    );
+    (this.#mover ??= new ViewportMover(
+      this.#zoom,
+      this.#grid_x,
+      this.#grid_y,
+    )).attach_to_element(move, this.#canvas);
   }
 }
 define_element(Viewport);
