@@ -1,9 +1,8 @@
 import "@chocbite/ts-lib-base";
+import form from "@chocbite/ts-lib-form";
 import { material_device_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
 import { err, ok, type Result } from "@chocbite/ts-lib-result";
 import { state, type StateLocalROSW } from "@chocbite/ts-lib-state";
-import { viewport, ViewportElementTest } from "@libEditor";
-import form from "@libForm";
 import "./index.scss";
 import "./lib/composition";
 import { comp, TopBarSides } from "./lib/composition";
@@ -112,9 +111,3 @@ class Character {
 console.warn(Character.deserialize({ uuid: "1234", name: "Hero" }));
 
 // document.getElementById("app")?.replaceChildren(example_page());
-
-const vp = viewport.create_viewport(100, 100, false);
-document.getElementById("app")?.replaceChildren(vp);
-const elem = new ViewportElementTest();
-vp.elements = [elem];
-vp.attach_mover(elem);

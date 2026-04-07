@@ -1,7 +1,0 @@
-@use "../base";
-
-form-spacer {
-  *:empty + & {
-    height: 0 !important;
-  }
-}

@@ -1,4 +1,5 @@
 import { define_element } from "@chocbite/ts-lib-base";
+import form from "@chocbite/ts-lib-form";
 import { material_device_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
 import { some } from "@chocbite/ts-lib-result";
 import { state } from "@chocbite/ts-lib-state";
@@ -10,7 +11,6 @@ import {
   THEME,
 } from "@chocbite/ts-lib-theme";
 import type { Panel, PanelOptions } from "@libComposition";
-import form from "@libForm";
 import { ContentBase } from "./content";
 import { panel_position_with_anchor } from "./panel";
 import { get_element_anchor_position, type CompAnchor } from "./shared";
