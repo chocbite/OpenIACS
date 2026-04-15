@@ -59,7 +59,7 @@ class Fact extends Part {
   readonly owner: Entity;
   #game: Game;
 
-  constructor(game: Game, uuid: string, desc: string, owner: Entity) {
+  constructor(game: Game, desc: string, owner: Entity, uuid?: string) {
     super(uuid);
     this.#game = game;
     this.#description = state.ok_w(desc);
@@ -73,6 +73,7 @@ class Entity extends Part {
   #description;
   readonly description;
   #fact_store = state.ok_w<Fact[]>([]);
+  readonly facts = this.#fact_store.read_write;
 
   constructor(uuid: string, desc: string) {
     super(uuid);
@@ -85,19 +86,16 @@ interface CharacterData {
   uuid: string;
   name: string;
 }
-class Character {
-  readonly uuid: string;
-  #name: StateLocalROSW<string>;
-
-  constructor(uuid: string = crypto.randomUUID(), name: string) {
-    this.uuid = uuid;
-    this.#name = state.ok_w(name);
-  }
+class Character extends Part {
+  #name: StateLocalROSW<string> = state.ok_w("");
+  readonly name = this.#name.read_write;
 
   static deserialize(data: Partial<CharacterData>): Result<Character, string> {
     if (!data.uuid) return err("Missing uuid");
     if (!data.name) return err("Missing name");
-    return ok(new Character(data.uuid, data.name));
+    const char = new Character(data.uuid);
+    char.#name.set_ok(data.name);
+    return ok(char);
   }
 
   serialize(): CharacterData {
