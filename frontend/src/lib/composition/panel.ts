@@ -33,7 +33,7 @@ export interface PanelOptions {
   auto_close?: boolean;
 
   //Accessories
-  content?: ContentBase;
+  content: ContentBase;
 
   //Positioning
   moveable?: boolean;
@@ -280,9 +280,14 @@ export class Panel extends Base {
     return !this.#titlebar.classList.contains("hidden");
   }
 
+  #set_title(title: string) {
+    this.#titlebar.textContent = title;
+  }
+
   #content: HTMLDivElement;
   set content(cont: ContentBase) {
     this.#content.replaceChildren(cont);
+    this.#set_title("test");
   }
   get content(): ContentBase | undefined {
     return (this.#content.firstElementChild as ContentBase) ?? undefined;
