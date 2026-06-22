@@ -1,4 +1,4 @@
-import { GREY, ORANGE } from "@chocbite/ts-lib-colors";
+import { GREY, ORANGE, RED } from "@chocbite/ts-lib-colors";
 import { px_to_rem, theme_init_variable_root } from "@chocbite/ts-lib-theme";
 
 /** Type to store a position related to composition
@@ -67,6 +67,16 @@ colors.make_variable(
   "Background color for the title bar of UI panels when hovered",
   GREY[400],
   GREY[700],
+  "Color",
+  undefined,
+);
+
+colors.make_variable(
+  "titlebarCloseHover",
+  "Title Bar Close Hover Background",
+  "Background color for the title bar close button of UI panels when hovered",
+  RED[400],
+  RED[700],
   "Color",
   undefined,
 );

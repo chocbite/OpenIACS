@@ -21,7 +21,7 @@ export abstract class ContentBase<Close = void> extends Base {
   abstract readonly icon: StateROS<Option<SVGFunc>>;
   abstract readonly closable: StateROS<boolean>;
   abstract readonly min_size: StateROS<Option<CompMinSize>>;
-  abstract on_close(): Promise<Close>;
+  protected abstract on_close(): Promise<Close>;
 
   async close(_args: Close): Promise<Option<Close>> {
     return none();
@@ -78,7 +78,7 @@ export class Content extends ContentBase {
     return none();
   }
 
-  async on_close(): Promise<void> {
+  protected async on_close(): Promise<void> {
     return;
   }
 

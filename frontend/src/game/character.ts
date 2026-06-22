@@ -1,12 +1,15 @@
 import { define_element } from "@chocbite/ts-lib-base";
+import { material_action_123_rounded } from "@chocbite/ts-lib-icons";
 import {
   err,
   none,
   ok,
+  some,
   type Option,
   type Result,
 } from "@chocbite/ts-lib-result";
 import { state, type StateLocalROSW } from "@chocbite/ts-lib-state";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { main_panel_container } from "@libComposition";
 import { ContentBase } from "../lib/composition/content";
 import { Part } from "./shared";
@@ -48,10 +51,20 @@ export class CharacterEditor extends ContentBase {
     return this.#name;
   }
   get icon() {
-    return state.ok(none());
+    const yo = state.ok<Option<SVGFunc>>(none());
+    setInterval(() => {
+      yo.set_ok(
+        Math.random() > 0.5 ? none() : some(material_action_123_rounded),
+      );
+    }, 1700);
+    return yo;
   }
   get closable() {
-    return state.ok(true);
+    const yo = state.ok(false);
+    setInterval(() => {
+      yo.set_ok(!yo.get().value);
+    }, 1500);
+    return yo;
   }
   get min_size() {
     return state.ok(none());
@@ -66,7 +79,16 @@ export class CharacterEditor extends ContentBase {
 
   constructor(character: Character) {
     super();
-    this.#name.set_state(character.name);
+    const yo = state.ok("");
+    setInterval(() => {
+      yo.set_ok(
+        yo.get().value === "" ? "Char: " + character.name.get().unwrap() : "",
+      );
+    }, 1800);
+    this.#name.set_state(yo);
+    // this.#name.set_state(
+    //   state.collected.ros((v) => ok("Char: " + v[0].value), character.name),
+    // );
     console.warn(character.name.get().unwrap());
   }
 }

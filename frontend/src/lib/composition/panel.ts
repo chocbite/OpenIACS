@@ -1,4 +1,5 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
+import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { px_to_rem, rem_to_px } from "@chocbite/ts-lib-theme";
 import { ContentBase } from "./content";
 import "./panel.scss";
@@ -144,9 +145,10 @@ export class Panel extends Base {
       e.stopPropagation();
     };
     this.show_titlebar = options.show_titlebar ?? true;
+    this.#title = this.#titlebar.appendChild(document.createElement("div"));
 
     this.#content = this.appendChild(document.createElement("div"));
-    if (options.content) this.#content.appendChild(options.content);
+    if (options.content) this.content = options.content;
 
     //Positioning
     this.#moveable = options.moveable ?? true;
@@ -262,7 +264,9 @@ export class Panel extends Base {
     this.#container.focus_panel(this);
   }
 
-  close(): void {}
+  close(): void {
+    this.remove();
+  }
 
   //               _____ _____ ______  _____ _____  ____  _____  _____ ______  _____
   //         /\   / ____/ ____|  ____|/ ____/ ____|/ __ \|  __ \|_   _|  ____|/ ____|
@@ -271,23 +275,60 @@ export class Panel extends Base {
   //      / ____ \ |___| |____| |____ ____) |___) | |__| | | \ \ _| |_| |____ ____) |
   //     /_/    \_\_____\_____|______|_____/_____/ \____/|_|  \_\_____|______|_____/
   #titlebar: HTMLDivElement;
+  #icon?: HTMLFormElement;
+  #title: HTMLDivElement;
+  #close_button?: HTMLSpanElement;
 
   set show_titlebar(show: boolean) {
     if (show) this.#titlebar.classList.remove("hidden");
     else this.#titlebar.classList.add("hidden");
   }
+
   get show_titlebar(): boolean {
     return !this.#titlebar.classList.contains("hidden");
   }
 
+  #set_icon(icon?: SVGFunc) {
+    if (icon) {
+      if (!this.#icon) {
+        this.#icon = document.createElement("form");
+        this.#titlebar.prepend(this.#icon);
+      }
+      this.#icon.replaceChildren(icon());
+    } else if (this.#icon) {
+      this.#icon.remove();
+      this.#icon = undefined;
+    }
+  }
+
+  #closable(closable: boolean) {
+    if (closable && !this.#close_button) {
+      this.#close_button = document.createElement("span");
+      this.#titlebar.appendChild(this.#close_button);
+      this.#close_button.classList.add("close-button");
+      this.#close_button.textContent = "×";
+      this.#close_button.onpointerdown = (e) => {
+        e.stopPropagation();
+        this.close();
+      };
+    } else if (!closable && this.#close_button) {
+      this.#close_button.remove();
+      this.#close_button = undefined;
+    }
+  }
+
   #set_title(title: string) {
-    this.#titlebar.textContent = title;
+    this.#title.textContent = title;
   }
 
   #content: HTMLDivElement;
   set content(cont: ContentBase) {
     this.#content.replaceChildren(cont);
-    this.#set_title("test");
+    this.attach_state(cont.icon, (c) =>
+      this.#set_icon(c.value.unwrap_or(undefined)),
+    );
+    this.attach_state(cont.name, (c) => this.#set_title(c.value));
+    this.attach_state(cont.closable, (c) => this.#closable(c.value));
   }
   get content(): ContentBase | undefined {
     return (this.#content.firstElementChild as ContentBase) ?? undefined;

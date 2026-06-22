@@ -116,12 +116,14 @@ ui-panel {
   //        | |   _| |_   | |  | |____| |____
   //        |_|  |_____|  |_|  |______|______|
   & > div:nth-child(2) {
+    display: flex;
     position: relative;
     pointer-events: all;
     height: 1.6rem;
     background-color: var(--ui-colors-titlebar);
     border-radius: $radius $radius 0 0;
     cursor: grab;
+    overflow: hidden;
 
     &.moving {
       cursor: grabbing;
@@ -131,8 +133,60 @@ ui-panel {
       display: none;
     }
 
+    &:hover {
+      background-color: var(--ui-colors-titlebarHover);
+    }
+
     .touch & {
       height: 2.6rem;
+    }
+
+    > form {
+      display: flex;
+      padding: 0.1rem;
+      padding-right: 0;
+
+      > svg {
+        fill: var(--ui-colors-icons);
+        height: 100%;
+        width: auto;
+      }
+    }
+
+    > div {
+      color: var(--ui-colors-titlebarText);
+      padding-left: 0.3rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.6rem;
+      flex-grow: 1;
+
+      .touch & {
+        font-size: 1.2rem;
+        line-height: 2.6rem;
+      }
+    }
+
+    > span {
+      color: var(--ui-colors-icons);
+      font-size: 1.5rem;
+      line-height: 1.6rem;
+      text-align: center;
+      flex-shrink: 0;
+      width: 1.6rem;
+      cursor: pointer;
+      border-radius: ($radius / 2) $radius 0 ($radius / 2);
+
+      .touch & {
+        width: 2.6rem;
+        font-size: 2rem;
+        line-height: 2.6rem;
+      }
+
+      &:hover {
+        background-color: var(--ui-colors-titlebarCloseHover);
+      }
     }
   }
 

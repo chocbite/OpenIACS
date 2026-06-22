@@ -15,7 +15,7 @@ import { ContentBase } from "./content";
 import { panel_position_with_anchor } from "./panel";
 import { get_element_anchor_position, type CompAnchor } from "./shared";
 
-class CustomizationPanel extends ContentBase {
+class Customization extends ContentBase {
   static element_name() {
     return "customization-panel";
   }
@@ -23,11 +23,10 @@ class CustomizationPanel extends ContentBase {
     return "ui";
   }
 
-  readonly panel: Panel;
   readonly main_group;
   readonly advanced_group;
 
-  constructor(panel: Panel) {
+  constructor() {
     super();
     this.main_group = form.group({ embed: true });
     this.advanced_group = form.group({});
@@ -57,8 +56,6 @@ class CustomizationPanel extends ContentBase {
         ],
       }),
     );
-
-    this.panel = panel;
   }
 
   get name() {
@@ -74,31 +71,44 @@ class CustomizationPanel extends ContentBase {
     return state.ok(some({ width: 10, height: 6 }));
   }
 
-  async on_close(): Promise<void> {
+  protected async on_close(): Promise<void> {
     return;
   }
 }
-define_element(CustomizationPanel);
+define_element(Customization);
+
+class CustomizationPanel {
+  readonly panel: Panel;
+  readonly main_group;
+  readonly advanced_group;
+
+  constructor(panel: Panel, content: Customization) {
+    this.panel = panel;
+    this.main_group = content.main_group;
+    this.advanced_group = content.advanced_group;
+  }
+}
 
 export function customization_panel(
   element: Element = document.documentElement,
-  panel_option_overrides: PanelOptions = {},
+  panel_option_overrides: Omit<PanelOptions, "content"> = {},
 ): CustomizationPanel {
-  const content = new CustomizationPanel(
+  const content = new Customization();
+  return new CustomizationPanel(
     element.ownerDocument.panel_container.create_panel({
       closeable: false,
       moveable: false,
       sizeable: false,
-      show_titlebar: true,
+      show_titlebar: false,
       width: 20,
       hidden: true,
       auto_hide: true,
       modal: true,
       ...panel_option_overrides,
+      content: content,
     }),
+    content,
   );
-  content.panel.content = content;
-  return content;
 }
 
 export function attach_customization_panel_to_element(
