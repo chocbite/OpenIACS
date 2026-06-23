@@ -1,10 +1,11 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
+import type { Option } from "@chocbite/ts-lib-result";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { px_to_rem, rem_to_px } from "@chocbite/ts-lib-theme";
 import { ContentBase } from "./content";
 import "./panel.scss";
 import "./shared";
-import type { CompAnchor, CompPosition } from "./shared";
+import type { CompAnchor, CompMinSize, CompPosition } from "./shared";
 
 const MIN_WIDTH = 4; //rem
 const MIN_HEIGHT = 4; //rem
@@ -329,6 +330,9 @@ export class Panel extends Base {
     );
     this.attach_state(cont.content_title, (c) => this.#set_title(c.value));
     this.attach_state(cont.content_closable, (c) => this.#closable(c.value));
+    this.attach_state(cont.content_min_size, (c) =>
+      this.#set_min_size(c.value),
+    );
   }
   get content(): ContentBase | undefined {
     return (this.#content.firstElementChild as ContentBase) ?? undefined;
@@ -455,6 +459,20 @@ export class Panel extends Base {
   #sizeable: PanelSizers = true;
   #width?: number;
   #height?: number;
+  #min_width: number = MIN_WIDTH;
+  #min_height: number = MIN_HEIGHT;
+
+  #set_min_size(min_size: Option<CompMinSize>) {
+    if (min_size.some) {
+      this.#min_width = Math.max(MIN_WIDTH, min_size.value.width);
+      if (this.#min_width > this.width) this.width = this.#min_width;
+      this.#min_height = Math.max(MIN_HEIGHT, min_size.value.height);
+      if (this.#min_height > this.height) this.height = this.#min_height;
+    } else {
+      this.#min_width = MIN_WIDTH;
+      this.#min_height = MIN_HEIGHT;
+    }
+  }
 
   set sizeable(value: PanelSizers) {
     if (typeof value === "string") this.classList.add("visible");
@@ -535,7 +553,10 @@ export class Panel extends Base {
       this.style.width = "";
       return;
     }
-    this.#width = Math.min(Math.max(value, MIN_WIDTH), this.#container_width);
+    this.#width = Math.min(
+      Math.max(value, this.#min_width),
+      this.#container_width,
+    );
     this.style.width = this.#width + "rem";
   }
   get width(): number {
@@ -549,7 +570,7 @@ export class Panel extends Base {
       return;
     }
     this.#height = Math.min(
-      Math.max(value, MIN_HEIGHT),
+      Math.max(value, this.#min_height),
       this.#container_height,
     );
     this.style.height = this.#height + "rem";

@@ -93,7 +93,7 @@ class InternalPanelContainer implements PC, PanelContainer {
 }
 
 function create_panel_container(parent: HTMLElement): PanelContainer {
-  return new InternalPanelContainer(parent) as PanelContainer;
+  return new InternalPanelContainer(parent);
 }
 
 declare global {

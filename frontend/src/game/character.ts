@@ -50,7 +50,7 @@ export class CharacterEditor extends ContentBase {
     return state.ok(true);
   }
   get content_min_size() {
-    return state.ok(some({ width: 10, height: 10 }));
+    return state.ok(some({ width: 20, height: 10 }));
   }
 
   protected async content_on_close(): Promise<void> {
