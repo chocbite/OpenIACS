@@ -1,6 +1,6 @@
 import { define_element } from "@chocbite/ts-lib-base";
 import form from "@chocbite/ts-lib-form";
-import { material_device_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
+import { material_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
 import { some } from "@chocbite/ts-lib-result";
 import { state } from "@chocbite/ts-lib-state";
 import {
@@ -58,20 +58,20 @@ class Customization extends ContentBase {
     );
   }
 
-  get name() {
+  get content_title() {
     return state.ok("Customization");
   }
-  get icon() {
-    return state.ok(some(material_device_brightness_medium_rounded));
+  get content_icon() {
+    return state.ok(some(material_brightness_medium_rounded));
   }
-  get closable() {
+  get content_closable() {
     return state.ok(true);
   }
-  get min_size() {
+  get content_min_size() {
     return state.ok(some({ width: 10, height: 6 }));
   }
 
-  protected async on_close(): Promise<void> {
+  protected async content_on_close(): Promise<void> {
     return;
   }
 }

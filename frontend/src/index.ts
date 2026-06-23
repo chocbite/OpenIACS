@@ -1,5 +1,5 @@
 import "@chocbite/ts-lib-base";
-import { material_device_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
+import { material_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
 import "./game/character";
 import "./index.scss";
 import "./lib/composition";
@@ -30,7 +30,7 @@ const butt = topbar.add_item(
 const lab = topbar.add_item(comp.topbar_label("Right"), TopBarSides.RIGHT);
 
 const cust_butt = topbar.add_item(
-  comp.topbar_button_icon(material_device_brightness_medium_rounded, () => {}),
+  comp.topbar_button_icon(material_brightness_medium_rounded, () => {}),
   TopBarSides.RIGHT,
 );
 

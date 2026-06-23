@@ -17,13 +17,13 @@ export abstract class ContentBase<Close = void> extends Base {
     return "@abstract@";
   }
 
-  abstract readonly name: StateROS<string>;
-  abstract readonly icon: StateROS<Option<SVGFunc>>;
-  abstract readonly closable: StateROS<boolean>;
-  abstract readonly min_size: StateROS<Option<CompMinSize>>;
-  protected abstract on_close(): Promise<Close>;
+  abstract readonly content_title: StateROS<string>;
+  abstract readonly content_icon: StateROS<Option<SVGFunc>>;
+  abstract readonly content_closable: StateROS<boolean>;
+  abstract readonly content_min_size: StateROS<Option<CompMinSize>>;
+  protected abstract content_on_close(): Promise<Close>;
 
-  async close(_args: Close): Promise<Option<Close>> {
+  async content_close(_args: Close): Promise<Option<Close>> {
     return none();
   }
 
@@ -42,43 +42,43 @@ export class Content extends ContentBase {
     return "ui";
   }
 
-  #name = state.ros(ok(""));
-  get name() {
-    return this.#name.read_only;
+  #content_title = state.ros(ok(""));
+  get content_title() {
+    return this.#content_title.read_only;
   }
-  set_name(value: string) {
-    this.#name.set_ok(value);
-  }
-
-  #icon = state.ros(ok<Option<SVGFunc>>(none()));
-  get icon() {
-    return this.#icon.read_only;
-  }
-  set_icon(value: Option<SVGFunc>) {
-    this.#icon.set_ok(value);
+  set_content_title(value: string) {
+    this.#content_title.set_ok(value);
   }
 
-  #closable = state.ros(ok(false));
-  get closable() {
-    return this.#closable.read_only;
+  #content_icon = state.ros(ok<Option<SVGFunc>>(none()));
+  get content_icon() {
+    return this.#content_icon.read_only;
   }
-  set_closable(value: boolean) {
-    this.#closable.set_ok(value);
-  }
-
-  #min_size = state.ros(ok<Option<CompMinSize>>(none()));
-  get min_size() {
-    return this.#min_size.read_only;
-  }
-  set_min_size(value: Option<CompMinSize>) {
-    this.#min_size.set_ok(value);
+  set_content_icon(value: Option<SVGFunc>) {
+    this.#content_icon.set_ok(value);
   }
 
-  async close(_args: void): Promise<Option<void>> {
+  #content_closable = state.ros(ok(false));
+  get content_closable() {
+    return this.#content_closable.read_only;
+  }
+  set_content_closable(value: boolean) {
+    this.#content_closable.set_ok(value);
+  }
+
+  #content_min_size = state.ros(ok<Option<CompMinSize>>(none()));
+  get content_min_size() {
+    return this.#content_min_size.read_only;
+  }
+  set_content_min_size(value: Option<CompMinSize>) {
+    this.#content_min_size.set_ok(value);
+  }
+
+  async content_close(_args: void): Promise<Option<void>> {
     return none();
   }
 
-  protected async on_close(): Promise<void> {
+  protected async content_on_close(): Promise<void> {
     return;
   }
 

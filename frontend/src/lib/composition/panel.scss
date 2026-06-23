@@ -1,4 +1,5 @@
 @use "@chocbite/ts-lib-icons/mixins" as font;
+@use "sass:math";
 
 ui-panel {
   $radius: 0.8rem;
@@ -176,7 +177,7 @@ ui-panel {
       flex-shrink: 0;
       width: 1.6rem;
       cursor: pointer;
-      border-radius: ($radius / 2) $radius 0 ($radius / 2);
+      border-radius: math.div($radius, 2) $radius 0 math.div($radius, 2);
 
       .touch & {
         width: 2.6rem;

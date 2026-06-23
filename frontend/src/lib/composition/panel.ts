@@ -324,11 +324,11 @@ export class Panel extends Base {
   #content: HTMLDivElement;
   set content(cont: ContentBase) {
     this.#content.replaceChildren(cont);
-    this.attach_state(cont.icon, (c) =>
+    this.attach_state(cont.content_icon, (c) =>
       this.#set_icon(c.value.unwrap_or(undefined)),
     );
-    this.attach_state(cont.name, (c) => this.#set_title(c.value));
-    this.attach_state(cont.closable, (c) => this.#closable(c.value));
+    this.attach_state(cont.content_title, (c) => this.#set_title(c.value));
+    this.attach_state(cont.content_closable, (c) => this.#closable(c.value));
   }
   get content(): ContentBase | undefined {
     return (this.#content.firstElementChild as ContentBase) ?? undefined;
