@@ -1,4 +1,5 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
+import ctm from "@chocbite/ts-lib-context-menu";
 import type { Option } from "@chocbite/ts-lib-result";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { px_to_rem, rem_to_px } from "@chocbite/ts-lib-theme";
@@ -91,11 +92,14 @@ export class Panel extends Base {
 
     //Titlebar
     this.#titlebar = this.appendChild(document.createElement("div"));
+    ctm.attach(this.#titlebar, ctm.menu([]), () => this.#moving);
     this.#titlebar.tabIndex = 0;
     this.#titlebar.onpointerdown = (e) => {
       if (!this.#moveable) return;
+      if (e.button !== 0) return;
       this.#titlebar.setPointerCapture(e.pointerId);
       this.#titlebar.classList.add("moving");
+      this.#moving = true;
       const start_x = e.clientX;
       const start_y = e.clientY;
       const orig_left = this.getBoundingClientRect().left;
@@ -123,6 +127,7 @@ export class Panel extends Base {
       this.#titlebar.onpointerup = (ev: PointerEvent) => {
         this.#titlebar.releasePointerCapture(ev.pointerId);
         this.#titlebar.classList.remove("moving");
+        this.#moving = false;
         this.#titlebar.onpointermove = null;
         this.#titlebar.onpointerup = null;
       };
@@ -345,6 +350,7 @@ export class Panel extends Base {
   //     | |    | |__| |____) |_| |_   | |   _| || |__| | |\  |_| |_| |\  | |__| |
   //     |_|     \____/|_____/|_____|  |_|  |_____\____/|_| \_|_____|_| \_|\_____|
   #moveable: boolean;
+  #moving: boolean = false;
   #top?: number;
   #bottom?: number;
   #left?: number;
@@ -367,6 +373,10 @@ export class Panel extends Base {
   }
   get moveable(): boolean {
     return this.#moveable;
+  }
+
+  get moving(): boolean {
+    return this.#moving;
   }
 
   set center(value: boolean) {

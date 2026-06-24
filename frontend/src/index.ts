@@ -1,6 +1,6 @@
 import "@chocbite/ts-lib-base";
 import { material_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
-import "./game/character";
+import "./game";
 import "./index.scss";
 import "./lib/composition";
 import { comp, TopBarSides } from "./lib/composition";
