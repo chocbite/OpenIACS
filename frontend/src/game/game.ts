@@ -2,7 +2,6 @@ import { define_element } from "@chocbite/ts-lib-base";
 import { material_casino_rounded } from "@chocbite/ts-lib-icons";
 import { some } from "@chocbite/ts-lib-result";
 import state from "@chocbite/ts-lib-state";
-import { main_panel_container } from "@libComposition";
 import { ContentBase } from "../lib/composition/content";
 import type { Character } from "./character";
 
@@ -58,8 +57,8 @@ define_element(GameUI);
 
 console.warn("yoyoyo");
 
-main_panel_container.create_panel({
-  content: new GameUI(new Game()),
-  width: 10,
-  height: 10,
-});
+// main_panel_container.create_panel({
+//   content: new GameUI(new Game()),
+//   width: 10,
+//   height: 10,
+// });

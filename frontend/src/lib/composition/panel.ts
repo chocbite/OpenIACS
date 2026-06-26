@@ -475,9 +475,11 @@ export class Panel extends Base {
   #set_min_size(min_size: Option<CompMinSize>) {
     if (min_size.some) {
       this.#min_width = Math.max(MIN_WIDTH, min_size.value.width);
-      if (this.#min_width > this.width) this.width = this.#min_width;
+      if (this.#width !== undefined && this.#min_width > this.width)
+        this.width = this.#min_width;
       this.#min_height = Math.max(MIN_HEIGHT, min_size.value.height);
-      if (this.#min_height > this.height) this.height = this.#min_height;
+      if (this.#height !== undefined && this.#min_height > this.height)
+        this.height = this.#min_height;
     } else {
       this.#min_width = MIN_WIDTH;
       this.#min_height = MIN_HEIGHT;

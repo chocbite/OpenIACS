@@ -3,7 +3,6 @@ import form from "@chocbite/ts-lib-form";
 import { material_chess_pawn_rounded } from "@chocbite/ts-lib-icons";
 import { err, ok, some, type Result } from "@chocbite/ts-lib-result";
 import { state, type StateLocalROSW } from "@chocbite/ts-lib-state";
-import { main_panel_container } from "@libComposition";
 import { ContentBase } from "../lib/composition/content";
 import { Part } from "./shared";
 
@@ -82,8 +81,8 @@ const test_char = Character.deserialize({ uuid: "1234", name: "Hero" });
 
 console.warn(test_char);
 
-main_panel_container.create_panel({
-  content: new CharacterEditor(test_char.unwrap()),
-  width: 10,
-  height: 10,
-});
+// main_panel_container.create_panel({
+//   content: new CharacterEditor(test_char.unwrap()),
+//   width: 10,
+//   height: 10,
+// });
