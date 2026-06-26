@@ -29,7 +29,7 @@ export abstract class ContentBase<Close = void> extends Base {
 
   constructor() {
     super();
-    this.tabIndex = 0;
+    this.tabIndex = -1;
     this.classList.add("content");
   }
 }

@@ -5,6 +5,7 @@ import {
   attach_customization_panel_to_element,
   customization_panel,
 } from "./customization";
+import { router } from "./router";
 import { get_element_anchor_position } from "./shared";
 import {
   topbar,
@@ -21,6 +22,9 @@ export const comp = {
   customization_panel,
   attach_customization_panel_to_element,
   get_element_anchor_position,
+  router,
 };
 
+export { Content, ContentBase } from "./content";
+export type { Router } from "./router";
 export { TopBarSides } from "./topbar";
