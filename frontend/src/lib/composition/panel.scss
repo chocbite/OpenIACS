@@ -125,6 +125,7 @@ ui-panel {
     border-radius: $radius $radius 0 0;
     cursor: grab;
     overflow: hidden;
+    flex-shrink: 0;
 
     &.moving {
       cursor: grabbing;
@@ -207,6 +208,13 @@ ui-panel {
 
     .anim-all & {
       transition: background-color ease-in-out var(--animation-speed);
+    }
+
+    > * {
+      outline: none;
+      display: block;
+      min-width: 100%;
+      min-height: 100%;
     }
   }
 

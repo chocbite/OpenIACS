@@ -14,10 +14,7 @@
 
       //Lib
       "@libComposition": ["./src/lib/composition/index"],
-      "@libEditor": ["./src/lib/editor/index"],
-      "@libForm": ["./src/lib/form/index"],
-      "@libList": ["./src/lib/list/index"],
-      "@libRepository": ["./src/lib/repository/index"]
+      "@libPrompts": ["./src/lib/prompts/index"]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

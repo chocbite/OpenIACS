@@ -30,29 +30,28 @@ class Customization extends ContentBase {
     super();
     this.main_group = form.group({ embed: true });
     this.advanced_group = form.group({});
-    const advanced = form.group({
-      collapsible: true,
-      collapse_text: "Advanced",
-      collapsed: true,
-      embed: true,
-      elements: [
-        form.text({ text: "UI Scale" }),
-        form.stepper({ value_by_state: SCALE }),
-        form.text({ text: "Input Mode" }),
-        form.toggle_button({ value_by_state: INPUT_MODE }),
-        form.text({ text: "Animation Level" }),
-        form.toggle_button({ value_by_state: ANIMATION_LEVEL }),
-        form.text({ text: "Animation Speed" }),
-        form.slider({ value_by_state: ANIMATION_SPEED, live: true }),
-        this.advanced_group,
-      ],
-    });
     this.appendChild(
       form.group({
         elements: [
           form.toggle_button({ value_by_state: THEME }),
           this.main_group,
-          advanced,
+          form.group_collapser(
+            form.group({
+              embed: true,
+              elements: [
+                form.text({ text: "UI Scale" }),
+                form.stepper({ value_by_state: SCALE }),
+                form.text({ text: "Input Mode" }),
+                form.toggle_button({ value_by_state: INPUT_MODE }),
+                form.text({ text: "Animation Level" }),
+                form.toggle_button({ value_by_state: ANIMATION_LEVEL }),
+                form.text({ text: "Animation Speed" }),
+                form.slider({ value_by_state: ANIMATION_SPEED, live: true }),
+                this.advanced_group,
+              ],
+            }),
+            { closed_text: "Advanced", collapsed: true },
+          ),
         ],
       }),
     );
@@ -95,7 +94,7 @@ export function customization_panel(
 ): CustomizationPanel {
   const content = new Customization();
   return new CustomizationPanel(
-    element.ownerDocument.panel_container.create_panel({
+    element.ownerDocument.panel_container.create_panel(content, {
       closeable: false,
       moveable: false,
       sizeable: false,
@@ -105,7 +104,6 @@ export function customization_panel(
       auto_hide: true,
       modal: true,
       ...panel_option_overrides,
-      content: content,
     }),
     content,
   );

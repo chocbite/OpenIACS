@@ -1,5 +1,6 @@
 import "@chocbite/ts-lib-base";
 import { material_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
+import { prompts } from "@libPrompts";
 import "./game";
 import "./index.scss";
 import "./lib/composition";
@@ -14,6 +15,16 @@ import { comp, TopBarSides } from "./lib/composition";
 
 //   console.warn(response);
 // })();
+
+prompts.buttons("Test Prompt", [
+  { text: "Button 1", value: true },
+  { text: "Button 3" },
+  { text: "Button 2 very long text that  of the button in the prompt" },
+  { text: "Button 3" },
+  { text: "Button 3" },
+  { text: "Button 3" },
+  { text: "Button 3" },
+]);
 
 const topbar = comp.topbar();
 document.body.prepend(topbar);

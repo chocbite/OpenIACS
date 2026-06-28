@@ -1,4 +1,5 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
+import { ctm, type ContextMenuLines } from "@chocbite/ts-lib-context-menu";
 import { none, ok, type Option } from "@chocbite/ts-lib-result";
 import { state, type StateROS } from "@chocbite/ts-lib-state";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
@@ -17,20 +18,49 @@ export abstract class ContentBase<Close = void> extends Base {
     return "@abstract@";
   }
 
-  abstract readonly content_title: StateROS<string>;
-  abstract readonly content_icon: StateROS<Option<SVGFunc>>;
-  abstract readonly content_closable: StateROS<boolean>;
-  abstract readonly content_min_size: StateROS<Option<CompMinSize>>;
-  protected abstract content_on_close(): Promise<Close>;
-
+  /**Title of content that can be displayed by the container of the content*/
+  get content_title(): StateROS<string> {
+    return state.ok("");
+  }
+  /**Icon of content that can be displayed by the container of the content*/
+  get content_icon(): StateROS<Option<SVGFunc>> {
+    return state.ok(none());
+  }
+  /**Whether the content can be closed by the container*/
+  get content_closable(): StateROS<boolean> {
+    return state.ok(false);
+  }
+  /**Minimum size of the content*/
+  get content_min_size(): StateROS<Option<CompMinSize>> {
+    return state.ok(none());
+  }
+  /**Context menu lines of the content, automatically applied to the content itself, may also be used by the container*/
+  get content_context_lines(): ContextMenuLines {
+    return [];
+  }
+  /**Called when container requests the content to close*/
+  protected content_on_close(): Promise<Close> {
+    return Promise.resolve(undefined as unknown as Close);
+  }
   async content_close(_args: Close): Promise<Option<Close>> {
     return none();
   }
+
+  #on_contect_menu = (e: MouseEvent) => {
+    e.preventDefault();
+    ctm.summon(
+      ctm.menu(this.content_context_lines),
+      this,
+      e.clientX,
+      e.clientY,
+    );
+  };
 
   constructor() {
     super();
     this.tabIndex = -1;
     this.classList.add("content");
+    this.oncontextmenu = this.#on_contect_menu;
   }
 }
 

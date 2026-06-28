@@ -27,10 +27,7 @@ export default defineConfig({
 
       //Lib
       "@libComposition": path.resolve(__dirname, "./src/lib/composition/index"),
-      "@libEditor": path.resolve(__dirname, "./src/lib/editor/index"),
-      "@libForm": path.resolve(__dirname, "./src/lib/form/index"),
-      "@libList": path.resolve(__dirname, "./src/lib/list/index"),
-      "@libRepository": path.resolve(__dirname, "./src/lib/repository/index"),
+      "@libPrompts": path.resolve(__dirname, "./src/lib/prompts/index"),
     },
   },
 });

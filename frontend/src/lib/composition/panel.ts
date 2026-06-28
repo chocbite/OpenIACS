@@ -25,9 +25,6 @@ export type PanelSizers =
   | "ew"
   | "w";
 export interface PanelOptions {
-  show_titlebar?: boolean;
-  closeable?: boolean;
-
   //Composition
   layer?: number;
   hidden?: boolean;
@@ -36,7 +33,8 @@ export interface PanelOptions {
   auto_close?: boolean;
 
   //Accessories
-  content: ContentBase;
+  show_titlebar?: boolean;
+  closeable?: boolean;
 
   //Positioning
   moveable?: boolean;
@@ -75,10 +73,15 @@ export class Panel extends Base {
   }
 
   constructor(
+    content: ContentBase,
     container: PanelContainer,
     options: PanelOptions & { layer: number },
   ) {
     super();
+
+    this.addEventListener("focus", () => {
+      this.#content.focus();
+    });
 
     this.#container = container;
     this.#layer = options.layer;
@@ -92,7 +95,11 @@ export class Panel extends Base {
 
     //Titlebar
     this.#titlebar = this.appendChild(document.createElement("div"));
-    ctm.attach(this.#titlebar, ctm.menu([]), () => this.#moving);
+    ctm.attach(
+      this.#titlebar,
+      ctm.menu(() => [...this.#content.content_context_lines]),
+      () => this.#moving,
+    );
     this.#titlebar.tabIndex = 0;
     this.#titlebar.onpointerdown = (e) => {
       if (!this.#moveable) return;
@@ -153,8 +160,14 @@ export class Panel extends Base {
     this.show_titlebar = options.show_titlebar ?? true;
     this.#title = this.#titlebar.appendChild(document.createElement("div"));
 
-    this.#content = this.appendChild(document.createElement("div"));
-    if (options.content) this.content = options.content;
+    this.#content_box = this.appendChild(document.createElement("div"));
+    ctm.attach(
+      this.#content_box,
+      ctm.menu(() => this.#content.content_context_lines),
+      () => this.#moving,
+    );
+    this.#content = content;
+    this.content = content;
 
     //Positioning
     this.#moveable = options.moveable ?? true;
@@ -258,12 +271,23 @@ export class Panel extends Base {
     return Boolean(this.#auto_close_listener);
   }
 
+  #focus_catcher?: HTMLDivElement;
   set modal(modal: boolean) {
-    if (modal) this.classList.add("modal");
-    else this.classList.remove("modal");
+    if (modal && !this.#focus_catcher) {
+      this.classList.add("modal");
+      this.#focus_catcher ??= this.appendChild(document.createElement("div"));
+      this.#focus_catcher.tabIndex = 0;
+      this.#focus_catcher.addEventListener("focus", () => {
+        this.#content.focus();
+      });
+    } else if (!modal && this.#focus_catcher) {
+      this.classList.remove("modal");
+      this.#focus_catcher.remove();
+      this.#focus_catcher = undefined;
+    }
   }
   get modal(): boolean {
-    return this.classList.contains("modal");
+    return Boolean(this.#focus_catcher);
   }
 
   focus_panel(): void {
@@ -327,9 +351,11 @@ export class Panel extends Base {
     this.#title.textContent = title;
   }
 
-  #content: HTMLDivElement;
+  #content: ContentBase;
+  #content_box: HTMLDivElement;
   set content(cont: ContentBase) {
-    this.#content.replaceChildren(cont);
+    this.#content = cont;
+    this.#content_box.replaceChildren(cont);
     this.attach_state(cont.content_icon, (c) =>
       this.#set_icon(c.value.unwrap_or(undefined)),
     );
@@ -340,7 +366,7 @@ export class Panel extends Base {
     );
   }
   get content(): ContentBase | undefined {
-    return (this.#content.firstElementChild as ContentBase) ?? undefined;
+    return (this.#content_box.firstElementChild as ContentBase) ?? undefined;
   }
 
   //      _____   ____   _____ _____ _______ _____ ____  _   _ _____ _   _  _____

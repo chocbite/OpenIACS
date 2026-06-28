@@ -1,4 +1,5 @@
 import { px_to_rem } from "@chocbite/ts-lib-theme";
+import type { ContentBase } from "@libComposition";
 import "./container.scss";
 import { Panel, type PanelOptions, type PanelContainer as PC } from "./panel";
 import "./shared";
@@ -12,7 +13,7 @@ interface PanelContainer {
   /**The currently active panel in the panel container */
   readonly active_panel?: Panel;
   /**Creates a panel in the panel container */
-  create_panel(options: PanelOptions): Panel;
+  create_panel(content: ContentBase, options: PanelOptions): Panel;
   /**Adopts a panel from another panel container */
   adopt_panel(panel: Panel): void;
 }
@@ -79,10 +80,14 @@ class InternalPanelContainer implements PC, PanelContainer {
     layer.box.appendChild(panel);
   }
 
-  create_panel(options: PanelOptions): Panel {
+  create_panel(content: ContentBase, options: PanelOptions): Panel {
     options.layer ??= 0;
     const layer = this.get_layer(options.layer);
-    const panel = new Panel(this, options as PanelOptions & { layer: number });
+    const panel = new Panel(
+      content,
+      this,
+      options as PanelOptions & { layer: number },
+    );
     layer.box.appendChild(panel);
     layer.panels.push(panel);
     panel.style.zIndex = layer.panels.length.toString();
