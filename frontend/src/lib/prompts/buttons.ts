@@ -1,20 +1,21 @@
 import form from "@chocbite/ts-lib-form";
+import { none, some, type Option } from "@chocbite/ts-lib-result";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
-import { Content, main_panel_container } from "@libComposition";
+import { main_panel_container } from "@libComposition";
+import { Prompt } from "./shared";
 
 interface PromptButtonsButton<T> {
   text: string;
+  value: T;
   click?: () => void;
-  value?: T;
   icon?: SVGFunc;
 }
 
 export function prompt_buttons<T>(
   text: string,
   buttons: PromptButtonsButton<T>[],
-) {
-  const content = new Content();
-  content.appendChild(
+): Promise<Option<T>> {
+  const prompt = new Prompt<T>(
     form.group({
       elements: [
         form.text({ text: text, size: 1.2 }),
@@ -27,7 +28,7 @@ export function prompt_buttons<T>(
               text: button.text,
               icon: button.icon,
               on_click: () => {
-                content.content_close();
+                prompt.content_close(button.value);
                 if (button.click) button.click();
               },
             }),
@@ -36,9 +37,13 @@ export function prompt_buttons<T>(
       ],
     }),
   );
-  main_panel_container.create_panel(content, {
-    show_titlebar: false,
+  const panel = main_panel_container.create_panel(prompt, {
+    // show_titlebar: false,
     sizeable: false,
     modal: true,
   });
+  return Promise.race([
+    prompt.content_on_close().then((v) => some(v)),
+    panel.on_close().then(() => none()),
+  ]);
 }

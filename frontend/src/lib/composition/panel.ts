@@ -6,7 +6,7 @@ import { px_to_rem, rem_to_px } from "@chocbite/ts-lib-theme";
 import { ContentBase } from "./content";
 import "./panel.scss";
 import "./shared";
-import type { CompAnchor, CompMinSize, CompPosition } from "./shared";
+import { type CompAnchor, type CompMinSize, type CompPosition } from "./shared";
 
 const MIN_WIDTH = 4; //rem
 const MIN_HEIGHT = 4; //rem
@@ -34,7 +34,6 @@ export interface PanelOptions {
 
   //Accessories
   show_titlebar?: boolean;
-  closeable?: boolean;
 
   //Positioning
   moveable?: boolean;
@@ -73,7 +72,7 @@ export class Panel extends Base {
   }
 
   constructor(
-    content: ContentBase,
+    content: ContentBase<any>,
     container: PanelContainer,
     options: PanelOptions & { layer: number },
   ) {
@@ -81,6 +80,10 @@ export class Panel extends Base {
 
     this.addEventListener("focus", () => {
       this.#content.focus();
+    });
+    this.addEventListener("content_closed", (e) => {
+      e.stopPropagation();
+      this.close();
     });
 
     this.#container = container;
@@ -294,8 +297,17 @@ export class Panel extends Base {
     this.#container.focus_panel(this);
   }
 
+  #panel_on_closers: (() => void)[] = [];
+
+  on_close(): Promise<void> {
+    return new Promise((resolve) => {
+      this.#panel_on_closers.push(resolve);
+    });
+  }
+
   close(): void {
     this.remove();
+    for (const func of this.#panel_on_closers) func();
   }
 
   //               _____ _____ ______  _____ _____  ____  _____  _____ ______  _____
@@ -351,9 +363,9 @@ export class Panel extends Base {
     this.#title.textContent = title;
   }
 
-  #content: ContentBase;
+  #content: ContentBase<any>;
   #content_box: HTMLDivElement;
-  set content(cont: ContentBase) {
+  set content(cont: ContentBase<any>) {
     this.#content = cont;
     this.#content_box.replaceChildren(cont);
     this.attach_state(cont.content_icon, (c) =>
@@ -365,8 +377,10 @@ export class Panel extends Base {
       this.#set_min_size(c.value),
     );
   }
-  get content(): ContentBase | undefined {
-    return (this.#content_box.firstElementChild as ContentBase) ?? undefined;
+  get content(): ContentBase<any> | undefined {
+    return (
+      (this.#content_box.firstElementChild as ContentBase<any>) ?? undefined
+    );
   }
 
   //      _____   ____   _____ _____ _______ _____ ____  _   _ _____ _   _  _____

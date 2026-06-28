@@ -16,17 +16,28 @@ import { comp, TopBarSides } from "./lib/composition";
 //   console.warn(response);
 // })();
 
-prompts.buttons("Test Prompt", [
-  { text: "Button 1", value: true },
-  { text: "Button 3", value: true },
-  {
-    text: "Button 2 very long text that  of the button in the prompt",
-  },
-  { text: "Button 3", value: true },
-  { text: "Button 3", value: true },
-  { text: "Button 3", value: true },
-  { text: "Button 3", value: true },
-]);
+(async () => {
+  console.warn(
+    await prompts.buttons("Test Prompt", [
+      {
+        text: "Button 1",
+        value: true,
+        click() {
+          console.warn("Button 1 clicked");
+        },
+      },
+      { text: "Button 3", value: true },
+      {
+        text: "Button 2 very long text that  of the button in the prompt",
+        value: undefined,
+      },
+      { text: "Button 3", value: true },
+      { text: "Button 3", value: true },
+      { text: "Button 3", value: true },
+      { text: "Button 3", value: true },
+    ]),
+  );
+})();
 
 const topbar = comp.topbar();
 document.body.prepend(topbar);

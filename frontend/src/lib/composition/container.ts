@@ -13,7 +13,7 @@ interface PanelContainer {
   /**The currently active panel in the panel container */
   readonly active_panel?: Panel;
   /**Creates a panel in the panel container */
-  create_panel(content: ContentBase, options: PanelOptions): Panel;
+  create_panel(content: ContentBase<any>, options: PanelOptions): Panel;
   /**Adopts a panel from another panel container */
   adopt_panel(panel: Panel): void;
 }
@@ -80,7 +80,7 @@ class InternalPanelContainer implements PC, PanelContainer {
     layer.box.appendChild(panel);
   }
 
-  create_panel(content: ContentBase, options: PanelOptions): Panel {
+  create_panel(content: ContentBase<any>, options: PanelOptions): Panel {
     options.layer ??= 0;
     const layer = this.get_layer(options.layer);
     const panel = new Panel(

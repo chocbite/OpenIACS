@@ -10,7 +10,7 @@ import type { CompMinSize } from "./shared";
 const PRIVATE_FOCUSED_CONTENT = state.err<ContentBase>("No content focused");
 export const FOCUSED_CONTENT = PRIVATE_FOCUSED_CONTENT.read_only;
 
-export abstract class ContentBase<Close = void> extends Base {
+export abstract class ContentBase<C = void> extends Base {
   static element_name() {
     return "@abstract@";
   }
@@ -38,12 +38,25 @@ export abstract class ContentBase<Close = void> extends Base {
   get content_context_lines(): ContextMenuLines {
     return [];
   }
+
+  #content_on_closers: ((args: C) => void)[] = [];
+
   /**Called when container requests the content to close*/
-  protected content_on_close(): Promise<Close> {
-    return Promise.resolve(undefined as unknown as Close);
+  content_on_close(): Promise<C> {
+    return new Promise<C>((resolve) => {
+      this.#content_on_closers.push(resolve);
+    });
   }
-  async content_close(_args: Close): Promise<Option<Close>> {
-    return none();
+
+  #content_on_close_fulfill(args: C) {
+    for (const closer of this.#content_on_closers) closer(args);
+    this.#content_on_closers = [];
+  }
+
+  /**Closes content */
+  content_close(args: C) {
+    this.#content_on_close_fulfill(args);
+    this.dispatchEvent(new CustomEvent("content_closed", { bubbles: true }));
   }
 
   #on_contect_menu = (e: MouseEvent) => {
@@ -102,14 +115,6 @@ export class Content extends ContentBase {
   }
   set_content_min_size(value: Option<CompMinSize>) {
     this.#content_min_size.set_ok(value);
-  }
-
-  async content_close(_args: void): Promise<Option<void>> {
-    return none();
-  }
-
-  protected async content_on_close(): Promise<void> {
-    return;
   }
 
   constructor() {
