@@ -18,12 +18,14 @@ import { comp, TopBarSides } from "./lib/composition";
 
 prompts.buttons("Test Prompt", [
   { text: "Button 1", value: true },
-  { text: "Button 3" },
-  { text: "Button 2 very long text that  of the button in the prompt" },
-  { text: "Button 3" },
-  { text: "Button 3" },
-  { text: "Button 3" },
-  { text: "Button 3" },
+  { text: "Button 3", value: true },
+  {
+    text: "Button 2 very long text that  of the button in the prompt",
+  },
+  { text: "Button 3", value: true },
+  { text: "Button 3", value: true },
+  { text: "Button 3", value: true },
+  { text: "Button 3", value: true },
 ]);
 
 const topbar = comp.topbar();
