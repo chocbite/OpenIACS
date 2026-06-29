@@ -14,8 +14,14 @@ export class Prompt extends ContentBase {
     return state.ok(true);
   }
 
-  constructor(element: HTMLElement) {
+  #title;
+  get content_title(): StateROS<string> {
+    return this.#title;
+  }
+
+  constructor(title: string, element: HTMLElement) {
     super();
+    this.#title = state.ok(title);
     this.appendChild(element);
   }
 }

@@ -4,7 +4,7 @@ import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { main_panel_container } from "@libComposition";
 import { Prompt } from "./shared";
 
-interface PromptButtonsButton<T> {
+interface PromptButton<T> {
   text: string;
   value: T;
   click?: () => void;
@@ -13,13 +13,13 @@ interface PromptButtonsButton<T> {
 
 export function prompt_buttons<T>(
   text: string,
-  buttons: PromptButtonsButton<T>[],
+  buttons: PromptButton<T>[],
 ): Promise<Option<T>> {
   return new Promise<Option<T>>((resolve) => {
     const prompt = new Prompt(
+      text,
       form.group({
         elements: [
-          form.text({ text: text, size: 1.2 }),
           form.spacer({ space: 0.5 }),
           form.group({
             embed: true,

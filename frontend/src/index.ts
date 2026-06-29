@@ -1,6 +1,5 @@
 import "@chocbite/ts-lib-base";
 import { material_brightness_medium_rounded } from "@chocbite/ts-lib-icons";
-import { prompts } from "@libPrompts";
 import "./game";
 import "./index.scss";
 import "./lib/composition";
@@ -16,28 +15,32 @@ import { comp, TopBarSides } from "./lib/composition";
 //   console.warn(response);
 // })();
 
-(async () => {
-  console.warn(
-    await prompts.buttons("Test Prompt", [
-      {
-        text: "Button 1",
-        value: true,
-        click() {
-          console.warn("Button 1 clicked");
-        },
-      },
-      { text: "Button 3", value: true },
-      {
-        text: "Button 2 very long text that  of the button in the prompt",
-        value: undefined,
-      },
-      { text: "Button 3", value: true },
-      { text: "Button 3", value: true },
-      { text: "Button 3", value: true },
-      { text: "Button 3", value: true },
-    ]),
-  );
-})();
+// (async () => {
+//   const ret = await prompts.form(
+//     "Test Prompt",
+//     [
+//       form.lamp({
+//         id: "lamp1",
+//         text: "Lamp",
+//         colors: ["black", "blue"],
+//         value: false,
+//       }),
+//       form.lamp({
+//         id: "lamp2",
+//         text: "Lamp",
+//         colors: ["black", "blue"],
+//         value: true,
+//       }),
+//     ],
+//     {
+//       text: "Submit",
+//       click: (group) => {
+//         console.warn(group, group.value.unwrap().lamp1);
+//       },
+//     },
+//   );
+//   console.warn(ret.unwrap().lamp1);
+// })();
 
 const topbar = comp.topbar();
 document.body.prepend(topbar);

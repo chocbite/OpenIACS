@@ -3,7 +3,7 @@ import ctm from "@chocbite/ts-lib-context-menu";
 import { material_casino_rounded } from "@chocbite/ts-lib-icons";
 import list from "@chocbite/ts-lib-list";
 import { some } from "@chocbite/ts-lib-result";
-import state from "@chocbite/ts-lib-state";
+import state, { type StateROS } from "@chocbite/ts-lib-state";
 import { main_panel_container } from "@libComposition";
 import { ContentBase } from "../lib/composition/content";
 import { Game, games } from "./game";
@@ -33,13 +33,19 @@ export class GameList extends ContentBase {
     this.appendChild(
       list.container(
         {
-          name: list.column_string("Name"),
+          name: list.column({
+            title: "Name",
+            field_gen: () => list.text_field(),
+            field_apply: (field, val: StateROS<string>) => {
+              field.attach_state_ROA_to_prop("text", val);
+            },
+          }),
           created: list.column_string("Created"),
         },
         (row) => {
           return {
             values: {
-              name: row.game_name.ok(),
+              name: row.game_name,
               created: row.creation_data.ok().toLocaleString(),
             },
             context_menu() {
