@@ -10,7 +10,7 @@ import type { CompMinSize } from "./shared";
 const PRIVATE_FOCUSED_CONTENT = state.err<ContentBase>("No content focused");
 export const FOCUSED_CONTENT = PRIVATE_FOCUSED_CONTENT.read_only;
 
-export abstract class ContentBase<C = void> extends Base {
+export abstract class ContentBase extends Base {
   static element_name() {
     return "@abstract@";
   }
@@ -39,23 +39,23 @@ export abstract class ContentBase<C = void> extends Base {
     return [];
   }
 
-  #content_on_closers: ((args: C) => void)[] = [];
+  #content_on_closers: (() => void)[] = [];
 
   /**Called when container requests the content to close*/
-  content_on_close(): Promise<C> {
-    return new Promise<C>((resolve) => {
+  content_on_close(): Promise<void> {
+    return new Promise<void>((resolve) => {
       this.#content_on_closers.push(resolve);
     });
   }
 
-  #content_on_close_fulfill(args: C) {
-    for (const closer of this.#content_on_closers) closer(args);
+  #content_on_close_fulfill() {
+    for (const closer of this.#content_on_closers) closer();
     this.#content_on_closers = [];
   }
 
   /**Closes content */
-  content_close(args: C) {
-    this.#content_on_close_fulfill(args);
+  content_close() {
+    this.#content_on_close_fulfill();
     this.dispatchEvent(new CustomEvent("content_closed", { bubbles: true }));
   }
 

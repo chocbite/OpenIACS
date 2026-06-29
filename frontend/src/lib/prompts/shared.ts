@@ -2,7 +2,7 @@ import { define_element } from "@chocbite/ts-lib-base";
 import { state, type StateROS } from "@chocbite/ts-lib-state";
 import { ContentBase } from "@libComposition";
 
-export class Prompt<T> extends ContentBase<T> {
+export class Prompt extends ContentBase {
   static element_name() {
     return "prompt";
   }

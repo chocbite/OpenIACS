@@ -1,6 +1,6 @@
 import { Base, define_element } from "@chocbite/ts-lib-base";
 import ctm from "@chocbite/ts-lib-context-menu";
-import type { Option } from "@chocbite/ts-lib-result";
+import { none, type Option, type OptionNone } from "@chocbite/ts-lib-result";
 import type { SVGFunc } from "@chocbite/ts-lib-svg";
 import { px_to_rem, rem_to_px } from "@chocbite/ts-lib-theme";
 import { ContentBase } from "./content";
@@ -72,7 +72,7 @@ export class Panel extends Base {
   }
 
   constructor(
-    content: ContentBase<any>,
+    content: ContentBase,
     container: PanelContainer,
     options: PanelOptions & { layer: number },
   ) {
@@ -297,9 +297,9 @@ export class Panel extends Base {
     this.#container.focus_panel(this);
   }
 
-  #panel_on_closers: (() => void)[] = [];
+  #panel_on_closers: ((none: OptionNone) => void)[] = [];
 
-  on_close(): Promise<void> {
+  on_close(): Promise<OptionNone> {
     return new Promise((resolve) => {
       this.#panel_on_closers.push(resolve);
     });
@@ -307,7 +307,7 @@ export class Panel extends Base {
 
   close(): void {
     this.remove();
-    for (const func of this.#panel_on_closers) func();
+    for (const func of this.#panel_on_closers) func(none());
   }
 
   //               _____ _____ ______  _____ _____  ____  _____  _____ ______  _____
@@ -363,9 +363,9 @@ export class Panel extends Base {
     this.#title.textContent = title;
   }
 
-  #content: ContentBase<any>;
+  #content: ContentBase;
   #content_box: HTMLDivElement;
-  set content(cont: ContentBase<any>) {
+  set content(cont: ContentBase) {
     this.#content = cont;
     this.#content_box.replaceChildren(cont);
     this.attach_state(cont.content_icon, (c) =>
@@ -377,10 +377,8 @@ export class Panel extends Base {
       this.#set_min_size(c.value),
     );
   }
-  get content(): ContentBase<any> | undefined {
-    return (
-      (this.#content_box.firstElementChild as ContentBase<any>) ?? undefined
-    );
+  get content(): ContentBase | undefined {
+    return (this.#content_box.firstElementChild as ContentBase) ?? undefined;
   }
 
   //      _____   ____   _____ _____ _______ _____ ____  _   _ _____ _   _  _____
