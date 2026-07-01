@@ -31,7 +31,7 @@
     "@chocbite/ts-lib-svg": "^1.2.0",
     "@chocbite/ts-lib-theme": "^1.4.0",
     "@chocbite/ts-lib-list": "^1.2.4",
-    "@chocbite/ts-lib-form": "^1.4.2"
+    "@chocbite/ts-lib-form": "^1.4.3"
   },
   "devDependencies": {
     "@chocbite/ts-supplement-eslint": "^1.0.4",
@@ -42,7 +42,7 @@
     "sass": "^1.101.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.1",
-    "vite": "^8.1.1",
+    "vite": "^8.1.2",
     "vite-plugin-singlefile": "^2.3.3",
     "vitest": "^4.1.9"
   }

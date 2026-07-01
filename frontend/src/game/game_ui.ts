@@ -35,13 +35,13 @@ export class GameUI extends ContentBase {
         (
           await prompts.form(
             "Rename Game",
-            [form.input_text({ id: "name", value: this.#game.game_name.ok() })],
+            [form.text_input({ id: "name", value: this.#game.game_name.ok() })],
             {
               text: "Rename",
             },
           )
         ).map((v) => {
-          this.#game.game_name.write(v.name);
+          this.#game.game_name.write(v.name!);
         });
       }),
     ];

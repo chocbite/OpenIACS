@@ -30,8 +30,12 @@ interface Submit<RT extends object> {
 export function prompt_form<
   L extends FormElement[],
   T extends object = Prettify<Partial<GroupToKeyVal<GroupExtractVals<L>>>>,
->(text: string, elements: [...L], submit: Submit<T>): Promise<Option<T>> {
-  return new Promise<Option<T>>((resolve) => {
+>(
+  text: string,
+  elements: [...L],
+  submit: Submit<T>,
+): Promise<Option<Partial<T>>> {
+  return new Promise<Option<Partial<T>>>((resolve) => {
     const group = form.group<L, undefined, T>({
       elements,
       embed: true,
@@ -45,7 +49,7 @@ export function prompt_form<
           form.button({
             text: submit.text,
             on_click: () => {
-              const values = group.value;
+              const values = group.value_partial;
               submit.click?.(group);
               prompt.content_close();
               resolve(values.to_option());

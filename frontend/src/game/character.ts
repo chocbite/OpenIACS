@@ -53,17 +53,13 @@ export class CharacterEditor extends ContentBase {
     return state.ok(some({ width: 20, height: 10 }));
   }
 
-  protected async content_on_close(): Promise<void> {
-    return;
-  }
-
   #name;
 
   constructor(character: Character) {
     super();
     this.appendChild(
       form.group({
-        elements: [(this.#name = form.input_text())],
+        elements: [(this.#name = form.text_input())],
       }),
     );
     this.character = character;
