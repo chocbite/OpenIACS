@@ -1,5 +1,5 @@
 import { err, ok, ResultOk } from "@chocbite/ts-lib-result";
-import state from "@chocbite/ts-lib-state";
+import state, { type State } from "@chocbite/ts-lib-state";
 import type { Character } from "./character";
 import { game_storage, Part } from "./shared";
 
@@ -29,6 +29,12 @@ export class Game extends Part {
     };
   }
 }
+
+export const g2 = state.rosw<State<string>[]>(
+  ok(game_storage.get("test", []).value.map((v) => state.ok_w(String(v)))),
+);
+game_storage.register("test", g2);
+g2.array.push(state.ok_w("Hello"));
 
 export const games = state.rosw<Game[]>(
   parse_games(game_storage.get("games", [])),
