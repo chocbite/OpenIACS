@@ -46,7 +46,7 @@ export class GameList extends ContentBase {
           return {
             values: {
               name: row.game_name,
-              created: row.creation_data.ok().toLocaleString(),
+              created: row.creation_date.ok().toLocaleString(),
             },
             context_menu() {
               return some(

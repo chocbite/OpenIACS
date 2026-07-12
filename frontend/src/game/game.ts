@@ -1,5 +1,5 @@
 import { err, ok, ResultOk } from "@chocbite/ts-lib-result";
-import state, { type State } from "@chocbite/ts-lib-state";
+import state from "@chocbite/ts-lib-state";
 import type { Character } from "./character";
 import { game_storage, Part } from "./shared";
 
@@ -12,29 +12,23 @@ export class Game extends Part {
   #game_name = state.ok_w("New Game");
   readonly game_name = this.#game_name.read_write;
 
-  #creation_data = state.ok_w(new Date());
-  readonly creation_data = this.#creation_data.read_only;
+  #creation_date = state.ok_w(new Date());
+  readonly creation_date = this.#creation_date.read_only;
 
-  constructor(uuid?: string, name?: string, creation_data?: Date) {
+  constructor(uuid?: string, name?: string, creation_date?: Date) {
     super(uuid);
     if (name) this.#game_name.set_ok(name);
-    if (creation_data) this.#creation_data.set_ok(creation_data);
+    if (creation_date) this.#creation_date.set_ok(creation_date);
   }
 
-  toJSON() {
+  [state.v.OVERRIDE_KEY]() {
     return {
       uuid: this.uuid,
-      name: this.#game_name.ok(),
-      creation_data: this.#creation_data.ok(),
+      name: this.#game_name,
+      creation_date: this.#creation_date,
     };
   }
 }
-
-export const g2 = state.rosw<State<string>[]>(
-  ok(game_storage.get("test", []).value.map((v) => state.ok_w(String(v)))),
-);
-game_storage.register("test", g2);
-g2.array.push(state.ok_w("Hello"));
 
 export const games = state.rosw<Game[]>(
   parse_games(game_storage.get("games", [])),
