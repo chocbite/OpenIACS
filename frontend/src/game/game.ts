@@ -1,5 +1,5 @@
 import { err, ok, ResultOk } from "@chocbite/ts-lib-result";
-import state from "@chocbite/ts-lib-state";
+import state, { type StateROS } from "@chocbite/ts-lib-state";
 import type { Character } from "./character";
 import { game_storage, Part } from "./shared";
 
@@ -30,23 +30,26 @@ export class Game extends Part {
   }
 }
 
-export const games = state.rosw<Game[]>(
+export const games = state.rosw<StateROS<Game>[]>(
   parse_games(game_storage.get("games", [])),
 );
 game_storage.register("games", games);
 
-function parse_games(data: ResultOk<never[]>): ResultOk<Game[]> {
-  return ok(
-    data.value
-      .map((data: Partial<ReturnType<Game["toJSON"]>>) => {
-        if (typeof data !== "object" || data === null)
-          return err("Invalid game data");
-        if (!data.uuid) return err("Missing uuid");
-        if (!data.name) return err("Missing name");
-        if (!data.creation_data) return err("Missing creation data");
-        return ok(new Game(data.uuid, data.name, new Date(data.creation_data)));
-      })
-      .filter((result) => result.ok)
-      .map((result) => result.value),
-  );
+function parse_games(data: ResultOk<unknown>): ResultOk<StateROS<Game>[]> {
+  if (!Array.isArray(data.value)) return ok([]);
+  const yo = (data.value as unknown[])
+    .map((d) => {
+      if (typeof d !== "object" || d === null) return err("Invalid game data");
+      if (!("uuid" in d)) return err("Missing uuid");
+      if (typeof d.uuid !== "string") return err("Invalid uuid");
+      if (!("name" in d)) return err("Missing name");
+      if (typeof d.name !== "string") return err("Invalid name");
+      if (!("creation_date" in d)) return err("Missing creation date");
+      if (typeof d.creation_date !== "string")
+        return err("Invalid creation date");
+      return ok(new Game(d.uuid, d.name, new Date(d.creation_date)));
+    })
+    .filter((result) => result.ok)
+    .map((result) => state.ok(result.value));
+  return ok(yo);
 }

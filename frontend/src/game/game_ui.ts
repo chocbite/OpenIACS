@@ -3,7 +3,7 @@ import { ctm, type ContextMenuLines } from "@chocbite/ts-lib-context-menu";
 import form from "@chocbite/ts-lib-form";
 import { material_casino_rounded } from "@chocbite/ts-lib-icons";
 import { some } from "@chocbite/ts-lib-result";
-import state from "@chocbite/ts-lib-state";
+import state, { type StateROS } from "@chocbite/ts-lib-state";
 import { ContentBase } from "@libComposition";
 import { prompts } from "@libPrompts";
 import type { Game } from "./game";
@@ -35,28 +35,33 @@ export class GameUI extends ContentBase {
         (
           await prompts.form(
             "Rename Game",
-            [form.text_input({ id: "name", value: this.#game.game_name.ok() })],
+            [
+              form.text_input({
+                id: "name",
+                value: this.#game.ok().game_name.ok(),
+              }),
+            ],
             {
               text: "Rename",
             },
           )
         ).map((v) => {
-          this.#game.game_name.write(v.name!);
+          this.#game.ok().game_name.write(v.name!);
         });
       }),
     ];
   }
 
-  constructor(game: Game) {
+  constructor(game: StateROS<Game>) {
     super();
     this.#game = game;
     this.game = game;
   }
 
-  #game: Game;
-  set game(game: Game) {
+  #game: StateROS<Game>;
+  set game(game: StateROS<Game>) {
     this.#game = game;
-    this.#content_title.set_state(game.game_name);
+    this.#content_title.set_state(game.ok().game_name);
   }
 }
 define_element(GameUI);

@@ -45,8 +45,8 @@ export class GameList extends ContentBase {
         (row) => {
           return {
             values: {
-              name: row.game_name,
-              created: row.creation_date.ok().toLocaleString(),
+              name: row.ok().game_name,
+              created: row.ok().creation_date.ok().toLocaleString(),
             },
             context_menu() {
               return some(
@@ -68,7 +68,7 @@ export class GameList extends ContentBase {
           add_row: {
             text: "New Game",
             on_add() {
-              games.array.push(new Game());
+              games.array.push(state.ok(new Game()));
             },
           },
         },
