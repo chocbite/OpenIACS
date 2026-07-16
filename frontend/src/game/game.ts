@@ -23,6 +23,7 @@ export class Game extends Part {
 
   [state.v.OVERRIDE_KEY]() {
     return {
+      characters: this.#characters,
       uuid: this.uuid,
       name: this.#game_name,
       creation_date: this.#creation_date,
