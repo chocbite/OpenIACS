@@ -28,7 +28,7 @@ Further rules:
 
 | Crate | Used for | Reason accepted |
 |---|---|---|
-| *(none yet)* | | |
+| `redb` | Storing configuration on disk ([configuration.md](configuration.md)) | ACID storage is hard to get right ourselves; pure Rust; synchronous API; only used during boot and configuration, where allocation is allowed |
 
 ## Open questions
 

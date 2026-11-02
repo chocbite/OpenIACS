@@ -25,7 +25,6 @@ These apply to every part of the backend:
 
 - Are all hosts equal peers, or do some hosts have special roles (for example a leader or coordinator)?
 - Which host owns a given value? Is it always the host physically connected to the thing the value represents?
-- How do hosts discover each other and join or leave the cluster?
+- How does a host join or leave the cluster technically? Joining is a configuration change made by a user (see [configuration.md](configuration.md)), but the mechanism is not decided.
 - What happens to the values of a host that becomes unreachable?
 - Can a client (for example the frontend) connect to any host and see the whole cluster, or must it connect to a specific host?
-- Is there a maximum cluster size? This affects the allocation model, since resources per host must be sized in advance.

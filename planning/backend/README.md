@@ -7,6 +7,8 @@ Planning documents for the OpenIACS backend. Each distinct part of the design ha
 | [overview.md](overview.md) | What the backend does and the distributed cluster model |
 | [language-and-dependencies.md](language-and-dependencies.md) | Rust as the language and the minimal dependency policy |
 | [memory-allocation-model.md](memory-allocation-model.md) | The boot and configuration-time allocation model |
+| [configuration.md](configuration.md) | What configuration is, who can change it and when |
+| [systems-notifications.md](systems-notifications.md) | Host-level notifications about conditions that make the host run less than optimally |
 
 ## Conventions for these documents
 
