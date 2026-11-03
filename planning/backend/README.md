@@ -9,6 +9,7 @@ Planning documents for the OpenIACS backend. Each distinct part of the design ha
 | [memory-allocation-model.md](memory-allocation-model.md) | The boot and configuration-time allocation model |
 | [configuration.md](configuration.md) | What configuration is, who can change it and when |
 | [systems-notifications.md](systems-notifications.md) | Host-level notifications about conditions that make the host run less than optimally |
+| [registry.md](registry.md) | Items, the registry, permanent IDs and how running code refers to items |
 
 ## Conventions for these documents
 

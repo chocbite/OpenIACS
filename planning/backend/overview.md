@@ -4,7 +4,9 @@
 
 OpenIACS (Open Integrated Alarm and Control System) monitors and controls **values**.
 
-A value is a named piece of state in the system, for example a measured temperature, the state of a switch or a setpoint. Values can be read and observed, and where allowed, written to control something. The exact definition of a value (types, metadata, quality, timestamps, access rights) will get its own document.
+A value is a named piece of state in the system, for example a measured temperature, the state of a switch or a setpoint. Values can be read and observed, and where allowed, written to control something.
+
+Values are one kind of **item**: anything with a permanent identity that can be linked to, logged and shown in the UI. Other kinds of item are abstract and exist to link functionality together, such as a printer or an SMS modem. Items and their IDs are managed by the **registry** (see [registry.md](registry.md)). Each kind of item will get its own document.
 
 ## Distributed model
 
