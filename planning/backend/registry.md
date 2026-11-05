@@ -83,6 +83,14 @@ Permanent IDs are for the world outside the running code. Running code uses **ha
 - Running code follows handles directly to the slot, with no lookup by permanent ID.
 - Each registry also has a **permanent ID → handle** lookup for the boundaries, for example when the frontend asks for `value#1042`. It is a sorted array or a hashmap, built during configuration, so lookups while running do not allocate.
 
+### Stale links do nothing
+
+Deleting an item that other configuration links to is allowed. Links to it become **stale**, and a stale link safely **does nothing**:
+
+- What "nothing" means is specific to each item kind.
+- A stale link never crashes and never reaches a different item (see [Handles](#handles-how-running-code-refers-to-items)).
+- The same applies at boot: a stored link to an item that no longer exists is resolved to a stale link instead of stopping the boot.
+
 ### Logs
 
 Log files belong to one host, so log entries store only the item's number within its registry, which is compact and fixed-size. The full stored form is produced when entries are shown or exported.
@@ -91,4 +99,3 @@ Log files belong to one host, so log entries store only the item's number within
 
 - **Basic metadata.** Which metadata, if any, all items have in common (for example a name).
 - **Links to items on other hosts.** Items on another host are not in the local registry. How does a link to a remote item get a handle, and what does it point to while the other host is unreachable?
-- **Deleting an item that is linked to.** When a configuration change deletes an item that other configuration links to, should the change be rejected, or should those links be removed or marked as broken?
