@@ -24,6 +24,10 @@ Further rules:
 - Record every direct dependency in the table below, with the reason it was accepted.
 - Review the dependency list whenever a dependency is added or upgraded.
 
+### Targets: 32-bit and 64-bit
+
+The backend must run on both 32-bit and 64-bit hosts. 32-bit hardware is still widely used, and some 32-bit architectures have no 64-bit atomic operations, so code must not assume they exist.
+
 ## Approved dependencies
 
 | Crate | Used for | Reason accepted |
@@ -32,7 +36,7 @@ Further rules:
 
 ## Open questions
 
-- **Target platforms.** Which operating systems and CPU architectures must the backend run on? Is a `no_std` build ever needed (for example on small embedded hosts), or is `std` always available?
+- **Target platforms.** Which operating systems and CPU architectures, beyond supporting both 32-bit and 64-bit, must the backend run on? Is a `no_std` build ever needed (for example on small embedded hosts), or is `std` always available?
 - **Concurrency model.** Plain threads with blocking I/O, or an async runtime? An async runtime would be a large dependency and tends to allocate per task, which conflicts with both this policy and the allocation model. Plain threads, or a small event loop of our own, fit better.
 - **Rust edition and minimum supported Rust version (MSRV).**
 - **Project license.**

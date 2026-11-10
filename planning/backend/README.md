@@ -10,9 +10,11 @@ Planning documents for the OpenIACS backend. Each distinct part of the design ha
 | [configuration.md](configuration.md) | What configuration is, who can change it and when |
 | [systems-notifications.md](systems-notifications.md) | Host-level notifications about conditions that make the host run less than optimally |
 | [registry.md](registry.md) | Items, the registry, permanent IDs and how running code refers to items |
+| [registry-primitives.md](registry-primitives.md) | Primitives: booleans and numbers, volatile and nonvolatile |
 
 ## Conventions for these documents
 
+- Documents about anything built on the registry are named `registry-<name>.md`.
 - One distinct part per file. When a topic grows large enough to stand on its own, give it a new file and link it from this index.
 - Each document separates **decisions** (settled) from **open questions** (not settled). Do not turn an open question into a decision without the project owner agreeing.
 - The documents describe OpenIACS on its own terms. They do not refer to or compare with other systems.
